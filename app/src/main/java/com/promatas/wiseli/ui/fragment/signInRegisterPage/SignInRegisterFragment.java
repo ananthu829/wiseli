@@ -1,29 +1,30 @@
-package com.promatas.wiseli.ui.splashScreen;
-
+package com.promatas.wiseli.ui.fragment.signInRegisterPage;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.promatas.wiseli.R;
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import static com.promatas.wiseli.utils.AppConstants.SPLASH_SCREEN_TIME_OUT;
+import com.promatas.wiseli.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * Use the {@link SplashScreenFragment#newInstance} factory method to
+ * Use the {@link SignInRegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SplashScreenFragment extends Fragment {
+public class SignInRegisterFragment extends Fragment {
+
+    private AppCompatButton btnSignUp;
+    private AppCompatTextView tvSignedUser;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,7 +34,7 @@ public class SplashScreenFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SplashScreenFragment() {
+    public SignInRegisterFragment() {
         // Required empty public constructor
     }
 
@@ -43,11 +44,11 @@ public class SplashScreenFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SplashScreenFragment.
+     * @return A new instance of fragment SignInRegisterFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SplashScreenFragment newInstance(String param1, String param2) {
-        SplashScreenFragment fragment = new SplashScreenFragment();
+    public static SignInRegisterFragment newInstance(String param1, String param2) {
+        SignInRegisterFragment fragment = new SignInRegisterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -58,26 +59,39 @@ public class SplashScreenFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getWindow().setEnterTransition(null);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // This callback will only be called when MyFragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                getActivity().finish();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_splash_screen, container, false);
+        return inflater.inflate(R.layout.fragment_sign_in_register, container, false);
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            Navigation.findNavController(view).navigate(R.id.action_splashScreenFragment_to_signInFragment);
-        },SPLASH_SCREEN_TIME_OUT);
+        btnSignUp = view.findViewById(R.id.btnSignUp);
+        tvSignedUser = view.findViewById(R.id.tvSignedUser);
+        btnSignUp.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_signInRegisterFragment_to_registerFragment);
+        });
+        tvSignedUser.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_signInRegisterFragment_to_signInFragment);
+        });
+
     }
 }

@@ -1,7 +1,5 @@
 package com.promatas.wiseli.adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,29 +12,33 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.promatas.wiseli.CircleDetails;
 import com.promatas.wiseli.R;
 import com.promatas.wiseli.models.CircleInfo;
+import com.promatas.wiseli.ui.helper.AdapterInterface;
 
 import java.util.ArrayList;
 
 public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
 
-    private Context mContext;
     ArrayList<CircleInfo> items;
+    public AdapterInterface buttonListener;
 
 
-
-    public CircleAdapter(Context c, ArrayList<CircleInfo> items) {
-        mContext = c;
-        this.items=items;
-     //   this.activity=act;
+    public CircleAdapter(ArrayList<CircleInfo> items, AdapterInterface buttonListener) {
+        this.items = items;
+        this.buttonListener = buttonListener;
     }
 
+    public static void applyBlink(View view, long duration) {
 
-
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(duration); //You can manage the blinking time with this parameter
+//        anim.setStartOffset(20);
+//        anim.setRepeatMode(Animation.REVERSE);
+//        anim.setRepeatCount(1);
+        view.startAnimation(anim);
+    }
 
     @NonNull
     @Override
@@ -55,65 +57,48 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
         final CircleInfo contact = items.get(position);
 
-       applyBlink(holder.layout,  1000);
+        applyBlink(holder.layout, 1000);
 
 
         // Set the data to the views here
 
-        holder.setData(mContext,contact.getCaption());
-
-
-
-
+        holder.setData(buttonListener, contact.getCaption());
 
 
     }
-
-    public static void applyBlink(View view, long duration)
-    {
-
-        Animation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(duration); //You can manage the blinking time with this parameter
-//        anim.setStartOffset(20);
-//        anim.setRepeatMode(Animation.REVERSE);
-//        anim.setRepeatCount(1);
-        view.startAnimation(anim);
-    }
-
 
     @Override
     public int getItemCount() {
-        return items == null? 0: items.size();
+        return items == null ? 0 : items.size();
     }
 
-    public static class holder extends  RecyclerView.ViewHolder {
+    public static class holder extends RecyclerView.ViewHolder {
 
         TextView txtName;
         ImageView edit, del;
         CardView layout;
 
 
-        public  holder(View grid)
-        {
+        public holder(View grid) {
             super(grid);
 
-            txtName= grid.findViewById(R.id.item);
-            layout= grid.findViewById(R.id.cardView);
-            edit=grid.findViewById(R.id.editBtn);
-            del=grid.findViewById(R.id.deleteBtn);
-               }
+            txtName = grid.findViewById(R.id.item);
+            layout = grid.findViewById(R.id.cardView);
+            edit = grid.findViewById(R.id.editBtn);
+            del = grid.findViewById(R.id.deleteBtn);
+        }
 
 
-
-
-        public void setData(Context context,String caption) {
+        public void setData(AdapterInterface buttonListener, String caption) {
 
             txtName.setText(caption);
             layout.setOnClickListener(v -> {
+                buttonListener.buttonPressed();
 
-                Intent i= new Intent(context, CircleDetails.class);
+
+                /*Intent i = new Intent(context, CircleDetails.class);
                 i.putExtra("caption", caption);
-                context.startActivity(i);
+                context.startActivity(i);*/
 
             });
 

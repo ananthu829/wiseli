@@ -4,77 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.signInRegisterPage.SignInRegisterFragment">
+    tools:context=".ui.fragment.signInRegisterPage.SignInRegisterFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/match_constrain"
-            android:layout_marginStart="@dimen/dimens50"
-            android:layout_marginTop="@dimen/dimens80"
-            android:layout_marginEnd="@dimen/dimens50"
-            android:gravity="center"
-            android:text="@string/hey_dude"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/match_constrain"
+        android:layout_marginStart="@dimen/dimens50"
+        android:layout_marginTop="@dimen/dimens80"
+        android:layout_marginEnd="@dimen/dimens50"
+        android:gravity="center"
+        android:text="@string/hey_dude"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/match_constrain"
-            android:layout_marginTop="@dimen/dimens5"
-            android:text="@string/see_whats_going_around"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvHeading" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/match_constrain"
+        android:layout_marginTop="@dimen/dimens5"
+        android:text="@string/see_whats_going_around"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeading" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView"
-            android:layout_width="@dimen/match_constrain"
-            android:layout_height="@dimen/match_constrain"
-            android:layout_marginTop="47dp"
-            android:layout_marginBottom="67dp"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
-            app:layout_constraintEnd_toEndOf="@+id/appCompatTextView"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/appCompatTextView"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/appCompatImageView"
+        android:layout_width="@dimen/match_constrain"
+        android:layout_height="@dimen/match_constrain"
+        android:layout_marginTop="47dp"
+        android:layout_marginBottom="67dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
+        app:layout_constraintEnd_toEndOf="@+id/appCompatTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/appCompatTextView"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSignUp"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/match_constrain"
-            android:layout_marginBottom="40dp"
-            android:background="@drawable/signup_button_background"
-            android:paddingStart="@dimen/_45"
-            android:paddingTop="@dimen/_20"
-            android:paddingEnd="@dimen/_50"
-            android:paddingBottom="@dimen/_20"
-            android:text="@string/sign_up"
-            android:textAppearance="@style/fontBold16"
-            app:layout_constraintBottom_toTopOf="@+id/tvSignedUser"
-            app:layout_constraintEnd_toEndOf="@+id/tvSignedUser"
-            app:layout_constraintHorizontal_bias="0.525"
-            app:layout_constraintStart_toStartOf="@+id/tvSignedUser" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/match_constrain"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/signup_button_background"
+        android:paddingStart="@dimen/_45"
+        android:paddingTop="@dimen/_20"
+        android:paddingEnd="@dimen/_50"
+        android:paddingBottom="@dimen/_20"
+        android:text="@string/sign_up"
+        android:textAppearance="@style/fontBold16"
+        app:layout_constraintBottom_toTopOf="@+id/tvSignedUser"
+        app:layout_constraintEnd_toEndOf="@+id/tvSignedUser"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="@+id/tvSignedUser" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvSignedUser"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/match_constrain"
-            android:layout_marginBottom="@dimen/_40"
-            android:text="@string/have_account"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.535"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSignedUser"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/match_constrain"
+        android:layout_marginBottom="@dimen/_40"
+        android:text="@string/have_account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

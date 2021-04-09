@@ -1,4 +1,4 @@
-package com.promatas.wiseli.ui.signInPage;
+package com.promatas.wiseli.ui.fragment.registerPage;
 
 
 import android.content.Intent;
@@ -12,16 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import com.promatas.wiseli.MainActivity;
 import com.promatas.wiseli.R;
+import com.promatas.wiseli.ui.activity.LandingActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignInFragment extends Fragment {
+public class RegisterFragment extends Fragment {
 
-    private AppCompatButton btnLogin;
-    public SignInFragment() {
+    private AppCompatButton btnSignUp;
+
+    public RegisterFragment() {
         // Required empty public constructor
     }
 
@@ -30,15 +31,15 @@ public class SignInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnLogin = view.findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), MainActivity.class));
+        btnSignUp = view.findViewById(R.id.btnSignUp);
+        btnSignUp.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), LandingActivity.class));
             getActivity().finish();
         });
     }

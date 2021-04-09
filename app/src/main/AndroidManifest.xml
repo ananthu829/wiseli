@@ -13,10 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WiseLi">
-        <activity android:name=".ListActivity"></activity>
-        <activity android:name=".CircleDetails" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ui.LoginSignUpActivity">
+        <activity android:name=".ui.activity.LandingActivity"></activity>
+        <activity android:name=".ui.activity.LoginSignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

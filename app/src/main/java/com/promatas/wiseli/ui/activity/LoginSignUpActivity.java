@@ -1,4 +1,4 @@
-package com.promatas.wiseli.ui;
+package com.promatas.wiseli.ui.activity;
 
 import android.os.Bundle;
 
@@ -20,9 +20,9 @@ public class LoginSignUpActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_sign_up);
-        getWindow().setEnterTransition(null);
+
         NavHostFragment navHostFragment =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.login_sign_up_nav_host_fragment);
         NavInflater navInflater = navHostFragment.getNavController().getNavInflater();
         navGraph = navInflater.inflate(R.navigation.sign_in_register_navigation);
         navController = navHostFragment.getNavController();

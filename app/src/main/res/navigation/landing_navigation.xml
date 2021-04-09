@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/landing_navigation"
+    app:startDestination="@id/landingFragment">
+
+    <fragment
+        android:id="@+id/landingFragment"
+        android:name="com.promatas.wiseli.ui.fragment.landingPage.LandingFragment"
+        android:label="LandingFragment"
+        tools:layout="@layout/fragment_landing">
+
+        <action
+            android:id="@+id/action_landingFragment_to_circularFragment"
+            app:destination="@id/circleDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/circleDetailFragment"
+        android:name="com.promatas.wiseli.ui.fragment.circleDetailPage.CircleDetailFragment"
+        android:label="CircleDetailFragment"
+        tools:layout="@layout/fragment_circle_detail">
+
+        <action
+            android:id="@+id/action_circleDetailFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.promatas.wiseli.ui.fragment.listPage.ListFragment"
+        android:label="ListFragment"
+        tools:layout="@layout/fragment_list">
+
+    </fragment>
+
+
+</navigation>
