@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="fontBold16" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avertacy_bold</item>
+        <item name="android:textSize">@dimen/dimensFont16</item>
+        <item name="android:textColor">@color/darkPrimaryText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

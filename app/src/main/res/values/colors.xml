@@ -7,4 +7,73 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    //light theme color
+    <color name="lightColorPrimary">#7540EE</color>
+    <color name="lightColorPrimaryDark">#7540EE</color>
+    <color name="lightColorAccent">#7540EE</color>
+    <color name="lightPrimaryText">#FFFFFF</color>
+    <color name="lightButtonNormal">#97DFFC</color>
+    <color name="lightButtonHighlight">#97DFFC</color>
+    <color name="lightColor">#8097DFFC</color>
+    <color name="lightButtonText">#353535</color>
+    <color name="lightEdtHintTextColor">#80FFFFFF</color>
+    <color name="lightEdtBackgroundColor">#40FFFFFF</color>
+    <color name="lightFabTextColor">#9166F1</color>
+    <color name="lightOpacityTen">#1AFFFFFF</color>
+    <color name="lightThemeNotificationColor">#0D353535</color>
+    <color name="lightButtonText30">#F4F4F4</color>
+
+
+    //dark theme color
+    <color name="darkColorPrimary">#FFFFFF</color>
+    <color name="tabColorDarkColorPrimaryUnselected">#81FFFFFF</color>
+    <color name="darkColorPrimaryDark">#FFFFFF</color>
+    <color name="darkColorAccent">#FFFFFF</color>
+    <color name="darkPrimaryText">#353535</color>
+    <color name="darkButtonNormal">#7540EE</color>
+    <color name="darkButtonHighlight">#7540EE</color>
+    <color name="darkButtonText">#FFFFFF</color>
+    <color name="darkEdtHintTextColor">#80353535</color>
+    <color name="darkEdtBackgroundColor">#40353535</color>
+    <color name="darkFabTextColor">#26353535</color>
+    <color name="darkOpacityTen">#1A353535</color>
+    <color name="darkEventBAckground">#80D6EFFF</color>
+    <color name="blackColorOpacity3">#15353535</color>
+    <color name="photoBackground">#7C60F1</color>
+
+    //other colors
+    <color name="taylorSwift">#FFDC7C</color>
+    <color name="wizKhalifa">#97DFFC</color>
+    <color name="nickiMinaj">#FFBB7C</color>
+    <color name="lilPump">#FC9797</color>
+    <color name="lightWhite">#F9F6F5F5</color>
+    <color name="red">#DF0B0B</color>
+    <color name="blackOpacity50">#80353535</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="validation_background">#FF6363</color>
+    <color name="lightAccentColor">#80FFFFFF</color>
+    <color name="blueDiscovery">#4d97dffc</color>
+    <color name="search_background">#1A353535</color>
+    <color name="search_background_new">#08353535</color>
+    <color name="twenty_opacity">#33353535</color>
+    <color name="black_opacity30">#66353535</color>
+    <color name="black_opacity20">#26353535</color>
+    <color name="white_opacity30">#4DFFFFFF</color>
+    <color name="show_all_events">#9C9B9B</color>
+    <color name="opacityFive">#0D353535</color>
+    <color name="followLightThemeBackground">#7444E3</color>
+    <color name="otp_background">#0D2A1C62</color>
+    <color name="error_color">#f16b2a</color>
+    <color name="white_opacity">#B3FFFFFF</color>
+    <color name="semi_back">#B3000000</color>
+    <color name="PrimaryLightThemeBackgroundOpacity20">#33683EC9</color>
+    <color name="PrimaryDarkThemeBackgroundOpacity20">#33FFFFFF</color>
+    <color name="green">#40C35B</color>
+    <color name="infoSnackBarColor">#FFBB7C</color>
+    <color name="stroke_color">#FFC107</color>
+    <color name="blackOpacity30">#08353535</color>
+
+
 </resources>

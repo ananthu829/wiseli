@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_navigation"
+    app:startDestination="@id/splashScreenFragment">
+
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.promatas.wiseli.ui.splashScreen.SplashScreenFragment"
+        android:label="SplashScreenFragment"
+        tools:layout="@layout/fragment_splash_screen">
+
+        <action
+            android:id="@+id/action_splashScreenFragment_to_signInFragment"
+            app:destination="@id/signInRegisterFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/no_change"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/no_change"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/signInRegisterFragment"
+        android:name="com.promatas.wiseli.ui.signInRegisterPage.SignInRegisterFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in_register">
+
+        <action
+            android:id="@+id/action_signInRegisterFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/no_change"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/no_change"
+            />
+
+        <action
+            android:id="@+id/action_signInRegisterFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/no_change"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/no_change"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.promatas.wiseli.ui.registerPage.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.promatas.wiseli.ui.signInPage.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+
+    </fragment>
+
+
+
+</navigation>

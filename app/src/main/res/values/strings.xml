@@ -3,4 +3,14 @@
     <string name="title_activity_circle_detail">CircleDetailActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+
+    <string name="hey_dude">Hey  Surfer,</string>
+    <string name="see_whats_going_around">See whats\'s going on around!</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="have_account">I have an account</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>
