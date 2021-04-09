@@ -12,5 +12,34 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="when_s_your_birthday">When’s your birthday?</string>
+    <string name="and_bio">and Bio</string>
+    <string name="register_for">Register for</string>
+    <string name="register">Register</string>
+    <string name="skip">Skip</string>
+    <string name="number">Number</string>
+    <string name="username">Username</string>
+    <string name="i_have_a_referal_code">I have a referral code</string>
+    <string name="hey_name">Hey, name</string>
+    <string name="your_surfer">your surfer</string>
+    <string name="welcome">Welcome.</string>
+    <string name="task_cancelled">Task Cancelled</string>
+    <string name="tell_about_you_in_two_words">Tell us a little bit about yourself</string>
+    <string name="your_bio_must_be_at_least_50_character">Your BIO must be at least 50 character.</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="resend_otp">Resend Code</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="for_change_phone_number">for change phone number.</string>
+    <string name="changed_your_phone_number">Changed your Phone Number</string>
+    <string name="for_verfication">for verification</string>
+    <string name="enter_your_referral_code">Enter your code here</string>
+    <string name="code">Code</string>
+    <string name="bio">Bio</string>
+    <string name="change_email">Change Email</string>
+    <string name="email_address">email address</string>
+    <string name="address">address</string>
+    <string name="phone_number">Phone number</string>
+    <string name="email">Email</string>
+
 
 </resources>

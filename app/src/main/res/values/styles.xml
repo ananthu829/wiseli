@@ -8,4 +8,24 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="fontRegular12" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avertacy_regular</item>
+        <item name="android:textSize">@dimen/dimensFont12</item>
+        <item name="android:textColor">@color/darkPrimaryText</item>
+    </style>
+
+    <style name="fontBold18" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avertacy_bold</item>
+        <item name="android:textSize">@dimen/dimensFont18</item>
+        <item name="android:textColor">@color/darkPrimaryText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="primaryButton" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/darkButtonNormal</item>
+        <item name="colorControlHighlight">@color/lightPrimaryText</item>
+        <item name="android:textColor">@color/darkButtonText</item>
+        <item name="android:background">@color/darkButtonNormal</item>
+    </style>
+
 </resources>
