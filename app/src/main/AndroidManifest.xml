@@ -15,6 +15,7 @@
         android:theme="@style/Theme.WiseLi">
         <activity android:name=".ListActivity"></activity>
         <activity android:name=".CircleDetails" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".ui.LoginSignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
