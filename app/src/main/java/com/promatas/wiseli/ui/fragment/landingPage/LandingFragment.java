@@ -58,7 +58,7 @@ public class LandingFragment extends Fragment implements AdapterInterface {
 
 
         circles.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        circles.setAdapter(new CircleAdapter(infos, listener));
+        circles.setAdapter(new CircleAdapter(infos, this));
     }
 
     @Override

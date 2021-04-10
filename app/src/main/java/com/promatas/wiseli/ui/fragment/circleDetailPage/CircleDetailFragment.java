@@ -143,8 +143,8 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
         active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         inactive.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        active.setAdapter(new UserAdapter(activeList, listener));
-        inactive.setAdapter(new UserAdapter(inactiveLists, listener));
+        active.setAdapter(new UserAdapter(activeList, this));
+        inactive.setAdapter(new UserAdapter(inactiveLists, this));
 
 
     }
@@ -161,7 +161,7 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
 
     @Override
     public void buttonPressed() {
-        
+
         Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment);
     }
 }
