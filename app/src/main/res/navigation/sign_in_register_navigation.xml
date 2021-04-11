@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/splashScreenFragment"
         android:name="com.promatas.wiseli.ui.fragment.splashScreen.SplashScreenFragment"
-        android:label="SplashScreenFragment"
+        android:label="@string/splash_screen_fragment"
         tools:layout="@layout/fragment_splash_screen">
 
         <action
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/signInRegisterFragment"
         android:name="com.promatas.wiseli.ui.fragment.signInRegisterPage.SignInRegisterFragment"
-        android:label="SignInFragment"
+        android:label="@string/sign_in_register_fragment"
         tools:layout="@layout/fragment_sign_in_register">
 
         <action
@@ -51,7 +51,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.promatas.wiseli.ui.fragment.registerPage.RegisterFragment"
-        android:label="RegisterFragment"
+        android:label="@string/register_fragment"
         tools:layout="@layout/fragment_register">
 
     </fragment>
@@ -60,7 +60,7 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.promatas.wiseli.ui.fragment.signInPage.SignInFragment"
-        android:label="SignInFragment"
+        android:label="@string/sign_in_fragment"
         tools:layout="@layout/fragment_sign_in">
 
     </fragment>

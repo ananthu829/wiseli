@@ -40,6 +40,16 @@
     <string name="address">address</string>
     <string name="phone_number">Phone number</string>
     <string name="email">Email</string>
+    <string name="profile_fragment">ProfileFragment</string>
+    <string name="friend_group_fragment">FriendGroupFragment</string>
+    <string name="group_circles_fragment">GroupCirclesFragment</string>
+    <string name="landing_fragment">WiseLi</string>
+    <string name="circle_detail_fragment">CircleDetailFragment</string>
+    <string name="splash_screen_fragment">SplashScreenFragment</string>
+    <string name="sign_in_fragment">SignInFragment</string>
+    <string name="register_fragment">RegisterFragment</string>
+    <string name="sign_in_register_fragment">SignInRegisterFragment</string>
+    <string name="list_fragment">ListFragment</string>
 
 
 </resources>

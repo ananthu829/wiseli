@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/landingFragment"
         android:name="com.promatas.wiseli.ui.fragment.landingPage.LandingFragment"
-        android:label="LandingFragment"
+        android:label="@string/landing_fragment"
         tools:layout="@layout/fragment_landing">
 
         <action
@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/circleDetailFragment"
         android:name="com.promatas.wiseli.ui.fragment.circleDetailPage.CircleDetailFragment"
-        android:label="CircleDetailFragment"
+        android:label="@string/circle_detail_fragment"
         tools:layout="@layout/fragment_circle_detail">
 
         <action
@@ -40,10 +40,27 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.promatas.wiseli.ui.fragment.listPage.ListFragment"
-        android:label="ListFragment"
+        android:label="@string/list_fragment"
         tools:layout="@layout/fragment_list">
 
     </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.promatas.wiseli.ui.fragment.profilePage.ProfileFragment"
+        android:label="@string/profile_fragment" />
+
+    <fragment
+        android:id="@+id/groupCirclesFragment"
+        android:name="com.promatas.wiseli.ui.fragment.groupCircles.GroupCirclesFragment"
+        android:label="@string/group_circles_fragment"
+        tools:layout="@layout/fragment_group_circles" />
+
+    <fragment
+        android:id="@+id/friendGroupFragment"
+        android:name="com.promatas.wiseli.ui.fragment.friendGroupPage.FriendGroupFragment"
+        android:label="@string/friend_group_fragment"
+        tools:layout="@layout/fragment_friend_group" />
 
 
 </navigation>

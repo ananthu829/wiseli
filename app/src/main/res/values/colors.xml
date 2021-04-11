@@ -74,6 +74,8 @@
     <color name="infoSnackBarColor">#FFBB7C</color>
     <color name="stroke_color">#FFC107</color>
     <color name="blackOpacity30">#08353535</color>
+    //ToolBar Color
+    <color name="toolbar_color">#2F156A</color>
 
 
 </resources>
