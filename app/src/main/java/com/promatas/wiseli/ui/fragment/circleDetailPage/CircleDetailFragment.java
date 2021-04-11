@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +35,6 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    TextView title;
     RecyclerView active, inactive;
     ArrayList<User> chips, activeList, inactiveLists;
     ChipGroup chipGroup;
@@ -124,10 +122,6 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
             chipGroup.addView(newChip);
 
         }
-
-
-        title = view.findViewById(R.id.titleTxt);
-        title.setText("Circle Details");
 
         active = view.findViewById(R.id.activeRv);
         inactive = view.findViewById(R.id.inactiveRv);

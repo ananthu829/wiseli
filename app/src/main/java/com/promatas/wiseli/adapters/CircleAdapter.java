@@ -6,12 +6,14 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.camerash.toggleedittextview.ToggleEditButton;
+import com.camerash.toggleedittextview.ToggleEditTextView;
 import com.promatas.wiseli.R;
 import com.promatas.wiseli.models.CircleInfo;
 import com.promatas.wiseli.ui.helper.AdapterInterface;
@@ -21,8 +23,8 @@ import java.util.ArrayList;
 public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
 
-    ArrayList<CircleInfo> items;
     public AdapterInterface buttonListener;
+    ArrayList<CircleInfo> items;
 
 
     public CircleAdapter(ArrayList<CircleInfo> items, AdapterInterface buttonListener) {
@@ -62,7 +64,23 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
         // Set the data to the views here
 
-        holder.setData(buttonListener, contact.getCaption());
+        holder.setData(contact.getCaption());
+        holder.txtName.setEditTextEnabled(false);
+        Toast.makeText(holder.itemView.getContext(), holder.txtName.getEditTextEnabled() + " : onBindViewHolder State", Toast.LENGTH_SHORT).show();
+        holder.layout.setOnClickListener(v -> {
+            buttonListener.buttonPressed();
+        });
+        holder.editBtn.bind(holder.txtName);
+        holder.editBtn.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), holder.txtName.getEditTextEnabled() + " : State", Toast.LENGTH_SHORT).show();
+            if (holder.txtName.getEditTextEnabled()) {
+                holder.layout.setClickable(false);
+                holder.txtName.getText();
+                Toast.makeText(v.getContext(), holder.txtName.getText() + " : click", Toast.LENGTH_SHORT).show();
+            } else {
+                holder.layout.setClickable(true);
+            }
+        });
 
 
     }
@@ -74,33 +92,27 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
     public static class holder extends RecyclerView.ViewHolder {
 
-        TextView txtName;
+        ToggleEditTextView txtName;
         ImageView edit, del;
+        ToggleEditButton editBtn;
         CardView layout;
+        View view;
 
 
-        public holder(View grid) {
-            super(grid);
+        public holder(View view) {
+            super(view);
+            this.view = view;
 
-            txtName = grid.findViewById(R.id.item);
-            layout = grid.findViewById(R.id.cardView);
-            edit = grid.findViewById(R.id.editBtn);
-            del = grid.findViewById(R.id.deleteBtn);
+            txtName = view.findViewById(R.id.item);
+            layout = view.findViewById(R.id.cardView);
+            editBtn = view.findViewById(R.id.editBtn);
+            del = view.findViewById(R.id.deleteBtn);
         }
 
 
-        public void setData(AdapterInterface buttonListener, String caption) {
+        public void setData(String caption) {
 
             txtName.setText(caption);
-            layout.setOnClickListener(v -> {
-                buttonListener.buttonPressed();
-
-
-                /*Intent i = new Intent(context, CircleDetails.class);
-                i.putExtra("caption", caption);
-                context.startActivity(i);*/
-
-            });
 
         }
     }
