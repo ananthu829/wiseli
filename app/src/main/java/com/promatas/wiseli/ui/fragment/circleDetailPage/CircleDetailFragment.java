@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -119,8 +120,11 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
         for (User u : chips) {
             newChip = new Chip(getContext());
             newChip.setText(u.getCaption());
+            newChip.setCloseIconVisible(true);
             chipGroup.addView(newChip);
-
+            newChip.setOnCloseIconClickListener(v -> {
+                Toast.makeText(getContext(), u.getCaption() + "will get deleted.", Toast.LENGTH_SHORT).show();
+            });
         }
 
         active = view.findViewById(R.id.activeRv);
@@ -137,8 +141,8 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
         active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         inactive.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        active.setAdapter(new UserAdapter(activeList, this));
-        inactive.setAdapter(new UserAdapter(inactiveLists, this));
+        active.setAdapter(new UserAdapter(activeList, true, this));
+        inactive.setAdapter(new UserAdapter(inactiveLists, false, this));
 
 
     }

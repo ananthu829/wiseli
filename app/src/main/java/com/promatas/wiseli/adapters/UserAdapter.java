@@ -21,12 +21,14 @@ import java.util.ArrayList;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
 
 
-    ArrayList<User> items;
     public AdapterInterface buttonListener;
+    public Boolean showDeleteBtn;
+    ArrayList<User> items;
 
-    public UserAdapter(ArrayList<User> items, AdapterInterface buttonListener) {
+    public UserAdapter(ArrayList<User> items, Boolean showDeleteBtn, AdapterInterface buttonListener) {
         this.items = items;
         this.buttonListener = buttonListener;
+        this.showDeleteBtn = showDeleteBtn;
     }
 
     public static void applyBlink(View view, long duration) {
@@ -53,7 +55,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
 
-
+        if (!showDeleteBtn) {
+            holder.del.setVisibility(View.GONE);
+        }
         final User contact = items.get(position);
 
         applyBlink(holder.layout, 1000);
