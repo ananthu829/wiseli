@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.promatas.wiseli.R;
 
 import java.util.ArrayList;
 
+import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.UserAdapter;
 import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;

@@ -12,8 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import com.promatas.wiseli.R;
-
+import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 
 /**

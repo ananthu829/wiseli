@@ -9,7 +9,7 @@ import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.promatas.wiseli.R;
+import uk.ac.tees.mad.w9501736.R;
 
 public class LoginSignUpActivity extends AppCompatActivity {
 

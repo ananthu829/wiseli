@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.promatas.wiseli.R;
+import uk.ac.tees.mad.w9501736.R;
 
 /**
  * A simple {@link Fragment} subclass.

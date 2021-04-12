@@ -14,10 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.promatas.wiseli.R;
-
 import java.util.ArrayList;
 
+import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.ItemAdapter;
 import uk.ac.tees.mad.w9501736.models.Item;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;

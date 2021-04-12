@@ -12,10 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.promatas.wiseli.R;
-
 import java.util.ArrayList;
 
+import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 

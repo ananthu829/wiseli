@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.camerash.toggleedittextview.ToggleEditButton;
 import com.camerash.toggleedittextview.ToggleEditTextView;
-import com.promatas.wiseli.R;
 
 import java.util.ArrayList;
 
+import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 

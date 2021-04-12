@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
-import com.promatas.wiseli.R;
+import uk.ac.tees.mad.w9501736.R;
 
 public class CommonEditableTextView extends CardView {
 

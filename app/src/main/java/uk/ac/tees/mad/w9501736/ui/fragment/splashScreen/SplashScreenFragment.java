@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.promatas.wiseli.R;
+import uk.ac.tees.mad.w9501736.R;
 
 import static uk.ac.tees.mad.w9501736.utils.AppConstants.SPLASH_SCREEN_TIME_OUT;
 

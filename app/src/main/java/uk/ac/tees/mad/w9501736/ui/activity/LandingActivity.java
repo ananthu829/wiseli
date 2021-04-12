@@ -13,7 +13,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.promatas.wiseli.R;
+
+import uk.ac.tees.mad.w9501736.R;
 
 public class LandingActivity extends AppCompatActivity {
 

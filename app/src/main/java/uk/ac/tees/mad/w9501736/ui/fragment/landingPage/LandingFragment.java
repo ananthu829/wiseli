@@ -14,10 +14,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.promatas.wiseli.R;
-
 import java.util.ArrayList;
 
+import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
 import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
