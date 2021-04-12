@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blueDiscovery"
-    tools:context=".ui.fragment.registerPage.RegisterFragment">
+    tools:context="uk.ac.tees.mad.w9501736.ui.fragment.registerPage.RegisterFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

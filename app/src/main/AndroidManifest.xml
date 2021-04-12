@@ -6,15 +6,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".App"
+        android:name="uk.ac.tees.mad.w9501736.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WiseLi">
-        <activity android:name=".ui.activity.LandingActivity"></activity>
-        <activity android:name=".ui.activity.LoginSignUpActivity">
+        <activity android:name="uk.ac.tees.mad.w9501736.ui.activity.LandingActivity"></activity>
+        <activity android:name="uk.ac.tees.mad.w9501736.ui.activity.LoginSignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

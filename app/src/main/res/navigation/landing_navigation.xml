@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/landingFragment"
-        android:name="com.promatas.wiseli.ui.fragment.landingPage.LandingFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.landingPage.LandingFragment"
         android:label="@string/landing_fragment"
         tools:layout="@layout/fragment_landing">
 
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/circleDetailFragment"
-        android:name="com.promatas.wiseli.ui.fragment.circleDetailPage.CircleDetailFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage.CircleDetailFragment"
         android:label=""
         tools:layout="@layout/fragment_circle_detail">
 
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.promatas.wiseli.ui.fragment.listPage.ListFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ListFragment"
         android:label=""
         tools:layout="@layout/fragment_list">
 
@@ -47,18 +47,18 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.promatas.wiseli.ui.fragment.profilePage.ProfileFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.profilePage.ProfileFragment"
         android:label="@string/profile_fragment" />
 
     <fragment
         android:id="@+id/groupCirclesFragment"
-        android:name="com.promatas.wiseli.ui.fragment.groupCircles.GroupCirclesFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.GroupCirclesFragment"
         android:label="@string/group_circles_fragment"
         tools:layout="@layout/fragment_group_circles" />
 
     <fragment
         android:id="@+id/friendGroupFragment"
-        android:name="com.promatas.wiseli.ui.fragment.friendGroupPage.FriendGroupFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.friendGroupPage.FriendGroupFragment"
         android:label="@string/friend_group_fragment"
         tools:layout="@layout/fragment_friend_group" />
 
