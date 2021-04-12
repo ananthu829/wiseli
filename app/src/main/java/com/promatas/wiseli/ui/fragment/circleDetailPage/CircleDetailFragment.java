@@ -20,6 +20,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.promatas.wiseli.R;
 import com.promatas.wiseli.adapters.UserAdapter;
 import com.promatas.wiseli.models.User;
+import com.promatas.wiseli.ui.activity.LandingActivity;
 import com.promatas.wiseli.ui.helper.AdapterInterface;
 
 import java.util.ArrayList;
@@ -91,7 +92,14 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        //String caption = getArguments().getString("caption", "Circle Details");
+
+
+        if (getArguments() != null) {
+            String title = getArguments().getString("caption");
+            if (title != null) {
+                ((LandingActivity) getActivity()).setToolbarTitle(title);
+            }
+        }
         tabs = view.findViewById(R.id.tabhost);
         tabs.setup();
         TabHost.TabSpec spec = tabs.newTabSpec("tag1");
@@ -158,8 +166,9 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void buttonPressed() {
-
-        Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment);
+    public void buttonPressed(String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString("caption", title);
+        Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
     }
 }

@@ -72,7 +72,9 @@ public class LandingFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void buttonPressed() {
-        Navigation.findNavController(view).navigate(R.id.action_landingFragment_to_circularFragment);
+    public void buttonPressed(String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString("caption", title);
+        Navigation.findNavController(view).navigate(R.id.action_landingFragment_to_circularFragment, bundle);
     }
 }

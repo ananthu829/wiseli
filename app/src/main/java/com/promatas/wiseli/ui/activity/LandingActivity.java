@@ -54,4 +54,8 @@ public class LandingActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, drawerLayout);
     }
+
+    public void setToolbarTitle(String title) {
+        toolbar.setTitle(title);
+    }
 }

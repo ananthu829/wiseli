@@ -1,5 +1,5 @@
 package com.promatas.wiseli.ui.helper;
 
 public interface AdapterInterface {
-    void buttonPressed();
+    void buttonPressed(String title);
 }

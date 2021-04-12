@@ -68,7 +68,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
         holder.txtName.setEditTextEnabled(false);
         Toast.makeText(holder.itemView.getContext(), holder.txtName.getEditTextEnabled() + " : onBindViewHolder State", Toast.LENGTH_SHORT).show();
         holder.layout.setOnClickListener(v -> {
-            buttonListener.buttonPressed();
+            buttonListener.buttonPressed(contact.getCaption());
         });
         holder.editBtn.bind(holder.txtName);
         holder.editBtn.setOnClickListener(v -> {

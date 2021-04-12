@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/circleDetailFragment"
         android:name="com.promatas.wiseli.ui.fragment.circleDetailPage.CircleDetailFragment"
-        android:label="@string/circle_detail_fragment"
+        android:label=""
         tools:layout="@layout/fragment_circle_detail">
 
         <action
@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.promatas.wiseli.ui.fragment.listPage.ListFragment"
-        android:label="@string/list_fragment"
+        android:label=""
         tools:layout="@layout/fragment_list">
 
     </fragment>

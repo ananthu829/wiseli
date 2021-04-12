@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.promatas.wiseli.R;
 import com.promatas.wiseli.adapters.ItemAdapter;
 import com.promatas.wiseli.models.Item;
+import com.promatas.wiseli.ui.activity.LandingActivity;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,13 @@ public class ListFragment extends Fragment {
 
         rvList = view.findViewById(R.id.listrv);
         commentList = view.findViewById(R.id.commentsList);
+
+        if (getArguments() != null) {
+            String title = getArguments().getString("caption");
+            if (title != null) {
+                ((LandingActivity) getActivity()).setToolbarTitle(title);
+            }
+        }
 
         addItem("Oil", "10");
         addItem("Potato", "20");
