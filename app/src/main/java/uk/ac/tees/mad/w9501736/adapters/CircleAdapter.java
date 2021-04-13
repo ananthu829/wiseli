@@ -29,7 +29,6 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
     @NonNull
     @Override
     public holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         // Inflate the layout view you have created for the list rows here
         View view = layoutInflater.inflate(R.layout.home__recycler_layout, parent, false);

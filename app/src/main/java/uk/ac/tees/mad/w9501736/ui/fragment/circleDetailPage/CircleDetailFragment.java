@@ -1,27 +1,24 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.adapters.UserAdapter;
+import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
 import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
@@ -32,21 +29,18 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
  * Use the {@link CircleDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CircleDetailFragment extends Fragment implements AdapterInterface {
+public class CircleDetailFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    RecyclerView active, inactive;
-    ArrayList<User> chips, activeList, inactiveLists;
+    private static final String TAB = "param2";
+    ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
-    TabHost tabs;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     private AdapterInterface listener;
     private View view;
 
@@ -76,10 +70,6 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -94,27 +84,43 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
-
         if (getArguments() != null) {
             String title = getArguments().getString("caption");
             if (title != null) {
                 ((LandingActivity) getActivity()).setToolbarTitle(title);
             }
         }
-        tabs = view.findViewById(R.id.tabhost);
-        tabs.setup();
-        TabHost.TabSpec spec = tabs.newTabSpec("tag1");
-        spec.setContent(R.id.ACTIVE);
-        spec.setIndicator("Active");
-        tabs.addTab(spec);
-        spec = tabs.newTabSpec("tag2");
-        spec.setContent(R.id.INACTIVE);
-        spec.setIndicator("Inactive");
-        tabs.addTab(spec);
+
+        tabLayout = view.findViewById(R.id.tl);
+        viewPager = view.findViewById(R.id.vp);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Active"));
+        tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final TabPagerAdapter adapter = new TabPagerAdapter(getContext(), getParentFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         chips = new ArrayList<>();
-        activeList = new ArrayList<>();
-        inactiveLists = new ArrayList<>();
 
         chipGroup = view.findViewById(R.id.chipgroup);
 
@@ -135,46 +141,6 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
                 Toast.makeText(getContext(), u.getCaption() + "will get deleted.", Toast.LENGTH_SHORT).show();
             });
         }
-
-        active = view.findViewById(R.id.activeRv);
-        inactive = view.findViewById(R.id.inactiveRv);
-
-
-        activeList.add(new User("User 1"));
-        inactiveLists.add(new User("User 2"));
-        activeList.add(new User("User 3"));
-        inactiveLists.add(new User("User 4"));
-        activeList.add(new User("User 5"));
-        inactiveLists.add(new User("User 6"));
-
-        active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        inactive.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-
-        active.setAdapter(new UserAdapter(activeList, true, this));
-        inactive.setAdapter(new UserAdapter(inactiveLists, false, this));
-
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            listener = (AdapterInterface) context;
-        } catch (ClassCastException castException) {
-
-        }
-    }
-
-    @Override
-    public void onItemClicked(String title) {
-        Bundle bundle = new Bundle();
-        bundle.putString("caption", title);
-        Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-    }
-
-    @Override
-    public void onDeleteCtaClicked() {
 
     }
 }

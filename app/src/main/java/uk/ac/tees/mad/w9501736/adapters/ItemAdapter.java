@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,16 +28,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
     }
 
-    public static void applyBlink(View view, long duration) {
-
-        Animation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(duration); //You can manage the blinking time with this parameter
-//        anim.setStartOffset(20);
-//        anim.setRepeatMode(Animation.REVERSE);
-//        anim.setRepeatCount(1);
-        view.startAnimation(anim);
-    }
-
     @NonNull
     @Override
     public holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,9 +44,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
 
         final Item contact = items.get(position);
-
-        applyBlink(holder.layout, 1000);
-
 
         // Set the data to the views here
 

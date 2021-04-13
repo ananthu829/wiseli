@@ -267,7 +267,7 @@
                 android:paddingTop="@dimen/dimens20"
                 android:paddingEnd="@dimen/dimens45"
                 android:paddingBottom="@dimen/dimens20"
-                android:text="@string/save"
+                android:text="@string/register"
                 android:textAppearance="@style/fontBold14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

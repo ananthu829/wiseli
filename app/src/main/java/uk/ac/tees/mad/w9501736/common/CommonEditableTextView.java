@@ -3,8 +3,6 @@ package uk.ac.tees.mad.w9501736.common;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,20 +45,18 @@ public class CommonEditableTextView extends CardView {
         ivEdit = findViewById(R.id.ivEdit);
         ivDelete = findViewById(R.id.ivDelete);
 
-        final Animation anim_out = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+
         ivEdit.setOnClickListener(v -> {
             if (et.getVisibility() == VISIBLE) {
                 String currentText = et.getText().toString();
                 et.setVisibility(GONE);
                 tv.setVisibility(VISIBLE);
                 tv.setText(currentText);
-                ivEdit.setAnimation(anim_out);
                 ivEdit.setImageResource(R.drawable.ic_mode_edit);
             } else {
                 et.setVisibility(VISIBLE);
                 tv.setVisibility(GONE);
                 et.setFocusable(true);
-                ivEdit.setAnimation(anim_out);
                 ivEdit.setImageResource(R.drawable.ic_done);
             }
         });
@@ -76,6 +72,22 @@ public class CommonEditableTextView extends CardView {
 
     public String getEditableText() {
         return tv.getText().toString();
+    }
+
+    public void hideImageEditBtn(Boolean value) {
+        if (value) {
+            ivEdit.setVisibility(GONE);
+        } else {
+            ivEdit.setVisibility(VISIBLE);
+        }
+    }
+
+    public void hideImageDeleteBtn(Boolean value) {
+        if (value) {
+            ivDelete.setVisibility(GONE);
+        } else {
+            ivDelete.setVisibility(VISIBLE);
+        }
     }
 
     public void setEditableText(String text) {
