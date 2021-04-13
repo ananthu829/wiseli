@@ -51,6 +51,7 @@
     <string name="sign_in_register_fragment">SignInRegisterFragment</string>
     <string name="list_fragment">ListFragment</string>
     <string name="add_circle">Add Circle</string>
+    <string name="save">Save</string>
 
 
 </resources>
