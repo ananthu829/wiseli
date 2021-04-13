@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_header"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_200"
+    android:background="@color/purple_500"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/nav_header_imageView"
+        android:layout_width="@dimen/_100"
+        android:layout_height="@dimen/_100"
+        android:src="@drawable/image1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/nav_header_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="user@gmail.com"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+</LinearLayout>
