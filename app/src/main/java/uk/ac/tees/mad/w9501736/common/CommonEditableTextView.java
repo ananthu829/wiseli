@@ -3,6 +3,8 @@ package uk.ac.tees.mad.w9501736.common;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 public class CommonEditableTextView extends CardView {
 
@@ -23,52 +26,67 @@ public class CommonEditableTextView extends CardView {
 
     public CommonEditableTextView(@NonNull Context context) {
         super(context);
+        init(context, null, 0);
     }
 
     public CommonEditableTextView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs, 0);
     }
 
     public CommonEditableTextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr);
+    }
 
-/*        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.CommonEditableTextView, 0, 0);
-
-        String titleText = a.getString(R.styleable.ExpandableCardView_headerTitle);
-        final Drawable drawable = a.getDrawable(R.styleable.ExpandableCardView_headerIcon);
-
-        a.recycle();*/
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_cardview_editable_text_view, this, true);
+    public void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        LayoutInflater.from(context).inflate(R.layout.view_cardview_editable_text_view, this, true);
 
         tv = findViewById(R.id.tv);
         et = findViewById(R.id.et);
         ivEdit = findViewById(R.id.ivEdit);
         ivDelete = findViewById(R.id.ivDelete);
 
+        final Animation anim_out = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
         ivEdit.setOnClickListener(v -> {
-        });
-
-/*        final LinearLayout parent = (LinearLayout) getChildAt(0);
-
-        final RelativeLayout header = (RelativeLayout) parent.getChildAt(0);
-
-        final TextView titleTextView = (TextView) header.getChildAt(0);
-        titleTextView.setText(titleText);
-
-        final ImageView toggle = (ImageView) header.getChildAt(1);
-        if(drawable != null) {
-            toggle.setImageDrawable(drawable);
-        }
-
-        header.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setExpanded(toggle, !isExpanded);
-                onExpansionToggled(toggle);
+            if (et.getVisibility() == VISIBLE) {
+                String currentText = et.getText().toString();
+                et.setVisibility(GONE);
+                tv.setVisibility(VISIBLE);
+                tv.setText(currentText);
+                ivEdit.setAnimation(anim_out);
+                ivEdit.setImageResource(R.drawable.ic_mode_edit);
+            } else {
+                et.setVisibility(VISIBLE);
+                tv.setVisibility(GONE);
+                et.setFocusable(true);
+                ivEdit.setAnimation(anim_out);
+                ivEdit.setImageResource(R.drawable.ic_done);
             }
-        });*/
+        });
     }
+
+    public Boolean getEditTextVisibility() {
+        return et.getVisibility() == VISIBLE;
+    }
+
+    public Boolean getTextTextVisibility() {
+        return tv.getVisibility() == VISIBLE;
+    }
+
+    public String getEditableText() {
+        return tv.getText().toString();
+    }
+
+    public void setEditableText(String text) {
+        tv.setText(text);
+        et.setText(text);
+    }
+
+    public void setOnDeleteClickListener(AdapterInterface deleteClickListener) {
+        ivDelete.setOnClickListener(v -> {
+            deleteClickListener.onDeleteCtaClicked();
+        });
+    }
+
 }

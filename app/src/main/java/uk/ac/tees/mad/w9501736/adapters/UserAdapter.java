@@ -96,7 +96,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
 
             txtName.setText(caption);
             layout.setOnClickListener(v -> {
-                buttonListener.buttonPressed(caption);
+                buttonListener.onItemClicked(caption);
             });
 
         }

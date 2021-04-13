@@ -28,4 +28,11 @@
         <item name="android:background">@color/darkButtonNormal</item>
     </style>
 
+    <style name="fontBold14" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avertacy_light</item>
+        <item name="android:textSize">@dimen/_14</item>
+        <item name="android:textColor">@color/darkPrimaryText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

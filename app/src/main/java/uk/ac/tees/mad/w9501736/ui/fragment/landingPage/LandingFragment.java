@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +52,7 @@ public class LandingFragment extends Fragment implements AdapterInterface {
 
         infos.add(new CircleInfo("Circle 1"));
         infos.add(new CircleInfo("Circle 2"));
-        infos.add(new CircleInfo("Circle 2"));
+        infos.add(new CircleInfo("Circle 3"));
 
 
         circles = view.findViewById(R.id.homeRecyclerView);
@@ -72,9 +73,14 @@ public class LandingFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void buttonPressed(String title) {
+    public void onItemClicked(String title) {
         Bundle bundle = new Bundle();
         bundle.putString("caption", title);
         Navigation.findNavController(view).navigate(R.id.action_landingFragment_to_circularFragment, bundle);
+    }
+
+    @Override
+    public void onDeleteCtaClicked() {
+        Toast.makeText(getContext(), "IItem Deleted", Toast.LENGTH_SHORT).show();
     }
 }

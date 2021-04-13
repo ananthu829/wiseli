@@ -167,9 +167,14 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void buttonPressed(String title) {
+    public void onItemClicked(String title) {
         Bundle bundle = new Bundle();
         bundle.putString("caption", title);
         Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+    }
+
+    @Override
+    public void onDeleteCtaClicked() {
+
     }
 }

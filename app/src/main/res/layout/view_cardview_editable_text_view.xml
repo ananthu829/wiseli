@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_14">
 
     <FrameLayout
         android:id="@+id/view1"
@@ -17,20 +18,22 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/fontBold14"
             android:gravity="start|center"
             android:paddingStart="@dimen/_10"
             android:text="View 1"
+            android:layout_height="@dimen/_40"
             android:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/fontBold14"
             android:gravity="start|center"
             android:paddingStart="@dimen/_10"
             android:text="View 2"
-            android:visibility="visible" />
+            android:layout_height="@dimen/_40"
+            android:visibility="gone" />
 
     </FrameLayout>
 
