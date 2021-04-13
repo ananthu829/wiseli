@@ -82,7 +82,6 @@ public class ActiveFragment extends Fragment implements AdapterInterface {
         this.view = view;
         activeList = new ArrayList<>();
         active = view.findViewById(R.id.activeRv);
-        active.setHasFixedSize(true);
 
         activeList.add(new User("User 1"));
         activeList.add(new User("User 3"));

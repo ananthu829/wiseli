@@ -21,7 +21,6 @@ import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
 import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
-import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,12 +35,12 @@ public class CircleDetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAB = "param2";
+    public TabPagerAdapter tabPagerAdapter;
     ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private AdapterInterface listener;
     private View view;
 
 
@@ -98,8 +97,8 @@ public class CircleDetailFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final TabPagerAdapter adapter = new TabPagerAdapter(getContext(), getParentFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        tabPagerAdapter = new TabPagerAdapter(getContext(), getChildFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(tabPagerAdapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 

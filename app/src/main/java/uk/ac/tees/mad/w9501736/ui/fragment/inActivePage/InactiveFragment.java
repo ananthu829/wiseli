@@ -82,7 +82,7 @@ public class InactiveFragment extends Fragment implements AdapterInterface {
         this.view = view;
         inactiveLists = new ArrayList<>();
         inactive = view.findViewById(R.id.inActiveRv);
-        inactive.setHasFixedSize(true);
+
         inactiveLists.add(new User("User 2"));
         inactiveLists.add(new User("User 4"));
         inactiveLists.add(new User("User 6"));
