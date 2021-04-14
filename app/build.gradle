@@ -60,4 +60,11 @@ dependencies {
     // define any required OkHttp artifacts without version
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.squareup.okhttp:okhttp:2.3.0'
+
+    // Dependency for google maps Api
+    implementation "com.google.android.gms:play-services-maps:$googlePlayVersion"
+    implementation "com.google.android.gms:play-services-location:$googlePlayVersion"
+
+    //For permission
+    implementation 'com.karumi:dexter:6.2.2'
 }

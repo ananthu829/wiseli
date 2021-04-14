@@ -41,6 +41,7 @@
     <string name="phone_number">Phone number</string>
     <string name="email">Email</string>
     <string name="profile_fragment">ProfileFragment</string>
+    <string name="map_fragment">MapFragment</string>
     <string name="friend_group_fragment">FriendGroupFragment</string>
     <string name="group_circles_fragment">GroupCirclesFragment</string>
     <string name="landing_fragment">WiseLi</string>
@@ -54,6 +55,8 @@
     <string name="save">Save</string>
     <string name="inactive">Inactive</string>
     <string name="active">Active</string>
+
+    <string name="google_maps_api_key">AIzaSyAvUIS0LUpyZ3yDDacbvH7smR1ubMFo8mc</string>
 
 
 </resources>

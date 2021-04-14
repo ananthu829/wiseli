@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv"
+            android:id="@+id/tvShopAddress"
             android:layout_width="match_parent"
             style="@style/fontBold14"
             android:gravity="start|center"
@@ -46,12 +46,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_weight="20"
         app:layout_constraintLeft_toRightOf="@+id/view1"
-        app:layout_constraintRight_toLeftOf="@+id/ivDelete"
+        app:layout_constraintRight_toLeftOf="@+id/ivLocChose"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivDelete"
+        android:id="@+id/ivLocChose"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_delete"

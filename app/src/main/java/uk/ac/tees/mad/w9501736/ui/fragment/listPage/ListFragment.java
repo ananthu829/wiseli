@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.listPage;
 
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.CommentAdapter;
@@ -35,7 +45,9 @@ public class ListFragment extends Fragment {
     RecyclerView rvComments;
     ArrayList<Comment> commentArrayList;
     AppCompatEditText etComment;
+    AppCompatTextView tvShopAddress;
     AppCompatImageView ivCommentSend;
+    AppCompatImageView ivLocChose;
     CommentAdapter commentAdapter;
     ItemAdapter itemAdapter;
 
@@ -66,6 +78,8 @@ public class ListFragment extends Fragment {
         ivCommentSend = view.findViewById(R.id.ivCommentSend);
         rvList = view.findViewById(R.id.listrv);
         rvComments = view.findViewById(R.id.rvCommentsList);
+        ivLocChose = view.findViewById(R.id.ivLocChose);
+        tvShopAddress = view.findViewById(R.id.tvShopAddress);
 
         if (getArguments() != null) {
             String title = getArguments().getString("caption");
@@ -96,6 +110,26 @@ public class ListFragment extends Fragment {
                 etComment.clearFocus();
                 UtilHelper.hideKeyboardFrom(getContext(), view);
             }
+        });
+
+        ivLocChose.setOnClickListener(v -> {
+            Dexter.withContext(getActivity())
+                    .withPermissions(
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    ).withListener(new MultiplePermissionsListener() {
+                @Override
+                public void onPermissionsChecked(MultiplePermissionsReport report) {
+                    if (report.areAllPermissionsGranted()) {
+                        Navigation.findNavController(view).navigate(R.id.action_listFragment_to_mapFragment);
+                    }
+                }
+
+                @Override
+                public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                    token.continuePermissionRequest();
+                }
+            }).check();
         });
 
     }

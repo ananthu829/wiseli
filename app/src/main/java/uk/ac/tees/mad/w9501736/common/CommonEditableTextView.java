@@ -40,10 +40,10 @@ public class CommonEditableTextView extends CardView {
     public void init(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.view_cardview_editable_text_view, this, true);
 
-        tv = findViewById(R.id.tv);
+        tv = findViewById(R.id.tvShopAddress);
         et = findViewById(R.id.et);
         ivEdit = findViewById(R.id.ivEdit);
-        ivDelete = findViewById(R.id.ivDelete);
+        ivDelete = findViewById(R.id.ivLocChose);
 
 
         ivEdit.setOnClickListener(v -> {

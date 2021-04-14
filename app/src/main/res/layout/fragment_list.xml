@@ -20,6 +20,67 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <FrameLayout
+                    android:id="@+id/view1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="80"
+                    app:layout_constraintLeft_toRightOf="@+id/ivEdit"
+                    app:layout_constraintRight_toLeftOf="@+id/ivLocChose"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvShopAddress"
+                        style="@style/fontBold14"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40"
+                        android:gravity="start|center"
+                        android:hint="Chose the store location"
+                        android:paddingStart="@dimen/_10"
+                        android:visibility="visible" />
+
+                </FrameLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_gps_not_fixed"
+                    android:text="View 2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="20"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/view1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivLocChose"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_40"
+                    android:src="@drawable/map"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="20"
+                    app:layout_constraintLeft_toRightOf="@+id/view1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
@@ -32,7 +93,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/clMap" />
 
             <TextView
                 android:id="@+id/textView3"
