@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="100dp"
@@ -10,34 +9,65 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="8dp">
 
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/item"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="Item"
-            android:textSize="18sp" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/qty"
+            <TextView
+                android:id="@+id/tvItemHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_08"
+                android:text="Product "
+                android:textColor="@color/semi_back"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical|end"
-            android:padding="10dp"
-            android:text="10"
-            android:textSize="18sp" />
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvQtyHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_08"
+                android:text="Quantity"
+                android:textColor="@color/semi_back"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="16sp" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_10"
+    android:background="@color/white"
+    android:elevation="@dimen/_08"
+    android:translationY="@dimen/_08">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/clImage"
+            android:layout_width="@dimen/dimens52"
+            android:layout_height="@dimen/dimens52"
+            android:layout_marginStart="@dimen/dimens8"
+            android:layout_marginTop="@dimen/dimensFont8"
+            android:clipToPadding="false"
+            app:cardCornerRadius="@dimen/dimens15"
+            app:cardElevation="@dimen/dimens0"
+            app:cardPreventCornerOverlap="true"
+            app:layout_constraintRight_toLeftOf="@+id/tvName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/image8" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvName"
+            style="@style/fontBold14"
+            android:layout_width="@dimen/match_constrain"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_08"
+            android:layout_marginTop="@dimen/dimens8"
+            android:layout_marginEnd="@dimen/dimens24"
+            android:layout_marginBottom="@dimen/_08"
+            android:text="@{data.fullName}"
+            app:layout_constraintBottom_toTopOf="@id/tvComment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/clImage"
+            app:layout_constraintTop_toTopOf="@id/clImage"
+            tools:text="User Name" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_80"
+            android:layout_marginTop="@dimen/_20"
+            android:alpha="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/clImage"
+            app:layout_constraintTop_toTopOf="@id/clImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

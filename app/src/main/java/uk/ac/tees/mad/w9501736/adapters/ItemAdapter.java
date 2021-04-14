@@ -1,6 +1,5 @@
 package uk.ac.tees.mad.w9501736.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
 
     ArrayList<Item> items;
-    private Context mContext;
 
 
-    public ItemAdapter(Context c, ArrayList<Item> items) {
-        mContext = c;
+    public ItemAdapter(ArrayList<Item> items) {
         this.items = items;
 
     }
@@ -47,7 +44,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
         // Set the data to the views here
 
-        holder.setData(mContext, contact.getName(), contact.getQty());
+        holder.setData(contact.getName(), contact.getQty());
 
 
     }
@@ -73,7 +70,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
         }
 
 
-        public void setData(Context context, String name, String qty) {
+        public void setData(String name, String qty) {
 
             txtName.setText(name);
             txtQty.setText(qty);
