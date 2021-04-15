@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.w9501736.common;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
@@ -93,6 +94,16 @@ public class CommonEditableTextView extends CardView {
     public void setEditableText(String text) {
         tv.setText(text);
         et.setText(text);
+    }
+
+    public void setEditableHintText(String text) {
+        tv.setHint(text);
+        et.setHint(text);
+    }
+
+    public void setEditableNumberInputType() {
+        tv.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
     }
 
     public void setOnDeleteClickListener(AdapterInterface deleteClickListener) {

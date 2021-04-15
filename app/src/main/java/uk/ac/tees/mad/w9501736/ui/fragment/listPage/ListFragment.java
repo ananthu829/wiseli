@@ -29,6 +29,7 @@ import java.util.List;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.CommentAdapter;
 import uk.ac.tees.mad.w9501736.adapters.ItemAdapter;
+import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
 import uk.ac.tees.mad.w9501736.models.Comment;
 import uk.ac.tees.mad.w9501736.models.Item;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
@@ -50,6 +51,7 @@ public class ListFragment extends Fragment {
     AppCompatImageView ivLocChose;
     CommentAdapter commentAdapter;
     ItemAdapter itemAdapter;
+    CommonEditableTextView cetvTotal;
 
     public ListFragment() {
         // Required empty public constructor
@@ -80,6 +82,10 @@ public class ListFragment extends Fragment {
         rvComments = view.findViewById(R.id.rvCommentsList);
         ivLocChose = view.findViewById(R.id.ivLocChose);
         tvShopAddress = view.findViewById(R.id.tvShopAddress);
+        cetvTotal = view.findViewById(R.id.cetvTotal);
+        cetvTotal.hideImageDeleteBtn(true);
+        cetvTotal.setEditableNumberInputType();
+        cetvTotal.setEditableHintText("Enter the total Amount");
 
         if (getArguments() != null) {
             String title = getArguments().getString("caption");

@@ -21,7 +21,6 @@
             style="@style/fontBold14"
             android:gravity="start|center"
             android:paddingStart="@dimen/_10"
-            android:text="View 1"
             android:layout_height="@dimen/_40"
             android:visibility="visible" />
 
@@ -31,7 +30,6 @@
             style="@style/fontBold14"
             android:gravity="start|center"
             android:paddingStart="@dimen/_10"
-            android:text="View 2"
             android:layout_height="@dimen/_40"
             android:visibility="gone" />
 
