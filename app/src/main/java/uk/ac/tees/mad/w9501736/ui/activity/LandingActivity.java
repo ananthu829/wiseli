@@ -3,7 +3,6 @@ package uk.ac.tees.mad.w9501736.ui.activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -15,8 +14,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.ui.BaseActivity;
 
-public class LandingActivity extends AppCompatActivity {
+public class LandingActivity extends BaseActivity {
 
     public NavGraph navGraph;
     public NavController navController;

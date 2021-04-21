@@ -1,256 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ListFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clMap"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clMap"
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:id="@+id/view1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_14"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="80"
+                app:layout_constraintLeft_toRightOf="@+id/ivEdit"
+                app:layout_constraintRight_toLeftOf="@+id/ivLocChose"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvShopAddress"
+                    style="@style/fontBold14"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40"
+                    android:gravity="start|center"
+                    android:hint="Chose the store location"
+                    android:paddingStart="@dimen/_10"
+                    android:visibility="visible" />
+
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_gps_not_fixed"
+                android:text="View 2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="20"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/view1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivLocChose"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40"
+                android:src="@drawable/map"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="20"
+                app:layout_constraintLeft_toRightOf="@+id/view1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:drawableRight="@drawable/ic_baseline_add_circle_24"
+            android:drawablePadding="10dp"
+            android:gravity="end"
+            android:text="Add More"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clMap" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Items"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listrv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F2F7F8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTotalHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Total Amount"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listrv" />
+
+        <uk.ac.tees.mad.w9501736.common.CommonEditableTextView
+            android:id="@+id/cetvTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:elevation="@dimen/_08"
+            android:gravity="center"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTotalHeading">
+
+        </uk.ac.tees.mad.w9501736.common.CommonEditableTextView>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Add Comments"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cetvTotal" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAddComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/clImage"
+                android:layout_width="@dimen/dimens52"
+                android:layout_height="@dimen/dimens52"
+                android:layout_marginLeft="@dimen/_08"
+                android:layout_marginTop="@dimen/dimensFont8"
+                android:layout_marginRight="@dimen/_08"
+                android:clipToPadding="false"
+                app:cardCornerRadius="@dimen/dimens15"
+                app:cardElevation="@dimen/dimens0"
+                app:cardPreventCornerOverlap="true"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/ivEdit"
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <FrameLayout
-                    android:id="@+id/view1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="80"
-                    app:layout_constraintLeft_toRightOf="@+id/ivEdit"
-                    app:layout_constraintRight_toLeftOf="@+id/ivLocChose"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvShopAddress"
-                        style="@style/fontBold14"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40"
-                        android:gravity="start|center"
-                        android:hint="Chose the store location"
-                        android:paddingStart="@dimen/_10"
-                        android:visibility="visible" />
-
-                </FrameLayout>
-
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivEdit"
-                    android:layout_width="0dp"
+                    android:id="@+id/ivUser"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_gps_not_fixed"
-                    android:text="View 2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="20"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/view1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivLocChose"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_40"
-                    android:src="@drawable/map"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="20"
-                    app:layout_constraintLeft_toRightOf="@+id/view1"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:drawableRight="@drawable/ic_baseline_add_circle_24"
-                android:drawablePadding="10dp"
-                android:gravity="end"
-                android:text="Add More"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clMap" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Items"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listrv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#F2F7F8"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvTotalHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Total Amount"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listrv" />
-
-            <uk.ac.tees.mad.w9501736.common.CommonEditableTextView
-                android:id="@+id/cetvTotal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:elevation="@dimen/_08"
-                android:gravity="center"
-                app:cardCornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTotalHeading">
-
-            </uk.ac.tees.mad.w9501736.common.CommonEditableTextView>
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Add Comments"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cetvTotal" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clAddComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/clImage"
-                    android:layout_width="@dimen/dimens52"
-                    android:layout_height="@dimen/dimens52"
-                    android:layout_marginLeft="@dimen/_08"
-                    android:layout_marginTop="@dimen/dimensFont8"
-                    android:layout_marginRight="@dimen/_08"
-                    android:clipToPadding="false"
-                    app:cardCornerRadius="@dimen/dimens15"
-                    app:cardElevation="@dimen/dimens0"
-                    app:cardPreventCornerOverlap="true"
-                    app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/ivEdit"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:scaleType="fitXY"
+                    android:src="@drawable/image8" />
 
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivUser"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/image8" />
+            </androidx.cardview.widget.CardView>
 
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etComment"
-                    style="@style/fontBold14"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimens52"
-                    android:layout_marginLeft="@dimen/_08"
-                    android:layout_marginRight="@dimen/_08"
-                    android:background="@drawable/edit_text_border"
-                    android:focusableInTouchMode="true"
-                    android:hint="Please add a comment"
-                    android:padding="@dimen/_10"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintLeft_toRightOf="@+id/clImage"
-                    app:layout_constraintRight_toLeftOf="@+id/ivCommentSend" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivCommentSend"
-                    android:layout_width="@dimen/_40"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_08"
-                    android:src="@drawable/ic_send_vector"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="3"
-                    app:layout_constraintLeft_toRightOf="@+id/etComment"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvCommentHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Comments"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clAddComment" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCommentsList"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etComment"
+                style="@style/fontBold14"
                 android:layout_width="0dp"
+                android:layout_height="@dimen/dimens52"
+                android:layout_marginLeft="@dimen/_08"
+                android:layout_marginRight="@dimen/_08"
+                android:background="@drawable/edit_text_border"
+                android:focusableInTouchMode="true"
+                android:hint="Please add a comment"
+                android:padding="@dimen/_10"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintLeft_toRightOf="@+id/clImage"
+                app:layout_constraintRight_toLeftOf="@+id/ivCommentSend" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCommentSend"
+                android:layout_width="@dimen/_40"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10"
-                android:background="#F2F7F8"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCommentHeading" />
+                android:layout_marginRight="@dimen/_08"
+                android:src="@drawable/ic_send_vector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintLeft_toRightOf="@+id/etComment"
+                app:layout_constraintRight_toRightOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/inProgressbar"
-        layout="@layout/progressbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/match_constrain"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCommentHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Comments"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clAddComment" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCommentsList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10"
+            android:background="#F2F7F8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCommentHeading" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

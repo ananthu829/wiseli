@@ -3,15 +3,15 @@ package uk.ac.tees.mad.w9501736.ui.activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.fragment.NavHostFragment;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.ui.BaseActivity;
 
-public class LoginSignUpActivity extends AppCompatActivity {
+public class LoginSignUpActivity extends BaseActivity {
 
     public NavGraph navGraph;
     public NavController navController;
