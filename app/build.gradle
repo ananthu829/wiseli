@@ -1,8 +1,11 @@
-apply plugin: "com.android.application"
-
-apply plugin: "androidx.navigation.safeargs"
+plugins {
+    id 'com.android.application'
+    id 'androidx.navigation.safeargs'
+    id 'com.jakewharton.butterknife'
+}
 
 android {
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -26,6 +29,26 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled true
+    }
+
+    flavorDimensions "environment"
+
+    productFlavors {
+        develop {
+            dimension "environment"
+            applicationIdSuffix ".develop"
+            buildConfigField "String", base_url, base_url_dev
+            buildConfigField "String", environment, environment_dev
+        }
+        production {
+            dimension "environment"
+            buildConfigField "String", base_url, base_url_prod
+            buildConfigField "String", environment, environment_prod
+        }
+
     }
 }
 
@@ -76,6 +99,8 @@ dependencies {
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
     // Annotation processor
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
@@ -90,4 +115,11 @@ dependencies {
     // Room
     implementation "android.arch.persistence.room:runtime:$lifecycle_version"
     annotationProcessor "android.arch.persistence.room:compiler:$lifecycle_version"
+
+    //Butter Knife
+    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+
+    implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
+
 }

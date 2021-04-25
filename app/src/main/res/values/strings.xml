@@ -58,5 +58,9 @@
 
     <string name="google_maps_api_key">AIzaSyAvUIS0LUpyZ3yDDacbvH7smR1ubMFo8mc</string>
 
+    <string name="file_provider" translatable="false">uk.ac.tees.mad.w9501736.fileprovider</string>
+
+    <string name="pick_single">Please select your image</string>
+
 
 </resources>

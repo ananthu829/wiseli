@@ -95,7 +95,7 @@
 
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtName"
+                android:id="@+id/edtFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens24"
@@ -103,7 +103,7 @@
                 android:layout_marginEnd="@dimen/dimens24"
                 android:focusable="true"
                 android:fontFamily="@font/avertacy_regular"
-                android:hint="Full name"
+                android:hint="First name"
                 android:imeOptions="actionNext"
                 android:maxLength="25"
                 android:paddingStart="@dimen/dimens16"
@@ -111,11 +111,32 @@
                 android:paddingEnd="@dimen/dimens16"
                 android:paddingBottom="@dimen/dimens16"
                 android:singleLine="true"
-                android:text="@{editprofile.fullName}"
                 android:textColor="#353535"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/clProPic" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens24"
+                android:layout_marginTop="@dimen/dimens38"
+                android:layout_marginEnd="@dimen/dimens24"
+                android:focusable="true"
+                android:fontFamily="@font/avertacy_regular"
+                android:hint="Last name"
+                android:imeOptions="actionNext"
+                android:maxLength="25"
+                android:paddingStart="@dimen/dimens16"
+                android:paddingTop="@dimen/dimens16"
+                android:paddingEnd="@dimen/dimens16"
+                android:paddingBottom="@dimen/dimens16"
+                android:singleLine="true"
+                android:textColor="#353535"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtFirstName" />
 
             <RelativeLayout
                 android:id="@+id/layoutPhoneNumber"
@@ -127,7 +148,7 @@
                 android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edtName">
+                app:layout_constraintTop_toBottomOf="@id/edtLastName">
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -189,11 +210,33 @@
                     android:paddingEnd="@dimen/dimens16"
                     android:paddingBottom="@dimen/dimens16"
                     android:singleLine="true"
-                    android:text="@{editprofile.userName}"
                     android:textColor="#353535" />
 
 
             </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens24"
+                android:layout_marginTop="@dimen/dimens38"
+                android:layout_marginEnd="@dimen/dimens24"
+                android:focusable="true"
+                android:fontFamily="@font/avertacy_regular"
+                android:hint="password"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:maxLength="25"
+                android:paddingStart="@dimen/dimens16"
+                android:paddingTop="@dimen/dimens16"
+                android:paddingEnd="@dimen/dimens16"
+                android:paddingBottom="@dimen/dimens16"
+                android:singleLine="true"
+                android:textColor="#353535"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rlEditText" />
 
 
             <RelativeLayout
@@ -204,7 +247,7 @@
                 android:layout_marginTop="@dimen/dimens32"
                 android:layout_marginEnd="@dimen/dimens24"
                 android:background="@color/white"
-                app:layout_constraintTop_toBottomOf="@+id/rlEditText">
+                app:layout_constraintTop_toBottomOf="@+id/edtPassword">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtEmailID"
@@ -222,7 +265,6 @@
                     android:paddingEnd="@dimen/dimens16"
                     android:paddingBottom="@dimen/dimens16"
                     android:singleLine="true"
-                    android:text="@{editprofile.email}"
                     android:textColor="#353535" />
 
 
@@ -235,25 +277,46 @@
 
             </RelativeLayout>
 
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtProfileBio"
+            <RelativeLayout
+                android:id="@+id/rlGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens24"
                 android:layout_marginTop="@dimen/dimens32"
                 android:layout_marginEnd="@dimen/dimens24"
-                android:fontFamily="@font/avertacy_regular"
-                android:hint="@string/bio"
-                android:imeOptions="actionDone"
-                android:maxLength="50"
-                android:paddingStart="@dimen/dimens16"
-                android:paddingTop="@dimen/dimens16"
-                android:paddingEnd="@dimen/dimens16"
-                android:paddingBottom="@dimen/dimens16"
-                android:text="@{editprofile.bio}"
-                android:textColor="#353535"
-                app:layout_constraintTop_toBottomOf="@+id/rlEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/rlEmail">
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/btnTG"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:checkedButton="@id/btnMale"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnMale"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="Male"
+                        android:textSize="14dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnFemale"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Female"
+                        android:textSize="14dp" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSignUp"
@@ -273,7 +336,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.517"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtProfileBio" />
+                app:layout_constraintTop_toBottomOf="@+id/rlGender" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

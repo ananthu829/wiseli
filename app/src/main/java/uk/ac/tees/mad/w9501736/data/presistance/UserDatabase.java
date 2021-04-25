@@ -3,30 +3,33 @@ package uk.ac.tees.mad.w9501736.data.presistance;
 
 import android.content.Context;
 
+import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 
+@Database(entities = {WiseLiUser.class}, version = 1)
 @TypeConverters({Converters.class})
-public abstract class RecipeDatabase extends RoomDatabase {
+public abstract class UserDatabase extends RoomDatabase {
 
-    public static final String DATABASE_NAME = "recipes_db";
+    public static final String DATABASE_NAME = "user_db";
 
-    private static RecipeDatabase instance;
+    private static UserDatabase instance;
 
-    public static RecipeDatabase getInstance(final Context context) {
+    public static UserDatabase getInstance(final Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(
                     context.getApplicationContext(),
-                    RecipeDatabase.class,
+                    UserDatabase.class,
                     DATABASE_NAME
             ).build();
         }
         return instance;
     }
 
-    public abstract RecipeDao getRecipeDao();
+    public abstract UserDao getRecipeDao();
 
 }
 

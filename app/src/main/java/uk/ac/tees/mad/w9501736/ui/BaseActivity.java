@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import butterknife.ButterKnife;
 import uk.ac.tees.mad.w9501736.R;
 
 
@@ -20,6 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mProgressBar = constraintLayout.findViewById(R.id.progress_bar);
 
         getLayoutInflater().inflate(layoutResID, frameLayout, true);
+        ButterKnife.bind(this);
         super.setContentView(constraintLayout);
     }
 

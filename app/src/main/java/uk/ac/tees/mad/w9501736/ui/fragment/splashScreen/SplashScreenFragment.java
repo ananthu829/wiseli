@@ -9,58 +9,25 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.ui.BaseFragment;
+import uk.ac.tees.mad.w9501736.ui.viewModel.splashScreen.SplashScreenFragmentViewModel;
 
 import static uk.ac.tees.mad.w9501736.utils.AppConstants.SPLASH_SCREEN_TIME_OUT;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * Use the {@link SplashScreenFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SplashScreenFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class SplashScreenFragment extends BaseFragment {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
+    private SplashScreenFragmentViewModel splashScreenFragmentViewModel;
     public SplashScreenFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SplashScreenFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SplashScreenFragment newInstance(String param1, String param2) {
-        SplashScreenFragment fragment = new SplashScreenFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -72,11 +39,18 @@ public class SplashScreenFragment extends Fragment {
 
 
     @Override
+    protected int layoutRes() {
+        return R.layout.fragment_splash_screen;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        splashScreenFragmentViewModel = new ViewModelProvider(requireActivity()).get(SplashScreenFragmentViewModel.class);
+
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             Navigation.findNavController(view).navigate(R.id.action_splashScreenFragment_to_signInFragment);
-        },SPLASH_SCREEN_TIME_OUT);
+        }, SPLASH_SCREEN_TIME_OUT);
     }
 }
