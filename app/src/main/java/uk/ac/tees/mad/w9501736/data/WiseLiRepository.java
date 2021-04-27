@@ -16,7 +16,6 @@ import uk.ac.tees.mad.w9501736.utils.ApiResponse;
 import uk.ac.tees.mad.w9501736.utils.AppExecutors;
 import uk.ac.tees.mad.w9501736.utils.NetworkBoundResource;
 import uk.ac.tees.mad.w9501736.utils.Resource;
-import uk.ac.tees.mad.w9501736.utils.ServiceGenerator;
 
 public class WiseLiRepository {
 
@@ -64,18 +63,7 @@ public class WiseLiRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<uk.ac.tees.mad.w9501736.data.model.Resource<WiseLiUser>>> createCall() {
-                return ServiceGenerator.getWiseLiApi().registerUser(wiseLiUser.getFirstName(),
-                        wiseLiUser.getLastName(),
-                        wiseLiUser.getEmail(),
-                        wiseLiUser.getGender(),
-                        wiseLiUser.getProfilePic(),
-                        wiseLiUser.getPhoneNumber(),
-                        wiseLiUser.getUsername(),
-                        wiseLiUser.getPassword(),
-                        wiseLiUser.getDeviceId(),
-                        wiseLiUser.getDeviceType(),
-                        wiseLiUser.getLatitude(),
-                        wiseLiUser.getLongitude());
+                return null;
             }
         }.getAsLiveData();
     }

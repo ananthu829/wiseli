@@ -10,4 +10,15 @@ public class AppConstants {
     public static final int READ_TIMEOUT = 2; // 2 seconds
     public static final int WRITE_TIMEOUT = 2; // 2 seconds
 
+
+    //WARNING :  DO NOT EDIT THIS
+    public static class API {
+
+        //store API's
+        public static final String API_REGISTER = "user/signup";
+        private static String API_VERSION = "1.0";
+
+    }
+
+
 }

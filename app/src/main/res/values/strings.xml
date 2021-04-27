@@ -61,6 +61,13 @@
     <string name="file_provider" translatable="false">uk.ac.tees.mad.w9501736.fileprovider</string>
 
     <string name="pick_single">Please select your image</string>
+    <string name="field_empty_error">Field cant be empty</string>
+    <string name="empty_string"> </string>
+
+    <string name="snack_error_network">Please turn on your net.</string>
+    <string name="snack_error_network_available">Thanks for turning on the Network.</string>
+    <string name="snack_error_location">Please Enable Location</string>
+    <string name="snack_error_location_null">Please Enable Location And Internet</string>
 
 
 </resources>

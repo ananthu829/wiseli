@@ -11,6 +11,8 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import okhttp3.MultipartBody;
+
 @Entity(tableName = "user")
 public class WiseLiUser implements Parcelable {
     public static final Parcelable.Creator<WiseLiUser> CREATOR = new Parcelable.Creator<WiseLiUser>() {
@@ -67,6 +69,9 @@ public class WiseLiUser implements Parcelable {
     @ColumnInfo(name = "password")
     private String password;
 
+    @Ignore
+    private MultipartBody.Part imgBody;
+
     public WiseLiUser(String token, int userId, String firstName, String lastName, String email,
                       String username, String gender, String deviceType, String deviceId, String phoneNumber,
                       String latitude, String longitude, String profilePic, String password) {
@@ -105,6 +110,14 @@ public class WiseLiUser implements Parcelable {
         this.longitude = in.readString();
         this.profilePic = in.readString();
         this.password = in.readString();
+    }
+
+    public MultipartBody.Part getImgBody() {
+        return imgBody;
+    }
+
+    public void setImgBody(MultipartBody.Part imgBody) {
+        this.imgBody = imgBody;
     }
 
     public String getToken() {

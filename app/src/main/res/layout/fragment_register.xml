@@ -93,8 +93,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edtFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,17 +105,21 @@
                 android:hint="First name"
                 android:imeOptions="actionNext"
                 android:maxLength="25"
-                android:paddingStart="@dimen/dimens16"
-                android:paddingTop="@dimen/dimens16"
-                android:paddingEnd="@dimen/dimens16"
-                android:paddingBottom="@dimen/dimens16"
                 android:singleLine="true"
-                android:textColor="#353535"
+                app:helperText=" "
+                app:helperTextTextColor="@color/red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clProPic" />
+                app:layout_constraintTop_toBottomOf="@+id/clProPic">
 
-            <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edtLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,154 +131,128 @@
                 android:hint="Last name"
                 android:imeOptions="actionNext"
                 android:maxLength="25"
-                android:paddingStart="@dimen/dimens16"
-                android:paddingTop="@dimen/dimens16"
-                android:paddingEnd="@dimen/dimens16"
-                android:paddingBottom="@dimen/dimens16"
                 android:singleLine="true"
-                android:textColor="#353535"
+                app:helperText=" "
+                app:helperTextTextColor="@color/red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtFirstName" />
+                app:layout_constraintTop_toBottomOf="@+id/edtFirstName">
 
-            <RelativeLayout
-                android:id="@+id/layoutPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etPhoneNumber"
                 android:layout_marginStart="@dimen/dimens24"
-                android:layout_marginTop="@dimen/dimens32"
+                android:layout_width="match_parent"
                 android:layout_marginEnd="@dimen/dimens24"
-                android:background="@color/white"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dimens38"
+                android:focusable="false"
+                android:fontFamily="@font/avertacy_regular"
+                android:hint="@string/phone_number"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:singleLine="true"
+                android:textColor="@color/black_opacity30"
+                app:helperText=" "
+                app:helperTextTextColor="@color/red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edtLastName">
 
-
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dimens5"
-                    android:layout_toEndOf="@+id/client_std_code"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:fontFamily="@font/avertacy_regular"
-                    android:hint="@string/phone_number"
-                    android:imeOptions="actionNext"
-                    android:inputType="phone"
-                    android:paddingStart="@dimen/dimens16"
-                    android:paddingTop="@dimen/dimens16"
-                    android:paddingEnd="@dimen/dimens16"
-                    android:paddingBottom="@dimen/dimens16"
-                    android:singleLine="true"
-                    android:textColor="@color/black_opacity30"
-                    android:textCursorDrawable="@drawable/color_cursor" />
+                    android:background="@color/white" />
 
-                <View
-                    android:id="@+id/topView"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimens48"
-                    android:layout_centerInParent="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rlEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens24"
                 android:layout_marginTop="@dimen/dimens40"
                 android:layout_marginEnd="@dimen/dimens24"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/progressBar"
+                android:fontFamily="@font/avertacy_regular"
+                android:hint="@string/username"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="15"
+                android:singleLine="true"
+                app:helperText=" "
+                app:helperTextTextColor="@color/red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutPhoneNumber">
+                app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etUserName"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/progressBar"
-                    android:fontFamily="@font/avertacy_regular"
-                    android:hint="@string/username"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="15"
-                    android:paddingStart="@dimen/dimens16"
-                    android:paddingTop="@dimen/dimens16"
-                    android:paddingEnd="@dimen/dimens16"
-                    android:paddingBottom="@dimen/dimens16"
-                    android:singleLine="true"
-                    android:textColor="#353535" />
+                    android:background="@color/white" />
 
+            </com.google.android.material.textfield.TextInputLayout>
 
-            </RelativeLayout>
-
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimens24"
                 android:layout_marginTop="@dimen/dimens38"
                 android:layout_marginEnd="@dimen/dimens24"
-                android:focusable="true"
-                android:fontFamily="@font/avertacy_regular"
-                android:hint="password"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:maxLength="25"
-                android:paddingStart="@dimen/dimens16"
-                android:paddingTop="@dimen/dimens16"
-                android:paddingEnd="@dimen/dimens16"
-                android:paddingBottom="@dimen/dimens16"
-                android:singleLine="true"
-                android:textColor="#353535"
+                app:helperText=" "
+                app:helperTextTextColor="@color/red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rlEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/etUserName"
+                app:passwordToggleEnabled="true">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="@font/avertacy_regular"
+                    android:hint="password"
+                    android:inputType="textPassword" />
 
-            <RelativeLayout
-                android:id="@+id/rlEmail"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edtEmailID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/tvChange"
                 android:layout_marginStart="@dimen/dimens24"
                 android:layout_marginTop="@dimen/dimens32"
                 android:layout_marginEnd="@dimen/dimens24"
-                android:background="@color/white"
+                android:clickable="true"
+                android:enabled="true"
+                android:focusable="false"
+                android:fontFamily="@font/avertacy_regular"
+                android:hint="@string/email"
+                android:inputType="none"
+                android:singleLine="true"
+                app:helperText=" "
+                app:helperTextTextColor="@color/red"
                 app:layout_constraintTop_toBottomOf="@+id/edtPassword">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edtEmailID"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/tvChange"
-                    android:clickable="true"
-                    android:enabled="true"
-                    android:focusable="false"
-                    android:fontFamily="@font/avertacy_regular"
-                    android:hint="@string/email"
-                    android:inputType="none"
-                    android:paddingStart="@dimen/dimens16"
-                    android:paddingTop="@dimen/dimens16"
-                    android:paddingEnd="@dimen/dimens16"
-                    android:paddingBottom="@dimen/dimens16"
-                    android:singleLine="true"
-                    android:textColor="#353535" />
+                    android:background="@color/white" />
 
-
-                <View
-                    android:id="@+id/vwEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimens40"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
                 android:id="@+id/rlGender"
@@ -284,7 +261,7 @@
                 android:layout_marginStart="@dimen/dimens24"
                 android:layout_marginTop="@dimen/dimens32"
                 android:layout_marginEnd="@dimen/dimens24"
-                app:layout_constraintTop_toBottomOf="@+id/rlEmail">
+                app:layout_constraintTop_toBottomOf="@+id/edtEmailID">
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/btnTG"
