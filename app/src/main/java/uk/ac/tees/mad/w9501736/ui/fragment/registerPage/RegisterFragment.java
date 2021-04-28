@@ -40,6 +40,7 @@ import com.kroegerama.imgpicker.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,7 +63,6 @@ import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiService;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.viewModel.RegisterPage.RegisterFragmentViewModel;
-import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
 
 
@@ -71,12 +71,12 @@ import uk.ac.tees.mad.w9501736.utils.UtilHelper;
  */
 public class RegisterFragment extends BaseFragment implements BottomSheetImagePicker.OnImagesSelectedListener {
 
+    private static final String TAG = "RegisterFragment";
     public MultipartBody.Part image;
     @BindView(R.id.btnSignUp)
     AppCompatButton btnSignUp;
     @BindView(R.id.imgProfileImage)
     AppCompatImageView imgProfileImage;
-    protected Location mLastLocation;
     @BindView(R.id.edtFirstName)
     TextInputLayout edtFirstName;
     @BindView(R.id.edtLastName)
@@ -94,9 +94,9 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     WiseLiUser wiseLiUser;
     @BindView(R.id.edtEmailID)
     TextInputLayout edtEmailID;
+    Disposable dMainListObservable;
     private WiseLiRepository apiRepo;
     private RegisterFragmentViewModel registerFragmentViewModel;
-    Disposable dMainListObservable;
     private FusedLocationProviderClient mFusedLocationClient;
 
     public RegisterFragment() {
@@ -455,21 +455,47 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         showProgressBar(true);
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
         final WiseLiApiService webServices = retrofit.create(WiseLiApiService.class);
-        Observable<Resource<WiseLiUser>> likedObservable = webServices.registerUser(wiseLiUser.getFirstName(),
-                wiseLiUser.getLastName(),
-                wiseLiUser.getEmail(),
-                wiseLiUser.getGender(),
-                image,
-                wiseLiUser.getPhoneNumber(),
-                wiseLiUser.getUsername(),
-                wiseLiUser.getPassword(),
-                wiseLiUser.getDeviceId(),
-                wiseLiUser.getDeviceType(),
-                wiseLiUser.getLatitude(),
-                wiseLiUser.getLongitude());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getLatitude()" + wiseLiUser.getLatitude());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getLongitude()" + wiseLiUser.getLongitude());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getFirstName()" + wiseLiUser.getFirstName());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getLastName()" + wiseLiUser.getLastName());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getEmail()" + wiseLiUser.getEmail());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getPhoneNumber()" + wiseLiUser.getDeviceType());
+        Log.d(TAG, "getRegisterApiCall: wiseLiUser.getPhoneNumber()" + wiseLiUser.getDeviceId());
+
+        RequestBody first_name = createPartFromString(wiseLiUser.getFirstName());
+        RequestBody last_name = createPartFromString(wiseLiUser.getLastName());
+        RequestBody email = createPartFromString(wiseLiUser.getEmail());
+        RequestBody phone_number = createPartFromString(wiseLiUser.getPhoneNumber());
+        RequestBody password = createPartFromString(wiseLiUser.getPassword());
+        RequestBody device_id = createPartFromString(wiseLiUser.getDeviceId());
+        RequestBody device_type = createPartFromString(wiseLiUser.getDeviceType());
+        RequestBody latitude = createPartFromString(wiseLiUser.getLatitude());
+        RequestBody longitude = createPartFromString(wiseLiUser.getLongitude());
+        RequestBody gender = createPartFromString(wiseLiUser.getGender());
+
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("first_name", first_name);
+        map.put("last_name", last_name);
+        map.put("email", email);
+        map.put("gender", gender);
+        map.put("phone_number", phone_number);
+        map.put("password", password);
+        map.put("device_id", device_id);
+        map.put("device_type", device_type);
+        map.put("latitude", latitude);
+        map.put("longitude", longitude);
+
+        Observable<Resource<WiseLiUser>> likedObservable = webServices.registerUser(map,
+                image
+        );
         likedObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(registerUser());
+    }
+
+    private RequestBody createPartFromString(String partString) {
+        return RequestBody.create(MultipartBody.FORM, partString);
     }
 
     private Observer<Resource<WiseLiUser>> registerUser() {
@@ -508,25 +534,20 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     private void getLastLocation() {
         //iLandingPresenter.getWeatherForecastWebService(String.valueOf(latitude), String.valueOf(longitude));
         System.out.println("LandingActivity getLastLocation");
+        wiseLiUser.setLongitude("0.000");
+        wiseLiUser.setLatitude("0.000");
+        mFusedLocationClient.getLastLocation()
+                .addOnCompleteListener(getActivity(), task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Location mLastLocation = task.getResult();
+                        System.out.println("LandingActivity getLatitude : " + mLastLocation.getLatitude() + ", getLongitude : " + mLastLocation.getLongitude());
+                        wiseLiUser.setLatitude(Double.toString(mLastLocation.getLatitude()));
+                        wiseLiUser.setLongitude(Double.toString(mLastLocation.getLongitude()));
+                    } else {
+                        Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_location_null), Snackbar.LENGTH_LONG).show();
 
-        if (NetworkDetector.haveNetworkConnection(getActivity())) {
-
-            mFusedLocationClient.getLastLocation()
-                    .addOnCompleteListener(getActivity(), task -> {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            mLastLocation = task.getResult();
-                            System.out.println("LandingActivity getLatitude : " + mLastLocation.getLatitude() + ", getLongitude : " + mLastLocation.getLongitude());
-                            wiseLiUser.setLatitude(Double.toString(mLastLocation.getLatitude()));
-                            wiseLiUser.setLongitude(Double.toString(mLastLocation.getLongitude()));
-                        } else {
-                            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_location_null), Snackbar.LENGTH_LONG).show();
-
-                        }
-                    });
-        } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_network_available), Snackbar.LENGTH_LONG).show();
-
-        }
+                    }
+                });
     }
 
 

@@ -1,13 +1,14 @@
 package uk.ac.tees.mad.w9501736.data.remote;
 
-import androidx.annotation.Nullable;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
+import retrofit2.http.PartMap;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 
@@ -30,20 +31,8 @@ public interface WiseLiApiService {
             @Nullable @Field("latitude") String latitude,
             @Nullable @Field("longitude") String longitude);*/
 
-
     @Multipart
     @POST(API_REGISTER)
-    Observable<Resource<WiseLiUser>> registerUser(
-            @Nullable @Query("first_name") String firstName,
-            @Nullable @Query("last_name") String lastName,
-            @Nullable @Query("email") String email,
-            @Nullable @Query("gender") String gender,
-            @Part MultipartBody.Part file,
-            @Nullable @Query("phone_number") String mobNo,
-            @Nullable @Query("username") String userName,
-            @Nullable @Query("password") String password,
-            @Nullable @Query("device_id") String deviceId,
-            @Nullable @Query("device_type") String deviceType,
-            @Nullable @Query("latitude") String latitude,
-            @Nullable @Query("longitude") String longitude);
+    Observable<Resource<WiseLiUser>> registerUser(@PartMap() Map<String, RequestBody> partMap,
+                                                  @Part MultipartBody.Part file);
 }
