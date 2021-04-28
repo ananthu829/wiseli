@@ -91,6 +91,7 @@
                     tools:layout_editor_absoluteY="27dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/emailEdt"
                     android:layout_width="260dp"
                     android:layout_height="18dp"
                     android:layout_marginStart="20dp"
@@ -101,6 +102,7 @@
                     android:hint="lori.johnson@gmail.com"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:text="johnsamuels12345"
                     android:textColor="#19224C"
                     android:textColorHint="#D0D1D5"
                     android:textSize="15sp"
@@ -149,6 +151,7 @@
                     tools:layout_editor_absoluteY="27dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/pswEdt"
                     android:layout_width="246dp"
                     android:layout_height="19dp"
                     android:layout_marginStart="19dp"
@@ -158,6 +161,7 @@
                     android:gravity="start|center_vertical"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:text="Tes1234"
                     android:textColor="#000000"
                     android:textSize="12sp"
                     app:layout_constraintLeft_toLeftOf="parent"
