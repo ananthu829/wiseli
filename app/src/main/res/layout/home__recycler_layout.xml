@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<uk.ac.tees.mad.w9501736.common.CommonEditableTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<uk.ac.tees.mad.w9501736.common.CommonEditableTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/commonEditableTextView"
     android:layout_width="match_parent"
