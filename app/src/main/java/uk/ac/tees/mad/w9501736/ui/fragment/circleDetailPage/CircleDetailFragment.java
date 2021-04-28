@@ -1,31 +1,43 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
 import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
+import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
+import uk.ac.tees.mad.w9501736.models.AvailableUserList;
+import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
+import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +45,7 @@ import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
  * Use the {@link CircleDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CircleDetailFragment extends Fragment {
+public class CircleDetailFragment extends Fragment  implements AdapterInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,7 +59,10 @@ public class CircleDetailFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private View view;
-    ImageView addUser;
+    FloatingActionButton addUser;
+    ArrayList data;
+    RecyclerView recyclerview;
+    String  Title ="";
 
 
     public CircleDetailFragment() {
@@ -98,13 +113,68 @@ public class CircleDetailFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.tl);
         viewPager = view.findViewById(R.id.vp);
-        addUser = view.findViewById(R.id.addUserBtn);
+        addUser = view.findViewById(R.id.fab);
+        ImageView spino = view.findViewById(R.id.addUserBtn);
+
+
+
 
         tabLayout.addTab(tabLayout.newTab().setText("Active"));
         tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        AdapterInterface adapterInterface =this;
 
 
+
+        spino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.custom_dialog_list_user);
+                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+                recyclerview = (RecyclerView) dialog.findViewById(R.id.homeRecyclerView);
+                data = new ArrayList<>();
+                data.add(new AvailableUserList("User 1",false));
+                data.add(new AvailableUserList("User 2",false));
+                data.add(new AvailableUserList("User 3",false));
+                data.add(new AvailableUserList("User 4",false));
+
+                recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+                recyclerview.setAdapter(new UserListAdapter(data, adapterInterface));
+                dialog.show();
+                dialog.setOnDismissListener( new DialogInterface.OnDismissListener(){
+
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        Title ="";
+                    }
+                });
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(Title.isEmpty())
+                        {
+                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
+
+                        }
+                        else {
+                            dialog.dismiss();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("caption", Title);
+                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+                        }
+
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
         addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,6 +253,19 @@ public class CircleDetailFragment extends Fragment {
                 Toast.makeText(getContext(), u.getCaption() + "will get deleted.", Toast.LENGTH_SHORT).show();
             });
         }
+
+    }
+
+    @Override
+    public void onItemClicked(String title) {
+        Title = title;
+        Toast.makeText(view.getContext(),title,Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @Override
+    public void onDeleteCtaClicked() {
 
     }
 }
