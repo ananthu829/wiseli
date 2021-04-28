@@ -1,19 +1,24 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -42,6 +47,7 @@ public class CircleDetailFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private View view;
+    ImageView addUser;
 
 
     public CircleDetailFragment() {
@@ -92,10 +98,47 @@ public class CircleDetailFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.tl);
         viewPager = view.findViewById(R.id.vp);
+        addUser = view.findViewById(R.id.addUserBtn);
 
         tabLayout.addTab(tabLayout.newTab().setText("Active"));
         tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.custom_dialog_add_user);
+                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+                TextInputLayout txt = (TextInputLayout) dialog.findViewById(R.id.edtLastName);
+
+
+                dialog.show();
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(txt.getEditText().getText().toString().isEmpty())
+                        {
+                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            dialog.dismiss();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("caption", txt.getEditText().getText().toString());
+                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+                        }
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
 
         tabPagerAdapter = new TabPagerAdapter(getContext(), getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(tabPagerAdapter);

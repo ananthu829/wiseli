@@ -2,10 +2,14 @@ package uk.ac.tees.mad.w9501736.ui.fragment.listPage;
 
 
 import android.Manifest;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -52,7 +57,7 @@ public class ListFragment extends Fragment {
     CommentAdapter commentAdapter;
     ItemAdapter itemAdapter;
     CommonEditableTextView cetvTotal;
-
+    TextView btnAddProduct;
     public ListFragment() {
         // Required empty public constructor
     }
@@ -83,6 +88,7 @@ public class ListFragment extends Fragment {
         ivLocChose = view.findViewById(R.id.ivLocChose);
         tvShopAddress = view.findViewById(R.id.tvShopAddress);
         cetvTotal = view.findViewById(R.id.cetvTotal);
+        btnAddProduct =view.findViewById(R.id.textView4);
         cetvTotal.hideImageDeleteBtn(true);
         cetvTotal.setEditableNumberInputType();
         cetvTotal.setEditableHintText("Enter the total Amount");
@@ -117,7 +123,37 @@ public class ListFragment extends Fragment {
                 UtilHelper.hideKeyboardFrom(getContext(), view);
             }
         });
-
+        btnAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.custom_dialog_add_product);
+                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+                TextInputLayout itm = (TextInputLayout) dialog.findViewById(R.id.edtItem);
+                TextInputLayout quantity = (TextInputLayout) dialog.findViewById(R.id.edtQuantity2);
+                dialog.show();
+                btnOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(itm.getEditText().getText().toString().isEmpty() || quantity.getEditText().getText().toString().isEmpty() )
+                        {
+                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            dialog.dismiss();
+                            Navigation.findNavController(view).navigate(R.id.action_listFragment_to_mapFragment);
+                        }
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
         ivLocChose.setOnClickListener(v -> {
             Dexter.withContext(getActivity())
                     .withPermissions(
