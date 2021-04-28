@@ -519,6 +519,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onError(Throwable e) {
+                showProgressBar(false);
                 Log.d("registerUser", " onError : value : " + e.getMessage());
             }
 

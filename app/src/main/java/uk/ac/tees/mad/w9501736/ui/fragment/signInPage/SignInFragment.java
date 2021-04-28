@@ -3,7 +3,6 @@ package uk.ac.tees.mad.w9501736.ui.fragment.signInPage;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,20 +19,14 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +35,7 @@ import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.network.RestClient;
 import uk.ac.tees.mad.w9501736.network.RestService;
+import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
@@ -50,7 +43,7 @@ import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignInFragment extends Fragment {
+public class SignInFragment extends BaseFragment {
     protected RestService mRetrofitService;
     private EditText username, password;
     private AppCompatButton btnLogin;
@@ -73,6 +66,11 @@ public class SignInFragment extends Fragment {
 
         mAppPreferences = AppPreferences.getInstance(getContext());
         return v;
+    }
+
+    @Override
+    protected int layoutRes() {
+        return R.layout.fragment_sign_in;
     }
 
     @Override
