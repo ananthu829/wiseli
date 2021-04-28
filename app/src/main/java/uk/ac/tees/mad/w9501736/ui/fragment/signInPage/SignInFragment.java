@@ -1,8 +1,10 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.signInPage;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +18,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -34,6 +45,7 @@ import uk.ac.tees.mad.w9501736.network.RestClient;
 import uk.ac.tees.mad.w9501736.network.RestService;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
+import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +55,8 @@ public class SignInFragment extends Fragment {
     private EditText username, password;
     private AppCompatButton btnLogin;
     AppPreferences mAppPreferences;
-
+    private FusedLocationProviderClient mFusedLocationClient;
+    protected Location mLastLocation;
     public SignInFragment() {
         // Required empty public constructor
     }
@@ -67,17 +80,59 @@ public class SignInFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btnLogin = view.findViewById(R.id.btnLogin);
         mRetrofitService = RestClient.getInstance();
-        getProfileImage();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
         btnLogin.setOnClickListener(v -> {
 //            startActivity(new Intent(getActivity(), LandingActivity.class));
 //            getActivity().finish();
-            getProfileImage();
+            getCurrentLoc();
         });
     }
+    public void getCurrentLoc() {
+        Dexter.withContext(getActivity())
+                .withPermissions(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    getLastLocation();
+                }
+            }
 
-    private void getProfileImage() {
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
+    }
+    @SuppressWarnings("MissingPermission")
+    private void getLastLocation() {
+        //iLandingPresenter.getWeatherForecastWebService(String.valueOf(latitude), String.valueOf(longitude));
+        System.out.println("LandingActivity getLastLocation");
 
-        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), "device1", "android", "54.5760419", "-1.2344047");
+        if (NetworkDetector.haveNetworkConnection(getActivity())) {
+
+            mFusedLocationClient.getLastLocation()
+                    .addOnCompleteListener(getActivity(), task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+                            getLoginApi();
+                            System.out.println("LandingActivity getLatitude : " + mLastLocation.getLatitude() + ", getLongitude : " + mLastLocation.getLongitude());
+                        } else {
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_location_null), Snackbar.LENGTH_LONG).show();
+
+                        }
+                    });
+        } else {
+            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_network_available), Snackbar.LENGTH_LONG).show();
+
+        }
+    }
+    private void getLoginApi() {
+
+        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), "device1", "android", String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 
 
         api.enqueue(new Callback<LoginModel>() {
