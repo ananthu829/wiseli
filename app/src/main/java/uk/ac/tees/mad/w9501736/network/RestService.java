@@ -1,22 +1,22 @@
-package com.project.certificate.RestService;
+package uk.ac.tees.mad.w9501736.network;
 
 
 
-import com.project.certificate.model.User;
 
-import java.util.List;
+import androidx.annotation.Nullable;
+
+import java.util.Map;
 
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
+import uk.ac.tees.mad.w9501736.models.LoginModel;
 
 
 /**
@@ -25,10 +25,17 @@ import retrofit2.http.Url;
 public interface RestService {
 
 
-    @GET("/join/id")
-    Call<User> getCust(@Query("id") String search);
 
+//    @POST("/api/user/login")
+//    Call<LoginModel> getOTP(@Body LoginModel requestOTP);
 
-
+    @FormUrlEncoded
+    @POST("/api/user/login")
+    Call<LoginModel> login(@Nullable @Field("username") String name,
+                                   @Nullable @Field("password") String id,
+                                   @Nullable @Field("device_id") String password,
+                                   @Nullable @Field("device_type") String phone,
+                                   @Nullable @Field("latitude") String country,
+                                   @Nullable @Field("longitude") String city);
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 
 @Dao
-public interface LocationDataDAO {
+public interface LoginDataDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insert(LoginModel.LoginModelDB locationData);
 

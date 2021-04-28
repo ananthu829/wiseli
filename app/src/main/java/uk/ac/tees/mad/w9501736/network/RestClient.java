@@ -1,4 +1,4 @@
-package com.project.certificate.RestService;
+package uk.ac.tees.mad.w9501736.network;
 
 
 import java.security.SecureRandom;
@@ -13,6 +13,7 @@ import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import uk.ac.tees.mad.w9501736.utils.AppConstants;
 
 
 /**
@@ -69,14 +70,13 @@ public class RestClient extends AppConstants {
         httpClient.addInterceptor(logging);
         httpClient.addInterceptor(chain -> {
             Request.Builder builder = chain.request().newBuilder();
-            builder.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
             Request request = builder.build();
 
             return chain.proceed(request);
         });
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -112,14 +112,13 @@ public class RestClient extends AppConstants {
         httpClient.addInterceptor(logging);
         httpClient.addInterceptor(chain -> {
             Request.Builder builder = chain.request().newBuilder();
-            builder.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
             Request request = builder.build();
 
             return chain.proceed(request);
         });
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AppConstants.BASE_URL)
+                .baseUrl(AppConstants.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
