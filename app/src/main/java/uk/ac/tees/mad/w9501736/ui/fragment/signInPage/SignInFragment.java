@@ -85,9 +85,11 @@ public class SignInFragment extends Fragment {
             public void onResponse(Call<LoginModel> responseCall, Response<LoginModel> response) {
 
                 if (response.body() != null) {
-LoginModel loginModel=response.body();
+                    LoginModel loginModel = response.body();
                     mAppPreferences.setToken(loginModel.getEmail().getToken());
                     DatabaseFactory.getInstance().insertUserData(loginModel.getEmail());
+                    startActivity(new Intent(getActivity(), LandingActivity.class));
+                    getActivity().finish();
                 } else {
                     Log.d("tag1", "Failed---");
 
