@@ -386,6 +386,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     }
 
     private void navigateToLanding() {
+        showProgressBar(false);
         startActivity(new Intent(getActivity(), LandingActivity.class));
         getActivity().finish();
     }
@@ -465,6 +466,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
         RequestBody first_name = createPartFromString(wiseLiUser.getFirstName());
         RequestBody last_name = createPartFromString(wiseLiUser.getLastName());
+        RequestBody username = createPartFromString(wiseLiUser.getUsername());
         RequestBody email = createPartFromString(wiseLiUser.getEmail());
         RequestBody phone_number = createPartFromString(wiseLiUser.getPhoneNumber());
         RequestBody password = createPartFromString(wiseLiUser.getPassword());
@@ -480,6 +482,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         map.put("email", email);
         map.put("gender", gender);
         map.put("phone_number", phone_number);
+        map.put("username", username);
         map.put("password", password);
         map.put("device_id", device_id);
         map.put("device_type", device_type);
@@ -505,26 +508,23 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
             public void onSubscribe(Disposable d) {
                 dMainListObservable = d;
                 Log.d("registerUser", " onSubscribe : " + d.isDisposed());
-                showProgressBar(false);
             }
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
 
                 Log.d("registerUser", " onNext : value : " + value);
-                showProgressBar(false);
                 navigateToLanding();
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d("registerUser", " onError : value : " + e.getMessage());
                 showProgressBar(false);
+                Log.d("registerUser", " onError : value : " + e.getMessage());
             }
 
             @Override
             public void onComplete() {
-                showProgressBar(false);
                 Log.d("registerUser", " onComplete");
             }
         };

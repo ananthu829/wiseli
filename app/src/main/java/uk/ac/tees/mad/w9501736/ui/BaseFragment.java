@@ -12,21 +12,31 @@ import androidx.fragment.app.Fragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
+import uk.ac.tees.mad.w9501736.network.RestClient;
+import uk.ac.tees.mad.w9501736.network.RestService;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.activity.LoginSignUpActivity;
+import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 
 
 public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
     private AppCompatActivity activity;
-
+    protected RestService mRetrofitService;
+    protected AppPreferences mAppPreferences;
     @LayoutRes
     protected abstract int layoutRes();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
+        DatabaseFactory.setupObject(getContext());
+
+        mAppPreferences = AppPreferences.getInstance(getContext());
+        mRetrofitService = RestClient.getInstance();
+
         super.onViewCreated(view, savedInstanceState);
     }
 

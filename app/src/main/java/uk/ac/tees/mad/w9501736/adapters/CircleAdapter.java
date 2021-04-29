@@ -12,16 +12,17 @@ import java.util.ArrayList;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
 import uk.ac.tees.mad.w9501736.models.CircleInfo;
+import uk.ac.tees.mad.w9501736.models.CircleModel;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
 
     public AdapterInterface buttonListener;
-    ArrayList<CircleInfo> items;
+    ArrayList<CircleModel.CircleData> items;
 
 
-    public CircleAdapter(ArrayList<CircleInfo> items, AdapterInterface buttonListener) {
+    public CircleAdapter(ArrayList<CircleModel.CircleData> items, AdapterInterface buttonListener) {
         this.items = items;
         this.buttonListener = buttonListener;
     }
@@ -38,9 +39,11 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
-        final CircleInfo contact = items.get(position);
-        holder.commonEditableTextView.setEditableText(contact.getCaption());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener);
+        final CircleModel.CircleData contact = items.get(position);
+        holder.commonEditableTextView.setEditableText(contact.getCircle_name());
+        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener,contact.getCircle_id());
+        holder.commonEditableTextView.setOnEditClickListener(buttonListener,contact.getCircle_id());
+
         holder.commonEditableTextView.setOnClickListener(v -> {
             if (holder.commonEditableTextView.getTextTextVisibility()) {
                 buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText());

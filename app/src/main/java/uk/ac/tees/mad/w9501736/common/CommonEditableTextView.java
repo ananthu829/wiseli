@@ -21,7 +21,8 @@ public class CommonEditableTextView extends CardView {
     private AppCompatEditText et;
     private AppCompatImageView ivEdit;
     private AppCompatImageView ivDelete;
-
+    AdapterInterface editClickListner;
+    String id;
 
     public CommonEditableTextView(@NonNull Context context) {
         super(context);
@@ -54,6 +55,8 @@ public class CommonEditableTextView extends CardView {
                 tv.setVisibility(VISIBLE);
                 tv.setText(currentText);
                 ivEdit.setImageResource(R.drawable.ic_mode_edit);
+                editClickListner.setEditableText(id,et.getText().toString());
+
             } else {
                 et.setVisibility(VISIBLE);
                 tv.setVisibility(GONE);
@@ -106,10 +109,16 @@ public class CommonEditableTextView extends CardView {
         et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
     }
 
-    public void setOnDeleteClickListener(AdapterInterface deleteClickListener) {
+    public void setOnDeleteClickListener(AdapterInterface deleteClickListener, String id) {
         ivDelete.setOnClickListener(v -> {
-            deleteClickListener.onDeleteCtaClicked();
+            deleteClickListener.onDeleteCtaClicked(id);
         });
     }
+
+    public void setOnEditClickListener(AdapterInterface editClickListner, String id) {
+        this.editClickListner=editClickListner;
+        this.id=id;
+    }
+
 
 }

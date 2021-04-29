@@ -42,7 +42,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
     public void onBindViewHolder(@NonNull holder holder, int position) {
         final User contact = items.get(position);
         holder.commonEditableTextView.setEditableText(contact.getCaption());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener);
+        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener,"");
         holder.commonEditableTextView.setOnClickListener(v -> {
             if (holder.commonEditableTextView.getTextTextVisibility()) {
                 buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText());
