@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.network.RestClient;
 import uk.ac.tees.mad.w9501736.network.RestService;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
@@ -26,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
     private AppCompatActivity activity;
     protected RestService mRetrofitService;
     protected AppPreferences mAppPreferences;
+    protected WiseLiUser wiseLiUser;
     @LayoutRes
     protected abstract int layoutRes();
 
@@ -36,7 +38,7 @@ public abstract class BaseFragment extends Fragment {
 
         mAppPreferences = AppPreferences.getInstance(getContext());
         mRetrofitService = RestClient.getInstance();
-
+        wiseLiUser = mAppPreferences.getUserCashedInfo();
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -63,6 +65,10 @@ public abstract class BaseFragment extends Fragment {
         } else if (activity instanceof LandingActivity) {
             ((LandingActivity) getBaseActivity()).showProgressBar(visibility);
         }
+    }
+
+    public WiseLiUser getWiseLiUser() {
+        return wiseLiUser;
     }
 
     public AppCompatActivity getBaseActivity() {
