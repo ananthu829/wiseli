@@ -529,10 +529,12 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
                 loginModel.setUsername(value.getData().getUsername());
                 loginModel.setGender(value.getData().getGender());
                 loginModel.setProfile_pic(value.getData().getProfilePic());
+                wiseLiUser.setToken(value.data.getToken());
+                wiseLiUser.setProfilePic(value.data.getProfilePic());
                 mAppPreferences.setToken(value.data.getToken());
                 mAppPreferences.setUserDetails(loginModel);
                 DatabaseFactory.getInstance().insertUserData(loginModel);
-                mAppPreferences.setUserCashedInfo(value.data);
+                mAppPreferences.setUserCashedInfo(wiseLiUser);
                 Log.d("registerUser", " onNext : value : " + value);
                 navigateToLanding();
             }
