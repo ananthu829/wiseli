@@ -27,6 +27,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
 
+import github.nisrulz.easydeviceinfo.base.EasyDeviceMod;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,6 +89,7 @@ public class SignInFragment extends BaseFragment {
 //            getActivity().finish();
             getCurrentLoc();
         });
+        getDeviceDetails();
     }
     public void getCurrentLoc() {
         Dexter.withContext(getActivity())
@@ -108,11 +110,34 @@ public class SignInFragment extends BaseFragment {
             }
         }).check();
     }
+
+    public void getDeviceDetails() {
+        Dexter.withContext(getActivity())
+                .withPermissions(
+                        Manifest.permission.READ_PHONE_STATE
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    EasyDeviceMod easyDeviceMod = new EasyDeviceMod(getActivity());
+                    String deviceName = easyDeviceMod.getManufacturer() + " " + easyDeviceMod.getDevice() + " " + easyDeviceMod.getModel();
+                    deviceId = easyDeviceMod.getBuildID();
+                    deviceType = deviceName;
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
+    }
+
     @SuppressWarnings("MissingPermission")
     private void getLastLocation() {
         //iLandingPresenter.getWeatherForecastWebService(String.valueOf(latitude), String.valueOf(longitude));
         System.out.println("LandingActivity getLastLocation");
-
+        showProgressBar(true);
         if (NetworkDetector.haveNetworkConnection(getActivity())) {
 
             mFusedLocationClient.getLastLocation()
@@ -128,14 +153,16 @@ public class SignInFragment extends BaseFragment {
 
                         }
                     });
+            getLoginApi();
         } else {
+            showProgressBar(false);
             Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_network_available), Snackbar.LENGTH_LONG).show();
 
         }
     }
     private void getLoginApi() {
 
-        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), getDeviceId(), getDeviceType(), lat, log);
+        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), deviceId, deviceType, lat, log);
 
 
         api.enqueue(new Callback<LoginModel>() {
@@ -156,6 +183,10 @@ public class SignInFragment extends BaseFragment {
                     user.setGender(response.body().getLoginDetails().getGender());
                     user.setPhoneNumber(response.body().getLoginDetails().getPhone_number());
                     user.setProfilePic(response.body().getLoginDetails().getProfile_pic());
+                    user.setToken(response.body().getLoginDetails().getToken());
+                    user.setPassword(password.getText().toString());
+                    user.setLatitude(lat);
+                    user.setLongitude(log);
                     mAppPreferences.setUserCashedInfo(user);
                     startActivity(new Intent(getActivity(), LandingActivity.class));
                     getActivity().finish();
@@ -163,15 +194,14 @@ public class SignInFragment extends BaseFragment {
                     Log.d("tag1", "Failed---");
 
                 }
-
-
+                showProgressBar(false);
             }
 
             @Override
             public void onFailure(Call<LoginModel> responseCall, Throwable t) {
                 t.printStackTrace();
+                showProgressBar(false);
             }
-
 
         });
     }
