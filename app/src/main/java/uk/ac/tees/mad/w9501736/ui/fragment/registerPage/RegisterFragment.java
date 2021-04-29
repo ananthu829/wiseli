@@ -61,6 +61,7 @@ import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiService;
+import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.viewModel.RegisterPage.RegisterFragmentViewModel;
@@ -111,7 +112,6 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         super.onCreate(savedInstanceState);
         //WiseLiComponent wiseLiComponent = ((WiseLiComponentProvider) getActivity().getApplication()).getWiseLiComponent();
         //wiseLiComponent.inject(this);
-        mAppPreferences = AppPreferences.getInstance(getContext());
         registerFragmentViewModel = new ViewModelProvider(this).get(RegisterFragmentViewModel.class);
     }
 
@@ -520,6 +520,18 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
+                LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
+                loginModel.setUser_id(String.valueOf(value.getData().getUserId()));
+                loginModel.setFirst_name(value.getData().getFirstName());
+                loginModel.setLast_name(value.getData().getLastName());
+                loginModel.setToken(value.getData().getToken());
+                loginModel.setEmail(value.getData().getEmail());
+                loginModel.setUsername(value.getData().getUsername());
+                loginModel.setGender(value.getData().getGender());
+                loginModel.setProfile_pic(value.getData().getProfilePic());
+                mAppPreferences.setToken(value.data.getToken());
+                mAppPreferences.setUserDetails(loginModel);
+                DatabaseFactory.getInstance().insertUserData(loginModel);
                 mAppPreferences.setUserCashedInfo(value.data);
                 Log.d("registerUser", " onNext : value : " + value);
                 navigateToLanding();
