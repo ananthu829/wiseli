@@ -1,62 +1,61 @@
 package uk.ac.tees.mad.w9501736.models;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class CircleModel implements Serializable {
+public class CreateModel implements Serializable {
 
-    @SerializedName("result")
+    @SerializedName("token")
 
-    private String result;
+    private String token;
 
-    @SerializedName("msg")
+    @SerializedName("circle_name")
 
-    private String msg;
-
-    @SerializedName("data")
-
-    private CircleData data;
+    private String circle_name;
 
 
-    public String getResult() {
-        return result;
+    @SerializedName("latitude")
+
+    private String latitude;
+
+
+    @SerializedName("longitude")
+
+    private String longitude;
+
+
+    public String getToken() {
+        return token;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getCircle_name() {
+        return circle_name;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setCircle_name(String circle_name) {
+        this.circle_name = circle_name;
     }
 
-    public CircleData getData() {
-        return data;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setData(CircleData data) {
-        this.data = data;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    @Entity
-    public class CircleData implements Serializable {
-        @SerializedName("circle_name")
+    public String getLongitude() {
+        return longitude;
+    }
 
-        private String circle_name;
-
-        @SerializedName("circle_id")
-
-        private String circle_id;
-
-
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

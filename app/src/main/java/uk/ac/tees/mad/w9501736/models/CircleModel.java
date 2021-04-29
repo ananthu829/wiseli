@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class LoginModel implements Serializable {
+public class CircleModel implements Serializable {
 
     @SerializedName("result")
 
@@ -20,7 +21,8 @@ public class LoginModel implements Serializable {
 
     @SerializedName("data")
 
-    private LoginModelDB data;
+    private List<CircleData> data;
+
 
     public String getResult() {
         return result;
@@ -38,126 +40,37 @@ public class LoginModel implements Serializable {
         this.msg = msg;
     }
 
-    public LoginModelDB getEmail() {
+    public List<CircleData> getData() {
         return data;
     }
 
-    public void setEmail(LoginModelDB email) {
-        this.data = email;
+    public void setData(List<CircleData> data) {
+        this.data = data;
     }
 
-    @Entity
-    public class LoginModelDB implements Serializable {
-        @SerializedName("token")
+    public class CircleData implements Serializable {
+        @SerializedName("circle_name")
 
-        private String token;
+        private String circle_name;
 
-        @SerializedName("user_id")
-        @PrimaryKey
-        @NonNull
-        private String user_id;
+        @SerializedName("circle_id")
 
-        @SerializedName("first_name")
+        private String circle_id;
 
-        private String first_name;
-
-        @SerializedName("last_name")
-
-        private String last_name;
-
-        @SerializedName("email")
-
-        private String email;
-
-        @SerializedName("username")
-
-        private String username;
-
-
-        @SerializedName("gender")
-
-        private String gender;
-
-        @SerializedName("phone_number")
-
-        private String phone_number;
-
-
-        @SerializedName("profile_pic")
-
-        private String profile_pic;
-
-
-        public String getToken() {
-            return token;
+        public String getCircle_name() {
+            return circle_name;
         }
 
-        public void setToken(String token) {
-            this.token = token;
+        public void setCircle_name(String circle_name) {
+            this.circle_name = circle_name;
         }
 
-        public String getUser_id() {
-            return user_id;
+        public String getCircle_id() {
+            return circle_id;
         }
 
-        public void setUser_id(String user_id) {
-            this.user_id = user_id;
-        }
-
-        public String getFirst_name() {
-            return first_name;
-        }
-
-        public void setFirst_name(String first_name) {
-            this.first_name = first_name;
-        }
-
-        public String getLast_name() {
-            return last_name;
-        }
-
-        public void setLast_name(String last_name) {
-            this.last_name = last_name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
-
-        public String getPhone_number() {
-            return phone_number;
-        }
-
-        public void setPhone_number(String phone_number) {
-            this.phone_number = phone_number;
-        }
-
-        public String getProfile_pic() {
-            return profile_pic;
-        }
-
-        public void setProfile_pic(String profile_pic) {
-            this.profile_pic = profile_pic;
+        public void setCircle_id(String circle_id) {
+            this.circle_id = circle_id;
         }
     }
 }

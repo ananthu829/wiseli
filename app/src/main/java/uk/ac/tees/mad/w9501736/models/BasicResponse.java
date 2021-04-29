@@ -1,61 +1,45 @@
 package uk.ac.tees.mad.w9501736.models;
 
-import androidx.room.Entity;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class CreateModel implements Serializable {
+public class BasicResponse implements Serializable {
 
-    @SerializedName("token")
+    @SerializedName("result")
 
-    private String token;
+    private String result;
 
-    @SerializedName("circle_name")
+    @SerializedName("msg")
 
-    private String circle_name;
-
-
-    @SerializedName("latitude")
-
-    private String latitude;
+    private String msg;
 
 
-    @SerializedName("longitude")
+    @SerializedName("data")
 
-    private String longitude;
+    private String data;
 
-
-    public String getToken() {
-        return token;
+    public String getResult() {
+        return result;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public String getCircle_name() {
-        return circle_name;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setCircle_name(String circle_name) {
-        this.circle_name = circle_name;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public String getData() {
+        return data;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setData(String data) {
+        this.data = data;
     }
 }

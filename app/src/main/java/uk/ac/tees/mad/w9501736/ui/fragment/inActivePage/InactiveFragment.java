@@ -107,7 +107,12 @@ public class InactiveFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void onDeleteCtaClicked() {
+    public void onDeleteCtaClicked(String id) {
+
+    }
+
+    @Override
+    public void setEditableText(String id,String name) {
 
     }
 }
