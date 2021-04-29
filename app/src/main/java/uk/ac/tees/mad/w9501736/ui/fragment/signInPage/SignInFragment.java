@@ -139,8 +139,9 @@ public class SignInFragment extends BaseFragment {
 
                 if (response.body() != null) {
                     LoginModel loginModel = response.body();
-                    mAppPreferences.setToken(loginModel.getEmail().getToken());
-                    DatabaseFactory.getInstance().insertUserData(loginModel.getEmail());
+                    mAppPreferences.setToken(loginModel.getLoginDetails().getToken());
+                    mAppPreferences.setUserDetails(loginModel.getLoginDetails());
+                    DatabaseFactory.getInstance().insertUserData(loginModel.getLoginDetails());
                     startActivity(new Intent(getActivity(), LandingActivity.class));
                     getActivity().finish();
                 } else {

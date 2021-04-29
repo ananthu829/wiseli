@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.w9501736.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -26,6 +27,11 @@ public class LoginSignUpActivity extends BaseActivity {
         NavInflater navInflater = navHostFragment.getNavController().getNavInflater();
         navGraph = navInflater.inflate(R.navigation.sign_in_register_navigation);
         navController = navHostFragment.getNavController();
-        navGraph.setStartDestination(R.id.splashScreenFragment);
+        if(mAppPreferences.getToken().equals("")) {
+            navGraph.setStartDestination(R.id.splashScreenFragment);
+        }else {
+            startActivity(new Intent(this, LandingActivity.class));
+            finish();
+        }
     }
 }

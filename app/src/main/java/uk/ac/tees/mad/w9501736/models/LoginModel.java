@@ -38,11 +38,11 @@ public class LoginModel implements Serializable {
         this.msg = msg;
     }
 
-    public LoginModelDB getEmail() {
+    public LoginModelDB getLoginDetails() {
         return data;
     }
 
-    public void setEmail(LoginModelDB email) {
+    public void setLoginDetails(LoginModelDB email) {
         this.data = email;
     }
 
