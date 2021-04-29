@@ -51,6 +51,8 @@ public class SignInFragment extends BaseFragment {
     AppPreferences mAppPreferences;
     private FusedLocationProviderClient mFusedLocationClient;
     protected Location mLastLocation;
+    public String lat = "0.000";
+    public String log = "0.000";
     public SignInFragment() {
         // Required empty public constructor
     }
@@ -118,6 +120,8 @@ public class SignInFragment extends BaseFragment {
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation = task.getResult();
                             getLoginApi();
+                            lat = String.valueOf(mLastLocation.getLatitude());
+                            log = String.valueOf(mLastLocation.getLongitude());
                             System.out.println("LandingActivity getLatitude : " + mLastLocation.getLatitude() + ", getLongitude : " + mLastLocation.getLongitude());
                         } else {
                             Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_location_null), Snackbar.LENGTH_LONG).show();
@@ -131,7 +135,7 @@ public class SignInFragment extends BaseFragment {
     }
     private void getLoginApi() {
 
-        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), "device1", "android", String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
+        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), getDeviceId(), getDeviceType(), lat, log);
 
 
         api.enqueue(new Callback<LoginModel>() {

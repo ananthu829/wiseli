@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.w9501736.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +11,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import github.nisrulz.easydeviceinfo.base.EasyDeviceMod;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.network.RestClient;
@@ -23,11 +33,14 @@ import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 
 public abstract class BaseFragment extends Fragment {
 
-    private Unbinder unbinder;
-    private AppCompatActivity activity;
     protected RestService mRetrofitService;
     protected AppPreferences mAppPreferences;
     protected WiseLiUser wiseLiUser;
+    protected String deviceId = "";
+    protected String deviceType = "";
+    private Unbinder unbinder;
+    private AppCompatActivity activity;
+
     @LayoutRes
     protected abstract int layoutRes();
 
@@ -82,6 +95,36 @@ public abstract class BaseFragment extends Fragment {
             unbinder.unbind();
             unbinder = null;
         }
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void getDeviceDetails() {
+        Dexter.withContext(getActivity())
+                .withPermissions(
+                        Manifest.permission.READ_PHONE_STATE
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    EasyDeviceMod easyDeviceMod = new EasyDeviceMod(getActivity());
+                    String deviceName = easyDeviceMod.getManufacturer() + " " + easyDeviceMod.getDevice() + " " + easyDeviceMod.getModel();
+                    deviceId = easyDeviceMod.getBuildID();
+                    deviceType = deviceName;
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
     }
 
 }
