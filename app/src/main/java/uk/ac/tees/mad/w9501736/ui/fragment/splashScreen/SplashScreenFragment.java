@@ -94,7 +94,7 @@ public class SplashScreenFragment extends BaseFragment {
     }
 
     private void checkIfUserLoggedIn(View view) {
-        if (userDetails != null) {
+        if (userDetails != null && userDetails.getFirstName() != null) {
             startActivity(new Intent(getActivity(), LandingActivity.class));
             getActivity().finish();
         } else {
