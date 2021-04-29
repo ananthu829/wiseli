@@ -54,6 +54,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Retrofit;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.data.WiseLiRepository;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
@@ -63,6 +64,7 @@ import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiService;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.viewModel.RegisterPage.RegisterFragmentViewModel;
+import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
 
 
@@ -98,6 +100,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     private WiseLiRepository apiRepo;
     private RegisterFragmentViewModel registerFragmentViewModel;
     private FusedLocationProviderClient mFusedLocationClient;
+    AppPreferences mAppPreferences;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -108,6 +111,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         super.onCreate(savedInstanceState);
         //WiseLiComponent wiseLiComponent = ((WiseLiComponentProvider) getActivity().getApplication()).getWiseLiComponent();
         //wiseLiComponent.inject(this);
+        mAppPreferences = AppPreferences.getInstance(getContext());
         registerFragmentViewModel = new ViewModelProvider(this).get(RegisterFragmentViewModel.class);
     }
 
@@ -134,6 +138,10 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     private void init(View view) {
 
         wiseLiUser = new WiseLiUser();
+
+        DatabaseFactory.setupObject(getContext());
+
+        mAppPreferences = AppPreferences.getInstance(getContext());
 
         Glide.with(getActivity()).load(R.drawable.image1).into(imgProfileImage);
 
@@ -512,7 +520,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
-
+                mAppPreferences.setUserCashedInfo(value.data);
                 Log.d("registerUser", " onNext : value : " + value);
                 navigateToLanding();
             }
@@ -520,6 +528,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
             @Override
             public void onError(Throwable e) {
                 showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.d("registerUser", " onError : value : " + e.getMessage());
             }
 
