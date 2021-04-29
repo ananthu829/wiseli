@@ -112,7 +112,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     private void addCircle(String text) {
         showProgressBar(true);
 
-        Call<BasicResponse> api = mRetrofitService.addCircle(getWiseLiUser().getToken(), text, "72.8", "66.8");
+        Call<BasicResponse> api = mRetrofitService.addCircle(getWiseLiUser().getToken(), text, getWiseLiUser().getLatitude(), getWiseLiUser().getLongitude());
 
 
         api.enqueue(new Callback<BasicResponse>() {
