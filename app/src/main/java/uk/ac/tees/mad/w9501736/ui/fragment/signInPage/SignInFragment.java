@@ -32,6 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.network.RestClient;
 import uk.ac.tees.mad.w9501736.network.RestService;
@@ -142,6 +143,16 @@ public class SignInFragment extends BaseFragment {
                     mAppPreferences.setToken(loginModel.getLoginDetails().getToken());
                     mAppPreferences.setUserDetails(loginModel.getLoginDetails());
                     DatabaseFactory.getInstance().insertUserData(loginModel.getLoginDetails());
+                    WiseLiUser user = new WiseLiUser();
+                    user.setUserId(Integer.parseInt(response.body().getLoginDetails().getUser_id()));
+                    user.setFirstName(response.body().getLoginDetails().getFirst_name());
+                    user.setLastName(response.body().getLoginDetails().getLast_name());
+                    user.setEmail(response.body().getLoginDetails().getEmail());
+                    user.setUsername(response.body().getLoginDetails().getUsername());
+                    user.setGender(response.body().getLoginDetails().getGender());
+                    user.setPhoneNumber(response.body().getLoginDetails().getPhone_number());
+                    user.setProfilePic(response.body().getLoginDetails().getProfile_pic());
+                    mAppPreferences.setUserCashedInfo(user);
                     startActivity(new Intent(getActivity(), LandingActivity.class));
                     getActivity().finish();
                 } else {

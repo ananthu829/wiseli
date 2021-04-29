@@ -14,7 +14,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.ui.BaseActivity;
+import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 
 public class LandingActivity extends BaseActivity {
 
@@ -23,6 +25,8 @@ public class LandingActivity extends BaseActivity {
     public DrawerLayout drawerLayout;
     public NavigationView navigationView;
     public Toolbar toolbar;
+    AppPreferences mAppPreferences;
+    WiseLiUser userDetails;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +46,10 @@ public class LandingActivity extends BaseActivity {
 
         setupDrawerLayout();
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
+
+
+        mAppPreferences = AppPreferences.getInstance(this);
+        userDetails = mAppPreferences.getUserCashedInfo();
     }
 
     private void setupDrawerLayout() {

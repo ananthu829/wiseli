@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 
 
@@ -31,12 +32,12 @@ public class AppPreferences {
         return sInstance;
     }
 
-    public void setToken(String token) {
-        mPref.edit().putString("token", token).apply();
-    }
-
     public String getToken() {
         return mPref.getString("token", "");
+    }
+
+    public void setToken(String token) {
+        mPref.edit().putString("token", token).apply();
     }
 
     public void setUserDetails(LoginModel.LoginModelDB loginDetails) {
@@ -56,6 +57,36 @@ public class AppPreferences {
         }
         return null;
     }
+
+    public WiseLiUser getUserCashedInfo() {
+        Gson gson = new Gson();
+        String json = mPref.getString("UserDetails", null);
+        WiseLiUser wiseLiUsers = new WiseLiUser();
+        if (json != null) {
+            wiseLiUsers = gson.fromJson(json, WiseLiUser.class);
+        }
+        return wiseLiUsers;
+    }
+
+    public void setUserCashedInfo(WiseLiUser wiseLiUsers) {
+        clear();
+
+        SharedPreferences.Editor editor = mPref.edit();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(wiseLiUsers);
+        //UserDetails user1 = gson.fromJson(jsonString,UserDetails.class);
+        if (jsonString != null) {
+            editor.putString("UserDetails", jsonString);
+            editor.commit();
+        }
+
+        editor.apply();
+    }
+
+    public void clear() {
+        mPref.edit().clear().commit();
+    }
+
 
 }
 
