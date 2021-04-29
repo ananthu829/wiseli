@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.w9501736.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class LandingActivity extends BaseActivity {
 
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
+        Log.i("GlideImage", AppConstants.API_BASE_URL+userDetails.getProfilePic());
         Glide.with(this).load(AppConstants.API_BASE_URL+userDetails.getProfilePic()).into(navProfle);
     }
 
