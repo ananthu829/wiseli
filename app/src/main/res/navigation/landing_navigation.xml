@@ -67,13 +67,22 @@
         android:id="@+id/groupCirclesFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.GroupCirclesFragment"
         android:label="@string/group_circles_fragment"
-        tools:layout="@layout/fragment_group_circles" />
+        tools:layout="@layout/fragment_group_circles" >
+        <action
+            android:id="@+id/action_groupCirclesFragment_to_findNewUserFragment"
+            app:destination="@id/findNewUserFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/friendGroupFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.friendGroupPage.FriendGroupFragment"
         android:label="@string/friend_group_fragment"
         tools:layout="@layout/fragment_friend_group" />
+    <fragment
+        android:id="@+id/findNewUserFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.FindNewUserFragment"
+        android:label="@string/friend_new_user_fragment"
+        tools:layout="@layout/fragment_find_new_user" />
 
 
 </navigation>
