@@ -24,7 +24,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +31,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
@@ -58,7 +56,6 @@ import uk.ac.tees.mad.w9501736.adapters.CommentAdapter;
 import uk.ac.tees.mad.w9501736.adapters.ItemAdapter;
 import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
 import uk.ac.tees.mad.w9501736.models.BasicResponse;
-import uk.ac.tees.mad.w9501736.models.CircleModel;
 import uk.ac.tees.mad.w9501736.models.Comment;
 import uk.ac.tees.mad.w9501736.models.Item;
 import uk.ac.tees.mad.w9501736.models.ItemsList;
@@ -185,7 +182,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
         List<String> yesOrNo = new ArrayList<>();
         yesOrNo.add("No");
         yesOrNo.add("Yes");
-        Spinner spinnerOffline = (Spinner) view.findViewById(R.id.spinner2);
+        Spinner spinnerOffline = view.findViewById(R.id.spinner2);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, yesOrNo);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -208,12 +205,12 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.custom_dialog_add_product);
-                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+                Button btnOk = dialog.findViewById(R.id.btnOk);
+                Button btnCancel = dialog.findViewById(R.id.btnCancel);
 //                TextInputLayout itm = (TextInputLayout) dialog.findViewById(R.id.edtItem);
-                TextInputLayout quantity = (TextInputLayout) dialog.findViewById(R.id.edtQuantity2);
+                TextInputLayout quantity = dialog.findViewById(R.id.edtQuantity2);
                 dialog.show();
-                spinner = (Spinner) dialog.findViewById(R.id.edtItem);
+                spinner = dialog.findViewById(R.id.edtItem);
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -224,11 +221,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         Toast.makeText(getContext(), list.get(position), Toast.LENGTH_SHORT).show();
                         itemId = listItem.get(position).getItem_id();
-                        if (position == 0) {
-                            isclosed = false;
-                        } else {
-                            isclosed = true;
-                        }
+                        isclosed = position != 0;
                     }
 
                     @Override
@@ -309,7 +302,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
         });
     }
 
-    private void addItem(String Item, String quantity, String listid) {
+    private void addItem(String Item, String quantity, Integer listid) {
         itemList.add(new Item(Item, quantity, listid));
         itemAdapter.notifyDataSetChanged();
     }
@@ -470,7 +463,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
     }
 
 
-    private void deleteShoppingList(String listId) {
+    private void deleteShoppingList(Integer listId) {
         showProgressBar(true);
         Call<BasicResponse> api = mRetrofitService.deleteListShopping(mAppPreferences.getToken(), listId);
 
@@ -501,17 +494,17 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer circleID) {
 
     }
 
     @Override
-    public void onDeleteCtaClicked(String id) {
+    public void onDeleteCtaClicked(Integer id) {
         deleteShoppingList(id);
     }
 
     @Override
-    public void setEditableText(String id, String name) {
+    public void setEditableText(Integer id, String name) {
 
     }
 }

@@ -14,6 +14,7 @@ import retrofit2.http.Query;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.models.BasicResponse;
 import uk.ac.tees.mad.w9501736.models.CircleData;
+import uk.ac.tees.mad.w9501736.models.ItemsList;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.models.ShoppingList;
 
@@ -82,7 +83,7 @@ public interface RestService {
     @FormUrlEncoded
     @POST("/api/shoppinglist/item/delete")
     Call<BasicResponse> deleteListShopping(@Nullable @Field("token") String token,
-                                           @Nullable @Field("listitem_id") String listitem_id
+                                           @Nullable @Field("listitem_id") Integer listitem_id
     );
 
 
@@ -93,5 +94,6 @@ public interface RestService {
                                  @Nullable @Field("shoppinglist_id") String shoppinglist_id,
                                  @Nullable @Field("is_closed") String is_closed
     );
+
 
 }

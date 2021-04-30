@@ -121,7 +121,7 @@ public class ShoppingList implements Serializable {
     public class ShoppingListItemData implements Serializable {
         @SerializedName("listitem_id")
 
-        private String listitem_id;
+        private Integer listitem_id;
 
         @SerializedName("item_id")
 
@@ -139,11 +139,11 @@ public class ShoppingList implements Serializable {
 
         private String quantity;
 
-        public String getListitem_id() {
+        public Integer getListitem_id() {
             return listitem_id;
         }
 
-        public void setListitem_id(String listitem_id) {
+        public void setListitem_id(Integer listitem_id) {
             this.listitem_id = listitem_id;
         }
 
