@@ -76,33 +76,24 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
 
         Fab = view.findViewById(R.id.fab);
         circles = view.findViewById(R.id.homeRecyclerView);
-        Fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.custom_dialog_add_circle);
-                Button btnOk = dialog.findViewById(R.id.btnOk);
-                Button btnCancel = dialog.findViewById(R.id.btnCancel);
-                TextInputLayout txt = dialog.findViewById(R.id.edtLastName);
-                dialog.show();
+        Fab.setOnClickListener(v -> {
+            dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.custom_dialog_add_circle);
+            Button btnOk = dialog.findViewById(R.id.btnOk);
+            Button btnCancel = dialog.findViewById(R.id.btnCancel);
+            TextInputLayout txt = dialog.findViewById(R.id.edtLastName);
+            dialog.show();
 
-                btnOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (txt.getEditText().getText().toString().isEmpty()) {
-                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
-                        } else {
-                            addCircle(txt.getEditText().getText().toString());
-                        }
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+            btnOk.setOnClickListener(v1 -> {
+                if (txt.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
+                } else {
+                    addCircle(txt.getEditText().getText().toString());
+                }
+            });
+            btnCancel.setOnClickListener(v2 -> {
+                dialog.dismiss();
+            });
         });
 
 
@@ -126,7 +117,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 } else {
                     Log.d("tag1", "Failed---");
                     dialog.dismiss();
-
                 }
 
 
