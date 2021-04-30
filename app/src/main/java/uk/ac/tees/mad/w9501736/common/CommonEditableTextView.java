@@ -120,5 +120,4 @@ public class CommonEditableTextView extends CardView {
         this.id=id;
     }
 
-
 }

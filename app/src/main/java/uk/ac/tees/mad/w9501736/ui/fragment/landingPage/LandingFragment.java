@@ -248,9 +248,10 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer circleId) {
         Bundle bundle = new Bundle();
-        bundle.putString("caption", title);
+        bundle.putString("circle_name", title);
+        bundle.putInt("circle_id", circleId);
 
         Navigation.findNavController(view).navigate(R.id.action_landingFragment_to_circularFragment, bundle);
     }

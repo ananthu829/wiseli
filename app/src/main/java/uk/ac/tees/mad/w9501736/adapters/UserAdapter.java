@@ -45,7 +45,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
         holder.commonEditableTextView.setOnDeleteClickListener(buttonListener,"");
         holder.commonEditableTextView.setOnClickListener(v -> {
             if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText());
+                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), 0);
             }
         });
         if (!showDeleteBtn) {

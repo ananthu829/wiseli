@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
-import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.models.CircleModel;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -46,7 +45,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
         holder.commonEditableTextView.setOnClickListener(v -> {
             if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText());
+                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), Integer.parseInt(contact.getCircle_id()));
             }
         });
     }

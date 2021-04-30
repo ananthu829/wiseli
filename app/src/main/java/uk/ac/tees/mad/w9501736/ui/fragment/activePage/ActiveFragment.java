@@ -100,7 +100,7 @@ public class ActiveFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer Id) {
         Bundle bundle = new Bundle();
         bundle.putString("caption", title);
         Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);

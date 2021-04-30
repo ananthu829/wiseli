@@ -16,6 +16,11 @@ public class AppConstants {
 
         //store API's
         public static final String API_REGISTER = "user/signup";
+        public static final String API_GET_FRIENDS_LISTS_CIRCLE = "circle/friends/get";
+        public static final String API_GET_CIRCLE_DETAILS = "circle/details/get";
+        public static final String API_REMOVE_CIRCLE_USER = "circle/remove/user";
+        public static final String API_ACTIVE_LIST = "active/list/get";
+        public static final String API_DELETE_SHOPPING_LIST = "shoppinglist/delete";
         private static String API_VERSION = "1.0";
 
     }

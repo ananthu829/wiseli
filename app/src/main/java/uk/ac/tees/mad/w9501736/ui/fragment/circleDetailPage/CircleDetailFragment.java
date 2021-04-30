@@ -1,16 +1,13 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,18 +21,28 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
 import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
 import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
+import uk.ac.tees.mad.w9501736.data.model.Resource;
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
+import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
+import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.AvailableUserList;
-import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.models.User;
+import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -45,7 +52,7 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
  * Use the {@link CircleDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CircleDetailFragment extends Fragment  implements AdapterInterface {
+public class CircleDetailFragment extends BaseFragment implements AdapterInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,13 +63,17 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private View view;
     FloatingActionButton addUser;
     ArrayList data;
     RecyclerView recyclerview;
-    String  Title ="";
+    String Title = "";
+    Disposable dUserList;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private View view;
+    private String circleTitle = "";
+    private Integer circleID = 0;
+    private AdapterInterface adapterInterface;
 
 
     public CircleDetailFragment() {
@@ -100,14 +111,20 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     }
 
     @Override
+    protected int layoutRes() {
+        return R.layout.fragment_circle_detail;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
         if (getArguments() != null) {
-            String title = getArguments().getString("caption");
-            if (title != null) {
-                ((LandingActivity) getActivity()).setToolbarTitle(title);
+            circleTitle = getArguments().getString("circle_name");
+            circleID = getArguments().getInt("circle_id");
+            if (circleTitle != null) {
+                ((LandingActivity) getActivity()).setToolbarTitle(circleTitle);
             }
         }
 
@@ -117,97 +134,35 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
         ImageView spino = view.findViewById(R.id.addUserBtn);
 
 
-
-
         tabLayout.addTab(tabLayout.newTab().setText("Active"));
         tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        AdapterInterface adapterInterface =this;
+        adapterInterface = this;
 
 
-
-        spino.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.custom_dialog_list_user);
-                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-                recyclerview = (RecyclerView) dialog.findViewById(R.id.homeRecyclerView);
-                data = new ArrayList<>();
-                data.add(new AvailableUserList("User 1",false));
-                data.add(new AvailableUserList("User 2",false));
-                data.add(new AvailableUserList("User 3",false));
-                data.add(new AvailableUserList("User 4",false));
-
-                recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-                recyclerview.setAdapter(new UserListAdapter(data, adapterInterface));
-                dialog.show();
-                dialog.setOnDismissListener( new DialogInterface.OnDismissListener(){
-
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Title ="";
-                    }
-                });
-                btnOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(Title.isEmpty())
-                        {
-                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
-
-                        }
-                        else {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("caption", Title);
-                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-                        }
-
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+        spino.setOnClickListener(v -> {
+            getUserListApiCall();
         });
-        addUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.custom_dialog_add_user);
-                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-                TextInputLayout txt = (TextInputLayout) dialog.findViewById(R.id.edtLastName);
+        addUser.setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.custom_dialog_add_user);
+            Button btnOk = dialog.findViewById(R.id.btnOk);
+            Button btnCancel = dialog.findViewById(R.id.btnCancel);
+            TextInputLayout txt = dialog.findViewById(R.id.edtLastName);
 
 
-                dialog.show();
-                btnOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(txt.getEditText().getText().toString().isEmpty())
-                        {
-                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("caption", txt.getEditText().getText().toString());
-                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-                        }
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+            dialog.show();
+            btnOk.setOnClickListener(v13 -> {
+                if (txt.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
+                } else {
+                    dialog.dismiss();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("caption", txt.getEditText().getText().toString());
+                    Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+                }
+            });
+            btnCancel.setOnClickListener(v14 -> dialog.dismiss());
         });
 
         tabPagerAdapter = new TabPagerAdapter(getContext(), getChildFragmentManager(), tabLayout.getTabCount());
@@ -257,11 +212,9 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer circleID) {
         Title = title;
-        Toast.makeText(view.getContext(),title,Toast.LENGTH_SHORT).show();
-
-
+        Toast.makeText(view.getContext(), title, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -270,7 +223,137 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     }
 
     @Override
-    public void setEditableText(String id,String name) {
+    public void setEditableText(String id, String name) {
 
+    }
+
+    private void getUserListApiCall() {
+        showProgressBar(true);
+        Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
+        final GroupApiService webServices = retrofit.create(GroupApiService.class);
+        Observable<Resource<ArrayList<WiseLiUser>>> likedObservable = webServices.getFriendsListCircle1(getWiseLiUser().getToken(), circleID);
+        likedObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getUserList());
+    }
+
+    private Observer<Resource<ArrayList<WiseLiUser>>> getUserList() {
+        return new Observer<Resource<ArrayList<WiseLiUser>>>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                dUserList = d;
+                Log.d("getUserList", " onSubscribe : " + d.isDisposed());
+            }
+
+            @Override
+            public void onNext(Resource<ArrayList<WiseLiUser>> value) {
+                Log.d("getUserList", " onNext : value : " + value);
+                if (value.result) {
+                    showUserListDialog();
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                    showProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Log.d("getUserList", " onError : value : " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("getUserList", " onComplete");
+            }
+        };
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (dUserList != null) {
+            dUserList.dispose();
+        }
+    }
+
+    public void showUserListDialog() {
+        showProgressBar(false);
+
+        getApiListForDialog();
+
+    }
+
+    public void getApiListForDialog() {
+        showProgressBar(true);
+        Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
+        final GroupApiService webServices = retrofit.create(GroupApiService.class);
+        Observable<Resource<ArrayList<WiseLiUser>>> likedObservable = webServices.getCircleDetails2(getWiseLiUser().getToken(), circleID);
+        likedObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getCircleDetails());
+    }
+
+    private Observer<Resource<ArrayList<WiseLiUser>>> getCircleDetails() {
+        return new Observer<Resource<ArrayList<WiseLiUser>>>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                dUserList = d;
+                Log.d("getUserList", " onSubscribe : " + d.isDisposed());
+            }
+
+            @Override
+            public void onNext(Resource<ArrayList<WiseLiUser>> value) {
+                Log.d("getUserList", " onNext : value : " + value);
+                if (value.result) {
+                    final Dialog dialog = new Dialog(view.getContext());
+                    dialog.setContentView(R.layout.custom_dialog_list_user);
+                    Button btnOk = dialog.findViewById(R.id.btnOk);
+                    Button btnCancel = dialog.findViewById(R.id.btnCancel);
+                    recyclerview = dialog.findViewById(R.id.homeRecyclerView);
+                    data = new ArrayList<>();
+                    data.add(new AvailableUserList("User 1", false));
+                    data.add(new AvailableUserList("User 2", false));
+                    data.add(new AvailableUserList("User 3", false));
+                    data.add(new AvailableUserList("User 4", false));
+
+                    recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+                    recyclerview.setAdapter(new UserListAdapter(data, adapterInterface));
+                    dialog.show();
+                    dialog.setOnDismissListener(dialog1 -> Title = "");
+                    btnOk.setOnClickListener(v1 -> {
+                        if (Title.isEmpty()) {
+                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            dialog.dismiss();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("caption", Title);
+                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+                        }
+
+                    });
+                    btnCancel.setOnClickListener(v12 -> dialog.dismiss());
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                    showProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Log.d("getUserList", " onError : value : " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("getUserList", " onComplete");
+            }
+        };
     }
 }

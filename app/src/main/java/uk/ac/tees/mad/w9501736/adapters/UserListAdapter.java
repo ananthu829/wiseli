@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
 import uk.ac.tees.mad.w9501736.models.AvailableUserList;
-import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
-public class UserListAdapter   extends  RecyclerView.Adapter<UserListAdapter.holder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.holder> {
 
     public AdapterInterface buttonListener;
     ArrayList<AvailableUserList> items;
@@ -41,33 +39,26 @@ public class UserListAdapter   extends  RecyclerView.Adapter<UserListAdapter.hol
         final AvailableUserList contact = items.get(position);
         holder.txt.setText(contact.getCaption());
 
-        if(contact.getSelected())
-        {
+        if (contact.getSelected()) {
             holder.checked.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             holder.checked.setVisibility(View.INVISIBLE);
         }
 
         holder.itemView.setOnClickListener(v -> {
-            if(contact.getSelected())
-            {
+            if (contact.getSelected()) {
                 items.get(position).setIsSelected(false);
 
                 notifyItemChanged(checkItem);
-                buttonListener.onItemClicked("");
+                buttonListener.onItemClicked("", 0);
 
-            }
-            else
-            {
+            } else {
                 items.get(checkItem).setIsSelected(false);
                 items.get(position).setIsSelected(true);
                 notifyItemChanged(checkItem);
-                checkItem =position;
+                checkItem = position;
                 notifyItemChanged(checkItem);
-                buttonListener.onItemClicked(holder.txt.getText().toString());
-
+                buttonListener.onItemClicked(holder.txt.getText().toString(), 0);
             }
 
         });
@@ -79,6 +70,7 @@ public class UserListAdapter   extends  RecyclerView.Adapter<UserListAdapter.hol
     public int getItemCount() {
         return items == null ? 0 : items.size();
     }
+
     public static class holder extends RecyclerView.ViewHolder {
 
         TextView txt;

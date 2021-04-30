@@ -2,11 +2,14 @@ package uk.ac.tees.mad.w9501736.data.model;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Resource<T> {
 
     @Nullable
     public Boolean result;
 
+    @SerializedName("msg")
     @Nullable
     public String message;
 

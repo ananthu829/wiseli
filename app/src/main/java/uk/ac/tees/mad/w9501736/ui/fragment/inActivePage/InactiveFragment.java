@@ -100,7 +100,7 @@ public class InactiveFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer id) {
         Bundle bundle = new Bundle();
         bundle.putString("caption", title);
         Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
