@@ -4,7 +4,7 @@ package uk.ac.tees.mad.w9501736.network;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -17,7 +17,7 @@ import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.models.ItemsList;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.models.ShoppingList;
-
+import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 
 /**
  * Created by nithin on 20/9/20
@@ -94,6 +94,11 @@ public interface RestService {
                                  @Nullable @Field("shoppinglist_id") String shoppinglist_id,
                                  @Nullable @Field("is_closed") String is_closed
     );
+
+
+
+    @GET("/api/user/search?")
+    Call<Resource<ArrayList<UserFriendsList>>> findCircle(@Nullable @Query("token") String name, @Nullable @Query("username") String username);
 
 
 }

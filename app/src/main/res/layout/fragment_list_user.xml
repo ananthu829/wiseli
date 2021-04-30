@@ -4,16 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/_04"
-    android:layout_marginBottom="@dimen/_04"
-    android:elevation="@dimen/_06"
-    app:cardCornerRadius="@dimen/_08">
+    android:layout_marginLeft="@dimen/dimens4"
+    android:layout_marginRight="@dimen/dimens4"
+    app:cardCornerRadius="@dimen/_08"
+    android:layout_marginBottom="@dimen/_04">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimens2"
-        android:background="@color/white"
-        android:padding="@dimen/_10">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:layout_margin="@dimen/_10"
+    android:padding="@dimen/_10">
+
 
         <TextView
             android:id="@+id/tvTitle"
