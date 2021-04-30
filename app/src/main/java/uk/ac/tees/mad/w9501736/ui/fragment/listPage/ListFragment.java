@@ -410,12 +410,14 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
             public void onResponse(Call<ShoppingList> responseCall, Response<ShoppingList> response) {
                 showProgressBar(false);
                 if (response.body() != null) {
-                    if (response.body().getData() != null) {
-                        listName = response.body().getData().getName();
-                        for (int i = 0; i < response.body().getData().getItemData().size(); i++) {
-                            addItem(response.body().getData().getItemData().get(i).getItem_name(), response.body().getData().getItemData().get(i).getQuantity(), response.body().getData().getItemData().get(i).getListitem_id());
-                        }
+                    if(response.body().getResult()) {
+                        if (response.body().getData() != null) {
+                            listName = response.body().getData().getName();
+                            for (int i = 0; i < response.body().getData().getItemData().size(); i++) {
+                                addItem(response.body().getData().getItemData().get(i).getItem_name(), response.body().getData().getItemData().get(i).getQuantity(), response.body().getData().getItemData().get(i).getListitem_id());
+                            }
 
+                        }
                     }
                 } else {
 

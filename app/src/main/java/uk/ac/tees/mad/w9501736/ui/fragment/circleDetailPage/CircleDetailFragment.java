@@ -282,6 +282,7 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
                     if (value.data != null) {
                         if (value.data.getFriendsList() != null && value.data.getFriendsList().size() > 0) {
                             addChips(value.data.getFriendsList());
+                            value.data.getCircleId();
                         }
                     }
                 } else {
