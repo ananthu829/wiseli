@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -139,9 +140,14 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
                 data.add(new AvailableUserList("User 2",false));
                 data.add(new AvailableUserList("User 3",false));
                 data.add(new AvailableUserList("User 4",false));
-
+                dialog.getWindow().setLayout(600,400);
                 recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
                 recyclerview.setAdapter(new UserListAdapter(data, adapterInterface));
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                dialog.getWindow().setAttributes(lp);
                 dialog.show();
                 dialog.setOnDismissListener( new DialogInterface.OnDismissListener(){
 

@@ -33,38 +33,36 @@ public class LandingActivity extends BaseActivity {
     public Toolbar toolbar;
     AppPreferences mAppPreferences;
     WiseLiUser userDetails;
+    View headerView;
+    TextView navUsername;
+    TextView navEmail;
+    ImageView navProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
-
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
-
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.landing_nav_host_fragment);
         NavInflater navInflater = navHostFragment.getNavController().getNavInflater();
         navGraph = navInflater.inflate(R.navigation.landing_navigation);
         navController = navHostFragment.getNavController();
         navGraph.setStartDestination(R.id.landingFragment);
-
         setupDrawerLayout();
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.navUsername);
-        TextView navEmail = (TextView) headerView.findViewById(R.id.navEmail);
-        ImageView navProfle =(ImageView)headerView.findViewById(R.id.navProfile) ;
-
+        headerView = navigationView.getHeaderView(0);
+        navUsername = headerView.findViewById(R.id.navUsername);
+        navEmail = headerView.findViewById(R.id.navEmail);
+        navProfile = headerView.findViewById(R.id.navProfile);
         mAppPreferences = AppPreferences.getInstance(this);
         userDetails = mAppPreferences.getUserCashedInfo();
-
-
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
-        Log.i("GlideImage", AppConstants.API_BASE_URL+userDetails.getProfilePic());
-        Glide.with(this).load(AppConstants.API_BASE_URL+userDetails.getProfilePic()).into(navProfle);
+        Log.i("GlideImage", AppConstants.API_BASE_URL + userDetails.getProfilePic());
+        Glide.with(this).load(AppConstants.API_BASE_URL + userDetails.getProfilePic()).into(navProfile);
     }
 
     private void setupDrawerLayout() {
@@ -81,5 +79,15 @@ public class LandingActivity extends BaseActivity {
 
     public void setToolbarTitle(String title) {
         toolbar.setTitle(title);
+    }
+
+    public void updateNavHeader() {
+        mAppPreferences = AppPreferences.getInstance(this);
+        userDetails = mAppPreferences.getUserCashedInfo();
+        navUsername.setText(userDetails.getUsername());
+        navEmail.setText(userDetails.getEmail());
+        Log.i("GlideImage", AppConstants.API_BASE_URL + userDetails.getProfilePic());
+        Glide.with(this).load(AppConstants.API_BASE_URL + userDetails.getProfilePic()).into(navProfile);
+
     }
 }

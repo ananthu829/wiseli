@@ -13,6 +13,7 @@ import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 
 import static uk.ac.tees.mad.w9501736.utils.AppConstants.API.API_REGISTER;
+import static uk.ac.tees.mad.w9501736.utils.AppConstants.API.PROFILE_EDIT_API;
 
 public interface WiseLiApiService {
 
@@ -37,7 +38,7 @@ public interface WiseLiApiService {
                                                   @Part MultipartBody.Part file);
 
     @Multipart
-    @POST(API_REGISTER)
+    @POST(PROFILE_EDIT_API)
     Observable<Resource<WiseLiUser>> editUser(@PartMap() Map<String, RequestBody> partMap,
                                                   @Part MultipartBody.Part file);
 }

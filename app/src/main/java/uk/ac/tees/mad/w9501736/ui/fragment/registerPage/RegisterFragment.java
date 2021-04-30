@@ -520,21 +520,27 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
-                LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
-                loginModel.setUser_id(String.valueOf(value.getData().getUserId()));
-                loginModel.setFirst_name(value.getData().getFirstName());
-                loginModel.setLast_name(value.getData().getLastName());
-                loginModel.setToken(value.getData().getToken());
-                loginModel.setEmail(value.getData().getEmail());
-                loginModel.setUsername(value.getData().getUsername());
-                loginModel.setGender(value.getData().getGender());
-                loginModel.setProfile_pic(value.getData().getProfilePic());
-                mAppPreferences.setToken(value.data.getToken());
-                mAppPreferences.setUserDetails(loginModel);
-                DatabaseFactory.getInstance().insertUserData(loginModel);
-                mAppPreferences.setUserCashedInfo(value.data);
-                Log.d("registerUser", " onNext : value : " + value);
-                navigateToLanding();
+                if(value.result) {
+                    LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
+                    loginModel.setUser_id(String.valueOf(value.getData().getUserId()));
+                    loginModel.setFirst_name(value.getData().getFirstName());
+                    loginModel.setLast_name(value.getData().getLastName());
+                    loginModel.setToken(value.getData().getToken());
+                    loginModel.setEmail(value.getData().getEmail());
+                    loginModel.setUsername(value.getData().getUsername());
+                    loginModel.setGender(value.getData().getGender());
+                    loginModel.setProfile_pic(value.getData().getProfilePic());
+                    mAppPreferences.setToken(value.data.getToken());
+                    mAppPreferences.setUserDetails(loginModel);
+                    DatabaseFactory.getInstance().insertUserData(loginModel);
+                    mAppPreferences.setUserCashedInfo(value.data);
+                    Log.d("registerUser", " onNext : value : " + value);
+                    navigateToLanding();
+                }
+                else
+                {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override

@@ -97,11 +97,11 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     @BindView(R.id.edtEmailID)
     TextInputLayout edtEmailID;
     Disposable dMainListObservable;
+    AppPreferences mAppPreferences;
+    WiseLiUser userDetails;
     private WiseLiRepository apiRepo;
     private RegisterFragmentViewModel registerFragmentViewModel;
     private FusedLocationProviderClient mFusedLocationClient;
-    AppPreferences mAppPreferences;
-    WiseLiUser userDetails;
 
 
     public ProfileFragment() {
@@ -157,17 +157,16 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         wiseLiUser.setUsername(userDetails.getUsername());
         edtEmailID.getEditText().setText(userDetails.getEmail());
         wiseLiUser.setEmail(userDetails.getEmail());
-        edtPassword.getEditText().setText(userDetails.getGender());
+        edtPassword.getEditText().setText(userDetails.getPassword());
+        wiseLiUser.setPhoneNumber(userDetails.getPhoneNumber());
         etPhoneNumber.getEditText().setText(userDetails.getPhoneNumber());
         wiseLiUser.setPhoneNumber(userDetails.getPhoneNumber());
-     //   Log.i("ENTER",userDetails.getPassword().toString());
+        //   Log.i("ENTER",userDetails.getPassword().toString());
 
-        if(userDetails.getGender().equals("Male"))
-        {
+        if (userDetails.getGender().equals("Male")) {
             btnTG.check(R.id.btnMale);
         }
-        if(userDetails.getGender().equals("Female"))
-        {
+        if (userDetails.getGender().equals("Female")) {
             btnTG.check(R.id.btnFemale);
         }
         MaterialButton materialButton = view.findViewById(btnTG.getCheckedButtonId());
@@ -179,8 +178,21 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
 
         getDeviceDetails();
 
+        wiseLiUser.setToken(userDetails.getToken());
 
 
+        btnTG.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if (isChecked) {
+                    if (checkedId == R.id.btnMale) {
+                        wiseLiUser.setGender("Male");
+                    } else {
+                        wiseLiUser.setGender("Female");
+                    }
+                }
+            }
+        });
     }
 
     private void btnClicks() {
@@ -188,6 +200,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         getGenderOnBtnClick();
         registerBtnClick();
     }
+
 
     public void getCurrentLoc() {
         Dexter.withContext(getActivity())
@@ -406,12 +419,12 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     }
 
     private void getRegisterData() {
-        if (!edtPassword.getEditText().getText().equals("")&&
+        if (!edtPassword.getEditText().getText().equals("") &&
                 !edtEmailID.getEditText().getText().equals("") &&
-                !etUserName.getEditText().getText().equals("")  &&
-                !etPhoneNumber.getEditText().getText().equals("")&&
+                !etUserName.getEditText().getText().equals("") &&
+                !etPhoneNumber.getEditText().getText().equals("") &&
                 !edtFirstName.getEditText().getText().equals("") &&
-                ! edtLastName.getEditText().getText().equals("")
+                !edtLastName.getEditText().getText().equals("")
         ) {
             //subscribeObservers(wiseLiUser);
             getRegisterApiCall();
@@ -499,6 +512,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         Log.d(TAG, "getRegisterApiCall: wiseLiUser.getPhoneNumber()" + wiseLiUser.getDeviceType());
         Log.d(TAG, "getRegisterApiCall: wiseLiUser.getPhoneNumber()" + wiseLiUser.getDeviceId());
 
+        RequestBody token = createPartFromString(wiseLiUser.getToken());
         RequestBody first_name = createPartFromString(wiseLiUser.getFirstName());
         RequestBody last_name = createPartFromString(wiseLiUser.getLastName());
         RequestBody username = createPartFromString(wiseLiUser.getUsername());
@@ -512,6 +526,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         RequestBody gender = createPartFromString(wiseLiUser.getGender());
 
         HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("token", token);
         map.put("first_name", first_name);
         map.put("last_name", last_name);
         map.put("email", email);
@@ -547,21 +562,27 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
-//                LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
-//                loginModel.setUser_id(String.valueOf(value.getData().getUserId()));
-//                loginModel.setFirst_name(value.getData().getFirstName());
-//                loginModel.setLast_name(value.getData().getLastName());
-//                loginModel.setToken(value.getData().getToken());
-//                loginModel.setEmail(value.getData().getEmail());
-//                loginModel.setUsername(value.getData().getUsername());
-//                loginModel.setGender(value.getData().getGender());
-//                loginModel.setProfile_pic(value.getData().getProfilePic());
-//                mAppPreferences.setToken(value.data.getToken());
-//                mAppPreferences.setUserDetails(loginModel);
-//                DatabaseFactory.getInstance().insertUserData(loginModel);
-//                mAppPreferences.setUserCashedInfo(value.data);
-//                Log.d("registerUser", " onNext : value : " + value);
-//                navigateToLanding();
+                Log.d("registerUser", " onNext : value : " + value.getMessage());
+                if (value.result) {
+                    LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
+                    loginModel.setUser_id(String.valueOf(wiseLiUser.getUserId()));
+                    loginModel.setFirst_name(wiseLiUser.getFirstName());
+                    loginModel.setLast_name(wiseLiUser.getLastName());
+                    loginModel.setToken(userDetails.getToken());
+                    loginModel.setEmail(wiseLiUser.getEmail());
+                    loginModel.setUsername(wiseLiUser.getUsername());
+                    loginModel.setGender(wiseLiUser.getGender());
+                    loginModel.setProfile_pic(wiseLiUser.getProfilePic());
+                    mAppPreferences.setToken(wiseLiUser.getToken());
+                    mAppPreferences.setUserDetails(loginModel);
+                    DatabaseFactory.getInstance().insertUserData(loginModel);
+                    mAppPreferences.setUserCashedInfo(wiseLiUser);
+                    ( (LandingActivity) getActivity()).updateNavHeader();
+
+                    Log.d("registerUser", " onNext : value : " + value);
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -573,6 +594,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
 
             @Override
             public void onComplete() {
+                showProgressBar(false);
                 Log.d("registerUser", " onComplete");
             }
         };
