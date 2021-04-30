@@ -4,7 +4,7 @@ package uk.ac.tees.mad.w9501736.network;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -98,7 +98,14 @@ public interface RestService {
 
 
     @GET("/api/user/search?")
-    Call<Resource<ArrayList<UserFriendsList>>> findCircle(@Nullable @Query("token") String name, @Nullable @Query("username") String username);
+    Call<Resource<ArrayList<UserFriendsList>>> findFriends(@Nullable @Query("token") String name, @Nullable @Query("username") String username);
+
+    @FormUrlEncoded
+    @POST("friend/create")
+    Call<BasicResponse> addFriend(@Nullable @Field("token") String name, @Nullable @Field("friend_id") Integer friendId);
+
+    @GET("friends/list/get")
+    Call<Resource<ArrayList<UserFriendsList>>> getFriendsList(@Nullable @Query("token") String token);
 
 
 }

@@ -14,7 +14,6 @@ import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
 import uk.ac.tees.mad.w9501736.models.CircleData;
-import uk.ac.tees.mad.w9501736.models.ShopActionResponse;
 import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 
 import static uk.ac.tees.mad.w9501736.utils.AppConstants.API.API_ACTIVE_LIST;
@@ -60,7 +59,7 @@ public interface GroupApiService {
     @FormUrlEncoded
     @POST(API_DELETE_SHOPPING_LIST)
     Observable<Resource<WiseLiUser>> deleteShoppingList(@Nullable @Field("token") String token,
-                                                        @Nullable @Field("shoppinglist_id") Integer shoppingListID);
+                                                        @Nullable @Field("list_id") Integer shoppingListID);
 
     @FormUrlEncoded
     @POST(API_EDIT_SHOPPING_LIST)
@@ -70,10 +69,10 @@ public interface GroupApiService {
 
     @FormUrlEncoded
     @POST(API_CREATE_SHOPPING_LIST)
-    Observable<Resource<ShopActionResponse>> createShoppingList(@Nullable @Field("token") String token,
-                                                                @Nullable @Field("circle_id") Integer circleID,
-                                                                @Nullable @Field("shop_name") String shopName,
-                                                                @Nullable @Field("list_name") String listName);
+    Observable<Resource<WiseLiUser>> createShoppingList(@Nullable @Field("token") String token,
+                                                        @Nullable @Field("circle_id") Integer circleID,
+                                                        @Nullable @Field("shop_name") String shopName,
+                                                        @Nullable @Field("list_name") String listName);
 
 
 }

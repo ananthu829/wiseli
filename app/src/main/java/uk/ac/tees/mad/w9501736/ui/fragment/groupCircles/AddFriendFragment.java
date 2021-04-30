@@ -1,6 +1,10 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.groupCircles;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,18 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.NavigableMap;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -36,7 +29,7 @@ import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 
-public class FindNewUserFragment extends BaseFragment implements AdapterInterface {
+public class AddFriendFragment extends BaseFragment implements AdapterInterface {
 
 
     @BindView(R.id.rvUser)
@@ -51,9 +44,11 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
 
     AdapterInterface adapterInterface;
 
-    String SearchData ="";
+    String SearchData = "";
 
-    ArrayList<UserFriendsList> friendsList  = new ArrayList<>();
+    Integer friendId = 0;
+
+    ArrayList<UserFriendsList> friendsList = new ArrayList<>();
 
 
     @Override
@@ -67,30 +62,22 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
         super.onViewCreated(view, savedInstanceState);
         adapterInterface = this;
 
-        getCircle(SearchData);
+        findFriend(SearchData);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!SearchData.isEmpty() && SearchData != null)
-                {
-                    addCircle(SearchData);
+                if (friendId != 0) {
+                    addUser(friendId);
                 }
-
             }
         });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                SearchData =query;
-                getCircle(SearchData);
-//                if(friendsList.contains(query)){
-//                    getCircle("");
-//                    //adapter.getFilter().filter(query);
-//                }else{
-//                    Toast.makeText(getContext(), "No Match found",Toast.LENGTH_LONG).show();
-//                }
+                SearchData = query;
+                findFriend(SearchData);
                 return false;
             }
 
@@ -101,10 +88,11 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
             }
         });
     }
-    private void getCircle(String data) {
+
+    private void findFriend(String userName) {
         showProgressBar(true);
         friendsList.clear();
-        Call<Resource<ArrayList<UserFriendsList>>> api = mRetrofitService.findCircle(getWiseLiUser().getToken(),data);
+        Call<Resource<ArrayList<UserFriendsList>>> api = mRetrofitService.findFriends(getWiseLiUser().getToken(), userName);
 
         api.enqueue(new Callback<Resource<ArrayList<UserFriendsList>>>() {
             @Override
@@ -116,13 +104,8 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
                     recycle();
                 } else {
                     Log.d("tag1", "Failed---");
-
                 }
-
-
             }
-
-
 
             @Override
             public void onFailure(Call<Resource<ArrayList<UserFriendsList>>> call, Throwable t) {
@@ -139,25 +122,20 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
         rvUser.setAdapter(new UserListAdapter(friendsList, this));
     }
 
-    private void addCircle(String text) {
+    private void addUser(Integer friendId) {
         showProgressBar(true);
 
-        Call<BasicResponse> api = mRetrofitService.addCircle(getWiseLiUser().getToken(), text, getWiseLiUser().getLatitude(), getWiseLiUser().getLongitude());
-
+        Call<BasicResponse> api = mRetrofitService.addFriend(getWiseLiUser().getToken(), friendId);
 
         api.enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> responseCall, Response<BasicResponse> response) {
                 showProgressBar(false);
-
                 if (response.body() != null) {
                     Navigation.findNavController(rvUser).navigateUp();
                 } else {
                     Log.d("tag1", "Failed---");
-
                 }
-
-
             }
 
             @Override
@@ -170,6 +148,28 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
         });
     }
 
+    private void getFriendsList() {
+        showProgressBar(true);
+        Call<Resource<ArrayList<UserFriendsList>>> api = mRetrofitService.getFriendsList(getWiseLiUser().getToken());
+        api.enqueue(new Callback<Resource<ArrayList<UserFriendsList>>>() {
+            @Override
+            public void onResponse(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Response<Resource<ArrayList<UserFriendsList>>> response) {
+                showProgressBar(false);
+                if (response.body() != null) {
+
+                } else {
+                    Log.d("tag1", "Failed---");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Throwable t) {
+                t.printStackTrace();
+                showProgressBar(false);
+            }
+        });
+    }
+
 
     @Override
     protected int layoutRes() {
@@ -178,8 +178,9 @@ public class FindNewUserFragment extends BaseFragment implements AdapterInterfac
 
 
     @Override
-    public void onItemClicked(String title, Integer circleID) {
-        SearchData =title;
+    public void onItemClicked(String title, Integer friendId) {
+        SearchData = title;
+        this.friendId = friendId;
 
     }
 

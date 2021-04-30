@@ -151,8 +151,9 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
             public void onNext(Resource<List<ActiveInActiveBody>> value) {
                 Log.d("getUserList", " onNext : value : " + value);
                 if (value.result) {
+                    inactiveLists.clear();
                     inactiveLists = value.getData();
-                    userAdapter.notifyDataSetChanged();
+                    userAdapter.updateListItem(inactiveLists);
                 } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
                     showProgressBar(false);

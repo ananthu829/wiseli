@@ -62,7 +62,10 @@ public class LandingActivity extends BaseActivity {
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
         Log.i("GlideImage", AppConstants.API_BASE_URL + userDetails.getProfilePic());
-        Glide.with(this).load(AppConstants.API_BASE_URL + userDetails.getProfilePic()).into(navProfile);
+        Glide.with(this)
+                .load(AppConstants.API_BASE_URL + userDetails.getProfilePic())
+                .error(AppConstants.API_BASE_URL + userDetails.getProfilePic())
+                .into(navProfile);
     }
 
     private void setupDrawerLayout() {

@@ -35,7 +35,6 @@ import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
-import uk.ac.tees.mad.w9501736.models.ShopActionResponse;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -48,6 +47,7 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 public class ActiveFragment extends BaseFragment implements AdapterInterface {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String TAG = "ActiveFragment";
     private static final String CIRCLEID = "circle_id";
     private static final String ARG_PARAM2 = "param2";
     RecyclerView active;
@@ -109,11 +109,12 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
         activeList = new ArrayList<>();
         active = view.findViewById(R.id.activeRv);
         addUser = view.findViewById(R.id.fab);
-        getActiveList();
 
         active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         userAdapter = new UserAdapter(activeList, true, this);
         active.setAdapter(userAdapter);
+
+        getActiveList();
 
         addUser.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(view.getContext());
@@ -145,13 +146,15 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
     }
 
     @Override
-    public void onDeleteCtaClicked(Integer id) {
-
+    public void onDeleteCtaClicked(Integer listID) {
+        Log.d(TAG, "onDeleteCtaClicked: listID: " + listID);
+        deleteShoppingList(listID);
     }
 
     @Override
-    public void setEditableText(Integer id, String name) {
-
+    public void setEditableText(Integer listID, String lastName) {
+        Log.d(TAG, "setEditableText: listID : " + listID);
+        editShoppingList(listID, lastName);
     }
 
     private void getActiveList() {
@@ -179,6 +182,7 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
                     activeList.clear();
                     activeList = value.getData();
                     userAdapter.updateListItem(activeList);
+                    showProgressBar(false);
                 } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
                     showProgressBar(false);
@@ -194,7 +198,6 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
 
             @Override
             public void onComplete() {
-                showProgressBar(false);
                 Log.d("getUserList", " onComplete");
             }
         };
@@ -204,14 +207,14 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
         showProgressBar(true);
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
         final GroupApiService webServices = retrofit.create(GroupApiService.class);
-        Observable<Resource<ShopActionResponse>> likedObservable = webServices.createShoppingList(getWiseLiUser().getToken(), circleId, shopName, listName);
+        Observable<Resource<WiseLiUser>> likedObservable = webServices.createShoppingList(getWiseLiUser().getToken(), circleId, shopName, listName);
         likedObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(createShoppingListObserve());
     }
 
-    private Observer<Resource<ShopActionResponse>> createShoppingListObserve() {
-        return new Observer<Resource<ShopActionResponse>>() {
+    private Observer<Resource<WiseLiUser>> createShoppingListObserve() {
+        return new Observer<Resource<WiseLiUser>>() {
             @Override
             public void onSubscribe(Disposable d) {
                 dUserList = d;
@@ -219,7 +222,7 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
             }
 
             @Override
-            public void onNext(Resource<ShopActionResponse> value) {
+            public void onNext(Resource<WiseLiUser> value) {
                 Log.d("getUserList", " onNext : value : " + value);
                 if (value.result) {
                     getActiveList();
@@ -274,7 +277,6 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
 
             @Override
             public void onError(Throwable e) {
-                showProgressBar(false);
                 Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
                 Log.d("getUserList", " onError : value : " + e.getMessage());
             }
@@ -287,6 +289,7 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
     }
 
     private void deleteShoppingList(Integer listId) {
+        showProgressBar(true);
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
         final GroupApiService webServices = retrofit.create(GroupApiService.class);
         Observable<Resource<WiseLiUser>> likedObservable = webServices.deleteShoppingList(getWiseLiUser().getToken(), listId);

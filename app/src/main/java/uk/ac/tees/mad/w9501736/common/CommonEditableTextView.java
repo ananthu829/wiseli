@@ -17,12 +17,12 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 public class CommonEditableTextView extends CardView {
 
+    AdapterInterface editClickListner;
+    Integer id;
     private AppCompatTextView tv;
     private AppCompatEditText et;
     private AppCompatImageView ivEdit;
     private AppCompatImageView ivDelete;
-    AdapterInterface editClickListner;
-    Integer id;
 
     public CommonEditableTextView(@NonNull Context context) {
         super(context);
@@ -55,7 +55,7 @@ public class CommonEditableTextView extends CardView {
                 tv.setVisibility(VISIBLE);
                 tv.setText(currentText);
                 ivEdit.setImageResource(R.drawable.ic_mode_edit);
-                if(editClickListner!=null) {
+                if (editClickListner != null) {
                     editClickListner.setEditableText(id, et.getText().toString());
                 }
             } else {
@@ -79,6 +79,11 @@ public class CommonEditableTextView extends CardView {
         return tv.getText().toString();
     }
 
+    public void setEditableText(String text) {
+        tv.setText(text);
+        et.setText(text);
+    }
+
     public void hideImageEditBtn(Boolean value) {
         if (value) {
             ivEdit.setVisibility(GONE);
@@ -93,11 +98,6 @@ public class CommonEditableTextView extends CardView {
         } else {
             ivDelete.setVisibility(VISIBLE);
         }
-    }
-
-    public void setEditableText(String text) {
-        tv.setText(text);
-        et.setText(text);
     }
 
     public void setEditableHintText(String text) {
@@ -117,8 +117,8 @@ public class CommonEditableTextView extends CardView {
     }
 
     public void setOnEditClickListener(AdapterInterface editClickListner, Integer id) {
-        this.editClickListner=editClickListner;
-        this.id=id;
+        this.editClickListner = editClickListner;
+        this.id = id;
     }
 
 }

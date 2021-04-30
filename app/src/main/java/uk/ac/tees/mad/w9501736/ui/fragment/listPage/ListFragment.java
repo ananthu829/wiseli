@@ -72,6 +72,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 public class ListFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, AdapterInterface {
+    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     ArrayList<String> items, qty;
     List<String> list = new ArrayList<>();
     List<ItemsList.ListItem> listItem = new ArrayList<>();
@@ -96,11 +97,11 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
             "DSA with java", "OS"};
     String itemId;
     Boolean isclosed = false;
+    private String placeName = "";
 
     public ListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -232,12 +233,6 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
                 btnOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        if (itm.getEditText().getText().toString().isEmpty() || quantity.getEditText().getText().toString().isEmpty()) {
-//                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            dialog.dismiss();
-//                            Navigation.findNavController(view).navigate(R.id.action_listFragment_to_mapFragment);
-//                        }
                         addItemToShoppingList();
                     }
                 });
@@ -312,8 +307,6 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
         commentAdapter.notifyDataSetChanged();
     }
 
-    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
-
     private void searchMaps() {
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
@@ -322,8 +315,6 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
                 .build(getContext());
         startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
     }
-
-    private String placeName = "";
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -410,7 +401,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
             public void onResponse(Call<ShoppingList> responseCall, Response<ShoppingList> response) {
                 showProgressBar(false);
                 if (response.body() != null) {
-                    if(response.body().getResult()) {
+                    if (response.body().getResult()) {
                         if (response.body().getData() != null) {
                             listName = response.body().getData().getName();
                             for (int i = 0; i < response.body().getData().getItemData().size(); i++) {

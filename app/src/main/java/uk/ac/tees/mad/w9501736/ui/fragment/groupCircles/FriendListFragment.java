@@ -6,33 +6,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
-import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
+import uk.ac.tees.mad.w9501736.adapters.FriendsAdapter;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
-import uk.ac.tees.mad.w9501736.models.AvailableUserList;
 import uk.ac.tees.mad.w9501736.models.BasicResponse;
-import uk.ac.tees.mad.w9501736.models.CircleData;
+import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GroupCirclesFragment extends BaseFragment implements AdapterInterface {
-    ArrayList<CircleData> infos = new ArrayList<>();
+public class FriendListFragment extends BaseFragment implements AdapterInterface {
+    ArrayList<UserFriendsList> infos = new ArrayList<>();
 
 
     @BindView(R.id.fab)
@@ -44,7 +46,7 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
     AdapterInterface adapterInterface;
 
 
-    public GroupCirclesFragment() {
+    public FriendListFragment() {
         // Required empty public constructor
     }
 
@@ -65,19 +67,19 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adapterInterface = this;
-        getCircle();
+        getFriendsList();
         btnClick(view);
     }
 
-    private void getCircle() {
+    private void getFriendsList() {
         showProgressBar(true);
         infos.clear();
-        Call<Resource<ArrayList<CircleData>>> api = mRetrofitService.getCircle(getWiseLiUser().getToken());
+        Call<Resource<ArrayList<UserFriendsList>>> api = mRetrofitService.getFriendsList(getWiseLiUser().getToken());
 
 
-        api.enqueue(new Callback<Resource<ArrayList<CircleData>>>() {
+        api.enqueue(new Callback<Resource<ArrayList<UserFriendsList>>>() {
             @Override
-            public void onResponse(Call<Resource<ArrayList<CircleData>>> responseCall, Response<Resource<ArrayList<CircleData>>> response) {
+            public void onResponse(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Response<Resource<ArrayList<UserFriendsList>>> response) {
                 showProgressBar(false);
 
                 if (response.body() != null) {
@@ -93,7 +95,7 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
 
 
             @Override
-            public void onFailure(Call<Resource<ArrayList<CircleData>>> responseCall, Throwable t) {
+            public void onFailure(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
 
@@ -139,39 +141,6 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
     }
 
 
-    private void editCircle(Integer id, String name) {
-        showProgressBar(true);
-
-        Call<BasicResponse> api = mRetrofitService.editCircle(getWiseLiUser().getToken(), id, name);
-
-
-        api.enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> responseCall, Response<BasicResponse> response) {
-                showProgressBar(false);
-
-                if (response.body() != null) {
-                    getCircle();
-                } else {
-                    Log.d("tag1", "Failed---");
-
-                }
-
-
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> responseCall, Throwable t) {
-                t.printStackTrace();
-                showProgressBar(false);
-
-            }
-
-
-        });
-    }
-
-
     @Override
     public void onItemClicked(String title, Integer circleID) {
 
@@ -179,14 +148,14 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
 
     public void recycle() {
         rvUser.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        rvUser.setAdapter(new CircleAdapter(infos, this));
+        rvUser.setAdapter(new FriendsAdapter(infos, this));
     }
 
     @Override
     public void onDeleteCtaClicked(Integer id) {
         deleteCircle(id);
         for (int i = 0; i < infos.size(); i++) {
-            if (infos.get(i).getCircleId() == id) {
+            if (infos.get(i).getUserId() == id) {
                 infos.remove(i);
             }
         }
@@ -195,6 +164,5 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
 
     @Override
     public void setEditableText(Integer id, String value) {
-        editCircle(id,value);
     }
 }
