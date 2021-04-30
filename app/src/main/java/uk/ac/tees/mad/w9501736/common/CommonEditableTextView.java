@@ -22,7 +22,7 @@ public class CommonEditableTextView extends CardView {
     private AppCompatImageView ivEdit;
     private AppCompatImageView ivDelete;
     AdapterInterface editClickListner;
-    String id;
+    Integer id;
 
     public CommonEditableTextView(@NonNull Context context) {
         super(context);
@@ -109,13 +109,13 @@ public class CommonEditableTextView extends CardView {
         et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
     }
 
-    public void setOnDeleteClickListener(AdapterInterface deleteClickListener, String id) {
+    public void setOnDeleteClickListener(AdapterInterface deleteClickListener, Integer id) {
         ivDelete.setOnClickListener(v -> {
             deleteClickListener.onDeleteCtaClicked(id);
         });
     }
 
-    public void setOnEditClickListener(AdapterInterface editClickListner, String id) {
+    public void setOnEditClickListener(AdapterInterface editClickListner, Integer id) {
         this.editClickListner=editClickListner;
         this.id=id;
     }

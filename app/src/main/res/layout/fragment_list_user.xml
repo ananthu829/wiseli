@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="@dimen/_06"
     android:layout_marginTop="@dimen/_04"
-    app:cardCornerRadius="@dimen/_08"
-    android:layout_marginBottom="@dimen/_04">
+    android:layout_marginBottom="@dimen/_04"
+    android:elevation="@dimen/_06"
+    app:cardCornerRadius="@dimen/_08">
 
-
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:layout_marginTop="@dimen/dimens2"
-    android:padding="@dimen/_10">
-
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Text"
-        android:fontFamily="@font/avertacy_black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingStart="@dimen/_20"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="@dimen/dimens2"
+        android:background="@color/white"
+        android:padding="@dimen/_10">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imgChecked"
-        android:src="@drawable/ic_done"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingEnd="@dimen/_20"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avertacy_black"
+            android:hint="Text"
+            android:paddingStart="@dimen/_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgChecked"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingEnd="@dimen/_20"
+            android:src="@drawable/ic_done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

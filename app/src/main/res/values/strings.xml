@@ -69,5 +69,6 @@
     <string name="snack_error_location">Please Enable Location</string>
     <string name="snack_error_location_null">Please Enable Location And Internet</string>
     <string name="please_provide">Please provide valid Data</string>
+    <string name="user_friends_list_null">No user is available please add user in the nav drawer section </string>
 
 </resources>

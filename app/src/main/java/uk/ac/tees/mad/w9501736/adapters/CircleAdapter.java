@@ -11,17 +11,17 @@ import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
-import uk.ac.tees.mad.w9501736.models.CircleModel;
+import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
 
     public AdapterInterface buttonListener;
-    ArrayList<CircleModel.CircleData> items;
+    ArrayList<CircleData> items;
 
 
-    public CircleAdapter(ArrayList<CircleModel.CircleData> items, AdapterInterface buttonListener) {
+    public CircleAdapter(ArrayList<CircleData> items, AdapterInterface buttonListener) {
         this.items = items;
         this.buttonListener = buttonListener;
     }
@@ -38,14 +38,14 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
-        final CircleModel.CircleData contact = items.get(position);
-        holder.commonEditableTextView.setEditableText(contact.getCircle_name());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener,contact.getCircle_id());
-        holder.commonEditableTextView.setOnEditClickListener(buttonListener,contact.getCircle_id());
+        final CircleData contact = items.get(position);
+        holder.commonEditableTextView.setEditableText(contact.getName());
+        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getCircleId());
+        holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getCircleId());
 
         holder.commonEditableTextView.setOnClickListener(v -> {
             if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), Integer.parseInt(contact.getCircle_id()));
+                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getCircleId());
             }
         });
     }

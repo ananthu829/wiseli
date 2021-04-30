@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
-import uk.ac.tees.mad.w9501736.models.User;
+import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
@@ -19,9 +19,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
 
     public AdapterInterface buttonListener;
     public Boolean showDeleteBtn;
-    ArrayList<User> items;
+    List<ActiveInActiveBody> items;
 
-    public UserAdapter(ArrayList<User> items, Boolean showDeleteBtn, AdapterInterface buttonListener) {
+    public UserAdapter(List<ActiveInActiveBody> items, Boolean showDeleteBtn, AdapterInterface buttonListener) {
         this.items = items;
         this.buttonListener = buttonListener;
         this.showDeleteBtn = showDeleteBtn;
@@ -40,12 +40,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
 
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
-        final User contact = items.get(position);
-        holder.commonEditableTextView.setEditableText(contact.getCaption());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener,"");
+        final ActiveInActiveBody contact = items.get(position);
+        holder.commonEditableTextView.setEditableText(contact.getListName());
+        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
         holder.commonEditableTextView.setOnClickListener(v -> {
             if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), 0);
+                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
             }
         });
         if (!showDeleteBtn) {

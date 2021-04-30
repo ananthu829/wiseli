@@ -14,6 +14,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     int totalTabs;
     private Context myContext;
+    private Integer circleId;
 
     public TabPagerAdapter(Context context, FragmentManager fm, int totalTabs) {
         super(fm);
@@ -26,13 +27,13 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                ActiveFragment activeFragment = new ActiveFragment();
+                ActiveFragment activeFragment = new ActiveFragment(circleId);
                 return activeFragment;
             case 1:
-                InactiveFragment inactiveFragment = new InactiveFragment();
+                InactiveFragment inactiveFragment = new InactiveFragment(circleId);
                 return inactiveFragment;
             default:
-                ActiveFragment defaultFragment = new ActiveFragment();
+                ActiveFragment defaultFragment = new ActiveFragment(circleId);
                 return defaultFragment;
         }
     }
@@ -41,5 +42,13 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return totalTabs;
+    }
+
+    public Integer getCircleID() {
+        return circleId;
+    }
+
+    public void setCircleID(Integer circleId) {
+        this.circleId = circleId;
     }
 }
