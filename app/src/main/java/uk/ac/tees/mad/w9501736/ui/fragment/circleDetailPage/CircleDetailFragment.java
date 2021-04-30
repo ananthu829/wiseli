@@ -23,7 +23,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -41,7 +40,6 @@ import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.models.FriendsList;
-import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
@@ -61,10 +59,8 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     private static final String ARG_PARAM2 = "param2";
     private static final String TAB = "param2";
     public TabPagerAdapter tabPagerAdapter;
-    ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
-    ArrayList data;
     RecyclerView recyclerview;
     Integer userID;
     String userName = "";
@@ -341,10 +337,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     }
 
     private void addUserToChipView() {
-        apiAddUser();
-    }
-
-    private void apiAddUser() {
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
         final GroupApiService webServices = retrofit.create(GroupApiService.class);
         Observable<Resource<WiseLiUser>> likedObservable = webServices.addCircleUser(getWiseLiUser().getToken(), circleID, userID);
