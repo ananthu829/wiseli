@@ -98,10 +98,10 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     @BindView(R.id.edtEmailID)
     TextInputLayout edtEmailID;
     Disposable dMainListObservable;
+    AppPreferences mAppPreferences;
     private WiseLiRepository apiRepo;
     private RegisterFragmentViewModel registerFragmentViewModel;
     private FusedLocationProviderClient mFusedLocationClient;
-    AppPreferences mAppPreferences;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -520,7 +520,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
-                if(value.result) {
+                if (value.result) {
                     LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
                     loginModel.setUser_id(String.valueOf(value.getData().getUserId()));
                     loginModel.setFirst_name(value.getData().getFirstName());
@@ -530,15 +530,15 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
                     loginModel.setUsername(value.getData().getUsername());
                     loginModel.setGender(value.getData().getGender());
                     loginModel.setProfile_pic(value.getData().getProfilePic());
+                    wiseLiUser.setToken(value.data.getToken());
+                    wiseLiUser.setProfilePic(value.data.getProfilePic());
                     mAppPreferences.setToken(value.data.getToken());
                     mAppPreferences.setUserDetails(loginModel);
                     DatabaseFactory.getInstance().insertUserData(loginModel);
-                    mAppPreferences.setUserCashedInfo(value.data);
+                    mAppPreferences.setUserCashedInfo(wiseLiUser);
                     Log.d("registerUser", " onNext : value : " + value);
                     navigateToLanding();
-                }
-                else
-                {
+                } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }

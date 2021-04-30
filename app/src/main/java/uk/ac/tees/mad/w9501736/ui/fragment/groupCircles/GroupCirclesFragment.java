@@ -2,6 +2,7 @@ package uk.ac.tees.mad.w9501736.ui.fragment.groupCircles;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
 import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
+import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.models.AvailableUserList;
+import uk.ac.tees.mad.w9501736.models.BasicResponse;
+import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -24,6 +32,8 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
  * A simple {@link Fragment} subclass.
  */
 public class GroupCirclesFragment extends BaseFragment implements AdapterInterface {
+    ArrayList<CircleData> infos = new ArrayList<>();
+
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -55,34 +65,136 @@ public class GroupCirclesFragment extends BaseFragment implements AdapterInterfa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adapterInterface = this;
-
-        ArrayList data = new ArrayList<>();
-        data.add(new AvailableUserList("User 1", false));
-        data.add(new AvailableUserList("User 2", false));
-        data.add(new AvailableUserList("User 3", false));
-        data.add(new AvailableUserList("User 4", false));
-        rvUser.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        rvUser.setAdapter(new UserListAdapter(data, adapterInterface));
+        getCircle();
         btnClick(view);
+    }
+
+    private void getCircle() {
+        showProgressBar(true);
+        infos.clear();
+        Call<Resource<ArrayList<CircleData>>> api = mRetrofitService.getCircle(getWiseLiUser().getToken());
+
+
+        api.enqueue(new Callback<Resource<ArrayList<CircleData>>>() {
+            @Override
+            public void onResponse(Call<Resource<ArrayList<CircleData>>> responseCall, Response<Resource<ArrayList<CircleData>>> response) {
+                showProgressBar(false);
+
+                if (response.body() != null) {
+                    infos.addAll(response.body().getData());
+                    recycle();
+                } else {
+                    Log.d("tag1", "Failed---");
+
+                }
+
+
+            }
+
+
+            @Override
+            public void onFailure(Call<Resource<ArrayList<CircleData>>> responseCall, Throwable t) {
+                t.printStackTrace();
+                showProgressBar(false);
+
+            }
+
+
+        });
     }
 
     public void btnClick(View view) {
         fab.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_groupCirclesFragment_to_findNewUserFragment));
     }
 
+    private void deleteCircle(Integer id) {
+        showProgressBar(true);
+
+        Call<BasicResponse> api = mRetrofitService.deleteCircle(getWiseLiUser().getToken(), id);
+
+
+        api.enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> responseCall, Response<BasicResponse> response) {
+                showProgressBar(false);
+
+                if (response.body() != null) {
+
+                } else {
+                    Log.d("tag1", "Failed---");
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> responseCall, Throwable t) {
+                t.printStackTrace();
+                showProgressBar(false);
+            }
+
+
+        });
+    }
+
+
+    private void editCircle(Integer id, String name) {
+        showProgressBar(true);
+
+        Call<BasicResponse> api = mRetrofitService.editCircle(getWiseLiUser().getToken(), id, name);
+
+
+        api.enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> responseCall, Response<BasicResponse> response) {
+                showProgressBar(false);
+
+                if (response.body() != null) {
+                    getCircle();
+                } else {
+                    Log.d("tag1", "Failed---");
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> responseCall, Throwable t) {
+                t.printStackTrace();
+                showProgressBar(false);
+
+            }
+
+
+        });
+    }
+
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer circleID) {
 
     }
 
-    @Override
-    public void onDeleteCtaClicked(String id) {
-
+    public void recycle() {
+        rvUser.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        rvUser.setAdapter(new CircleAdapter(infos, this));
     }
 
     @Override
-    public void setEditableText(String id, String name) {
+    public void onDeleteCtaClicked(Integer id) {
+        deleteCircle(id);
+        for (int i = 0; i < infos.size(); i++) {
+            if (infos.get(i).getCircleId() == id) {
+                infos.remove(i);
+            }
+        }
+        recycle();
+    }
 
+    @Override
+    public void setEditableText(Integer id, String value) {
+        editCircle(id,value);
     }
 }

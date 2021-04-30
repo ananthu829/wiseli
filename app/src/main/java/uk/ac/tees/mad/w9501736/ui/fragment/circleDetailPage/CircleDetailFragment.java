@@ -1,15 +1,15 @@
 package uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,18 +22,34 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
 import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
-import uk.ac.tees.mad.w9501736.models.AvailableUserList;
+import uk.ac.tees.mad.w9501736.data.model.Resource;
+import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
+import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
+import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
+import uk.ac.tees.mad.w9501736.models.CircleData;
+import uk.ac.tees.mad.w9501736.models.FriendsList;
 import uk.ac.tees.mad.w9501736.models.User;
+import uk.ac.tees.mad.w9501736.models.UserFriendsList;
+import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
+import uk.ac.tees.mad.w9501736.models.AvailableUserList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +57,7 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
  * Use the {@link CircleDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CircleDetailFragment extends Fragment implements AdapterInterface {
+public class CircleDetailFragment extends BaseFragment implements AdapterInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,10 +71,18 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     FloatingActionButton addUser;
     ArrayList data;
     RecyclerView recyclerview;
-    String Title = "";
+    Integer userID;
+    String userName = "";
+    Disposable dUserList;
+    Button btnOk;
+    Button btnCancel;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private View view;
+    private String circleTitle = "";
+    private Integer circleID = 0;
+    private AdapterInterface adapterInterface;
+    private Dialog dialog;
 
 
     public CircleDetailFragment() {
@@ -96,14 +120,20 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
     }
 
     @Override
+    protected int layoutRes() {
+        return R.layout.fragment_circle_detail;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
         if (getArguments() != null) {
-            String title = getArguments().getString("caption");
-            if (title != null) {
-                ((LandingActivity) getActivity()).setToolbarTitle(title);
+            circleTitle = getArguments().getString("circle_name");
+            circleID = getArguments().getInt("circle_id");
+            if (circleTitle != null) {
+                ((LandingActivity) getActivity()).setToolbarTitle(circleTitle);
             }
         }
 
@@ -116,96 +146,41 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
         tabLayout.addTab(tabLayout.newTab().setText("Active"));
         tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        AdapterInterface adapterInterface = this;
+        adapterInterface = this;
 
+        chipGroup = view.findViewById(R.id.chipgroup);
 
-        spino.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.custom_dialog_list_user);
-                Button btnOk = dialog.findViewById(R.id.btnOk);
-                Button btnCancel = dialog.findViewById(R.id.btnCancel);
-                recyclerview = dialog.findViewById(R.id.homeRecyclerView);
-                data = new ArrayList<>();
-                data.add(new AvailableUserList("User 1", false));
-                data.add(new AvailableUserList("User 2", false));
-                data.add(new AvailableUserList("User 3", false));
-                data.add(new AvailableUserList("User 4", false));
-                recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-                recyclerview.setAdapter(new UserListAdapter(data, adapterInterface));
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                dialog.getWindow().setAttributes(lp);
-                dialog.show();
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        getCircleDetailFromAPISetData();
 
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        Title = "";
-                    }
-                });
-                btnOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (Title.isEmpty()) {
-                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("caption", Title);
-                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-                        }
-
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+        spino.setOnClickListener(v -> {
+            getUserListApiCall();
         });
-        addUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.custom_dialog_add_user);
-                Button btnOk = dialog.findViewById(R.id.btnOk);
-                Button btnCancel = dialog.findViewById(R.id.btnCancel);
-                TextInputLayout shopName = dialog.findViewById(R.id.edtShopName);
-                TextInputLayout shopDescription = dialog.findViewById(R.id.edtShopDescription);
+
+        addUser.setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.custom_dialog_add_user);
+            Button btnOk = dialog.findViewById(R.id.btnOk);
+            Button btnCancel = dialog.findViewById(R.id.btnCancel);
+            TextInputLayout txt = dialog.findViewById(R.id.edtLastName);
 
 
-                dialog.show();
-                btnOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (shopName.getEditText().getText().toString().isEmpty() ||shopDescription.getEditText().getText().toString().isEmpty()) {
-                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
-                        } else {
-                            dialog.dismiss();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("caption", shopName.getEditText().getText().toString());
-                            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-                        }
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+            dialog.show();
+            btnOk.setOnClickListener(v13 -> {
+                if (txt.getEditText().getText().toString().isEmpty()) {
+                    Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
+                } else {
+                    dialog.dismiss();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("caption", txt.getEditText().getText().toString());
+                    Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+                }
+            });
+            btnCancel.setOnClickListener(v14 -> dialog.dismiss());
         });
 
         tabPagerAdapter = new TabPagerAdapter(getContext(), getChildFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(tabPagerAdapter);
+
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
@@ -226,45 +201,275 @@ public class CircleDetailFragment extends Fragment implements AdapterInterface {
             }
         });
 
-        chips = new ArrayList<>();
+        tabPagerAdapter.setCircleID(circleID);
 
-        chipGroup = view.findViewById(R.id.chipgroup);
+    }
 
+    @Override
+    public void onItemClicked(String userName, Integer userID) {
+        this.userID = userID;
+        this.userName = userName;
+        Toast.makeText(view.getContext(), userName, Toast.LENGTH_SHORT).show();
+    }
 
-        chips.add(new User("User 1"));
-        chips.add(new User("User 2"));
-        chips.add(new User("User 3"));
-        chips.add(new User("User 4"));
-        chips.add(new User("User 5"));
-        chips.add(new User("User 6"));
+    @Override
+    public void onDeleteCtaClicked(Integer id) {
 
-        for (User u : chips) {
+    }
+
+    @Override
+    public void setEditableText(Integer id, String name) {
+
+    }
+
+    private void getUserListApiCall() {
+        showProgressBar(true);
+        Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
+        final GroupApiService webServices = retrofit.create(GroupApiService.class);
+        Observable<Resource<List<UserFriendsList>>> likedObservable = webServices.getFriendsListCircle1(getWiseLiUser().getToken(), circleID);
+        likedObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getUserList());
+    }
+
+    private Observer<Resource<List<UserFriendsList>>> getUserList() {
+        return new Observer<Resource<List<UserFriendsList>>>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+                dUserList = d;
+                Log.d("getUserList", " onSubscribe : " + d.isDisposed());
+            }
+
+            @Override
+            public void onNext(Resource<List<UserFriendsList>> value) {
+                Log.d("getUserList", " onNext : value : " + value);
+                if (value.result) {
+                    if (value.data != null && value.data.size() > 0) {
+                        setDialogData(value.data);
+                    } else {
+                        Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.user_friends_list_null), Snackbar.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                    showProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Log.d("getUserList", " onError : value : " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("getUserList", " onComplete");
+            }
+        };
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (dUserList != null) {
+            dUserList.dispose();
+        }
+    }
+
+    public void getCircleDetailFromAPISetData() {
+        showProgressBar(false);
+
+        getApiListForChipView();
+    }
+
+    public void getApiListForChipView() {
+        showProgressBar(true);
+        Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
+        final GroupApiService webServices = retrofit.create(GroupApiService.class);
+        Observable<Resource<CircleData>> likedObservable = webServices.getCircleDetails2(getWiseLiUser().getToken(), circleID);
+        likedObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getCircleDetails());
+    }
+
+    private Observer<Resource<CircleData>> getCircleDetails() {
+        return new Observer<Resource<CircleData>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                dUserList = d;
+                Log.d("getUserList", " onSubscribe : " + d.isDisposed());
+            }
+
+            @Override
+            public void onNext(Resource<CircleData> value) {
+                Log.d("getUserList", " onNext : value : " + value);
+                if (value.result) {
+                    if (value.data != null) {
+                        if (value.data.getFriendsList() != null && value.data.getFriendsList().size() > 0) {
+                            addChips(value.data.getFriendsList());
+                        }
+                    }
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                    showProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Log.d("getUserList", " onError : value : " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("getUserList", " onComplete");
+            }
+        };
+    }
+
+    private void setDialogData(List<UserFriendsList> userFriendsLists) {
+        showProgressBar(false);
+        initDialog();
+        recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        recyclerview.setAdapter(new UserListAdapter(userFriendsLists, adapterInterface));
+        initDialogClicks(userFriendsLists);
+    }
+
+    void initDialog() {
+        dialog = new Dialog(view.getContext());
+        dialog.setContentView(R.layout.custom_dialog_list_user);
+        btnOk = dialog.findViewById(R.id.btnOk);
+        btnCancel = dialog.findViewById(R.id.btnCancel);
+        recyclerview = dialog.findViewById(R.id.homeRecyclerView);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+    }
+
+    void initDialogClicks(List<UserFriendsList> userFriendsLists) {
+        dialog.show();
+        dialog.setOnDismissListener(dialog1 -> userName = "");
+        btnOk.setOnClickListener(v1 -> {
+            if (userFriendsLists != null && userFriendsLists.size() > 0) {
+                dialog.dismiss();
+                addUserToChipView();
+            } else {
+                Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.user_friends_list_null), Snackbar.LENGTH_LONG).show();
+            }
+        });
+        btnCancel.setOnClickListener(v12 -> dialog.dismiss());
+    }
+
+    private void addUserToChipView() {
+        apiAddUser();
+    }
+
+    private void apiAddUser() {
+        Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
+        final GroupApiService webServices = retrofit.create(GroupApiService.class);
+        Observable<Resource<WiseLiUser>> likedObservable = webServices.addCircleUser(getWiseLiUser().getToken(), circleID, userID);
+        likedObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(addFriendToCircle());
+    }
+
+    private Observer<Resource<WiseLiUser>> addFriendToCircle() {
+        return new Observer<Resource<WiseLiUser>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                dUserList = d;
+                Log.d("getUserList", " onSubscribe : " + d.isDisposed());
+            }
+
+            @Override
+            public void onNext(Resource<WiseLiUser> value) {
+                Log.d("getUserList", " onNext : value : " + value);
+                if (value.result) {
+                    chipGroup.removeAllViews();
+                    getCircleDetailFromAPISetData();
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                    showProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Log.d("getUserList", " onError : value : " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("getUserList", " onComplete");
+            }
+        };
+    }
+
+    void addChips(List<FriendsList> userFriendsLists) {
+        for (FriendsList friendsList : userFriendsLists) {
             newChip = new Chip(getContext());
-            newChip.setText(u.getCaption());
+            newChip.setText(friendsList.getFullName());
             newChip.setCloseIconVisible(true);
             chipGroup.addView(newChip);
+            if (friendsList.isOwner()) {
+                newChip.setCloseIconVisible(false);
+            }
             newChip.setOnCloseIconClickListener(v -> {
-                Toast.makeText(getContext(), u.getCaption() + "will get deleted.", Toast.LENGTH_SHORT).show();
+                apiRemoveCircleUser(friendsList.getUserId());
             });
         }
-
+        showProgressBar(false);
     }
 
-    @Override
-    public void onItemClicked(String title) {
-        Title = title;
-        Toast.makeText(view.getContext(), title, Toast.LENGTH_SHORT).show();
-
-
+    void apiRemoveCircleUser(Integer userID) {
+        Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
+        final GroupApiService webServices = retrofit.create(GroupApiService.class);
+        Observable<Resource<WiseLiUser>> likedObservable = webServices.removeCircleUser(getWiseLiUser().getToken(), circleID, userID);
+        likedObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(apiRemoveCircleUserObserve());
     }
 
-    @Override
-    public void onDeleteCtaClicked(String id) {
+    private Observer<Resource<WiseLiUser>> apiRemoveCircleUserObserve() {
+        return new Observer<Resource<WiseLiUser>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                dUserList = d;
+                Log.d("getUserList", " onSubscribe : " + d.isDisposed());
+            }
 
-    }
+            @Override
+            public void onNext(Resource<WiseLiUser> value) {
+                Log.d("getUserList", " onNext : value : " + value);
+                if (value.result) {
+                    chipGroup.removeAllViews();
+                    getCircleDetailFromAPISetData();
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                    showProgressBar(false);
+                }
+            }
 
-    @Override
-    public void setEditableText(String id, String name) {
+            @Override
+            public void onError(Throwable e) {
+                showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                Log.d("getUserList", " onError : value : " + e.getMessage());
+            }
 
+            @Override
+            public void onComplete() {
+                Log.d("getUserList", " onComplete");
+            }
+        };
     }
 }

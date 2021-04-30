@@ -9,21 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
-import uk.ac.tees.mad.w9501736.models.AvailableUserList;
-import uk.ac.tees.mad.w9501736.models.CircleInfo;
+import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
-public class UserListAdapter   extends  RecyclerView.Adapter<UserListAdapter.holder> {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.holder> {
 
     public AdapterInterface buttonListener;
-    ArrayList<AvailableUserList> items;
+    List<UserFriendsList> items;
     int checkItem;
 
-    public UserListAdapter(ArrayList<AvailableUserList> items, AdapterInterface buttonListener) {
+    public UserListAdapter(List<UserFriendsList> items, AdapterInterface buttonListener) {
         this.items = items;
         this.buttonListener = buttonListener;
     }
@@ -38,36 +36,29 @@ public class UserListAdapter   extends  RecyclerView.Adapter<UserListAdapter.hol
 
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
-        final AvailableUserList contact = items.get(position);
-        holder.txt.setText(contact.getCaption());
+        final UserFriendsList contact = items.get(position);
+        holder.txt.setText(contact.getFullName());
 
-        if(contact.getSelected())
-        {
+        if (contact.isSelected()) {
             holder.checked.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             holder.checked.setVisibility(View.INVISIBLE);
         }
 
         holder.itemView.setOnClickListener(v -> {
-            if(contact.getSelected())
-            {
-                items.get(position).setIsSelected(false);
+            if (contact.isSelected()) {
+                contact.setSelected(false);
 
                 notifyItemChanged(checkItem);
-                buttonListener.onItemClicked("");
+                buttonListener.onItemClicked(contact.getFullName(), contact.getUserId());
 
-            }
-            else
-            {
-                items.get(checkItem).setIsSelected(false);
-                items.get(position).setIsSelected(true);
+            } else {
+                items.get(checkItem).setSelected(false);
+                contact.setSelected(true);
                 notifyItemChanged(checkItem);
-                checkItem =position;
+                checkItem = position;
                 notifyItemChanged(checkItem);
-                buttonListener.onItemClicked(holder.txt.getText().toString());
-
+                buttonListener.onItemClicked(holder.txt.getText().toString(), items.get(checkItem).getUserId());
             }
 
         });
@@ -79,6 +70,7 @@ public class UserListAdapter   extends  RecyclerView.Adapter<UserListAdapter.hol
     public int getItemCount() {
         return items == null ? 0 : items.size();
     }
+
     public static class holder extends RecyclerView.ViewHolder {
 
         TextView txt;

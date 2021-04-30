@@ -3,15 +3,20 @@ package uk.ac.tees.mad.w9501736.network;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.models.BasicResponse;
-import uk.ac.tees.mad.w9501736.models.CircleModel;
+import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
+import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 
 
 /**
@@ -43,7 +48,7 @@ public interface RestService {
     @FormUrlEncoded
     @POST("/api/circle/edit")
     Call<BasicResponse> editCircle(@Nullable @Field("token") String token,
-                                  @Nullable @Field("circle_id") String id,
+                                   @Nullable @Field("circle_id") Integer id,
                                    @Nullable @Field("circle_name") String name
                                 );
 
@@ -51,10 +56,16 @@ public interface RestService {
     @FormUrlEncoded
     @POST("/api/circle/delete")
     Call<BasicResponse> deleteCircle(@Nullable @Field("token") String token,
-                                     @Nullable @Field("circle_id") String id
+                                     @Nullable @Field("circle_id") Integer id
     );
 
 
     @GET("/api/circle/list/get?")
-    Call<CircleModel> getCircle(@Nullable @Query("token") String name);
+    Call<Resource<ArrayList<CircleData>>> getCircle(@Nullable @Query("token") String name);
+
+
+    @GET("/api/user/search?")
+    Call<Resource<ArrayList<UserFriendsList>>> findCircle(@Nullable @Query("token") String name, @Nullable @Query("username") String username);
+
+
 }

@@ -28,8 +28,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
+import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.models.BasicResponse;
-import uk.ac.tees.mad.w9501736.models.CircleModel;
+import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -39,7 +40,7 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 public class LandingFragment extends BaseFragment implements AdapterInterface {
 
     RecyclerView circles;
-    ArrayList<CircleModel.CircleData> infos = new ArrayList<>();
+    ArrayList<CircleData> infos = new ArrayList<>();
     CircleAdapter circleAdapter;
     private AdapterInterface listener;
     private View view;
@@ -133,7 +134,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     }
 
 
-    private void deleteCircle(String id) {
+    private void deleteCircle(Integer id) {
         showProgressBar(true);
 
         Call<BasicResponse> api = mRetrofitService.deleteCircle(getWiseLiUser().getToken(), id);
@@ -165,7 +166,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     }
 
 
-    private void editCircle(String id, String name) {
+    private void editCircle(Integer id, String name) {
         showProgressBar(true);
 
         Call<BasicResponse> api = mRetrofitService.editCircle(getWiseLiUser().getToken(), id, name);
@@ -201,12 +202,12 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     private void getCircle() {
         showProgressBar(true);
         infos.clear();
-        Call<CircleModel> api = mRetrofitService.getCircle(getWiseLiUser().getToken());
+        Call<Resource<ArrayList<CircleData>>> api = mRetrofitService.getCircle(getWiseLiUser().getToken());
 
 
-        api.enqueue(new Callback<CircleModel>() {
+        api.enqueue(new Callback<Resource<ArrayList<CircleData>>>() {
             @Override
-            public void onResponse(Call<CircleModel> responseCall, Response<CircleModel> response) {
+            public void onResponse(Call<Resource<ArrayList<CircleData>>> responseCall, Response<Resource<ArrayList<CircleData>>> response) {
                 showProgressBar(false);
 
                 if (response.body() != null) {
@@ -222,7 +223,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
             }
 
             @Override
-            public void onFailure(Call<CircleModel> responseCall, Throwable t) {
+            public void onFailure(Call<Resource<ArrayList<CircleData>>> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
 
@@ -248,18 +249,19 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, Integer circleId) {
         Bundle bundle = new Bundle();
-        bundle.putString("caption", title);
+        bundle.putString("circle_name", title);
+        bundle.putInt("circle_id", circleId);
 
         Navigation.findNavController(view).navigate(R.id.action_landingFragment_to_circularFragment, bundle);
     }
 
     @Override
-    public void onDeleteCtaClicked(String id) {
+    public void onDeleteCtaClicked(Integer id) {
         deleteCircle(id);
         for (int i = 0; i < infos.size(); i++) {
-            if (infos.get(i).getCircle_id().equals(id)) {
+            if (infos.get(i).getCircleId() == id) {
                 infos.remove(i);
             }
         }
@@ -268,7 +270,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     }
 
     @Override
-    public void setEditableText(String id, String value) {
+    public void setEditableText(Integer id, String value) {
         editCircle(id,value);
     }
 }
