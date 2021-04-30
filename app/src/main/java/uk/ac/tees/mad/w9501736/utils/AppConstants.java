@@ -17,6 +17,7 @@ public class AppConstants {
         //store API's
         public static final String API_REGISTER = "user/signup";
         private static String API_VERSION = "1.0";
+        public String PROFILE_EDIT_API ="user/profile/edit";
 
     }
 

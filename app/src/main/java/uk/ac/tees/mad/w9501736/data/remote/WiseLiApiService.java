@@ -35,4 +35,9 @@ public interface WiseLiApiService {
     @POST(API_REGISTER)
     Observable<Resource<WiseLiUser>> registerUser(@PartMap() Map<String, RequestBody> partMap,
                                                   @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST(API_REGISTER)
+    Observable<Resource<WiseLiUser>> editUser(@PartMap() Map<String, RequestBody> partMap,
+                                                  @Part MultipartBody.Part file);
 }
