@@ -7,11 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,11 +28,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
 import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
 import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
 import uk.ac.tees.mad.w9501736.models.AvailableUserList;
-import uk.ac.tees.mad.w9501736.models.CircleInfo;
 import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
@@ -46,7 +41,7 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
  * Use the {@link CircleDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CircleDetailFragment extends Fragment  implements AdapterInterface {
+public class CircleDetailFragment extends Fragment implements AdapterInterface {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,13 +52,13 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private View view;
     FloatingActionButton addUser;
     ArrayList data;
     RecyclerView recyclerview;
-    String  Title ="";
+    String Title = "";
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private View view;
 
 
     public CircleDetailFragment() {
@@ -118,13 +113,10 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
         ImageView spino = view.findViewById(R.id.addUserBtn);
 
 
-
-
         tabLayout.addTab(tabLayout.newTab().setText("Active"));
         tabLayout.addTab(tabLayout.newTab().setText("Inactive"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        AdapterInterface adapterInterface =this;
-
+        AdapterInterface adapterInterface = this;
 
 
         spino.setOnClickListener(new View.OnClickListener() {
@@ -132,15 +124,14 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.custom_dialog_list_user);
-                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-                recyclerview = (RecyclerView) dialog.findViewById(R.id.homeRecyclerView);
+                Button btnOk = dialog.findViewById(R.id.btnOk);
+                Button btnCancel = dialog.findViewById(R.id.btnCancel);
+                recyclerview = dialog.findViewById(R.id.homeRecyclerView);
                 data = new ArrayList<>();
-                data.add(new AvailableUserList("User 1",false));
-                data.add(new AvailableUserList("User 2",false));
-                data.add(new AvailableUserList("User 3",false));
-                data.add(new AvailableUserList("User 4",false));
-                dialog.getWindow().setLayout(600,400);
+                data.add(new AvailableUserList("User 1", false));
+                data.add(new AvailableUserList("User 2", false));
+                data.add(new AvailableUserList("User 3", false));
+                data.add(new AvailableUserList("User 4", false));
                 recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
                 recyclerview.setAdapter(new UserListAdapter(data, adapterInterface));
                 WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -149,22 +140,20 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
                 lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 dialog.getWindow().setAttributes(lp);
                 dialog.show();
-                dialog.setOnDismissListener( new DialogInterface.OnDismissListener(){
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        Title ="";
+                        Title = "";
                     }
                 });
                 btnOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(Title.isEmpty())
-                        {
-                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
+                        if (Title.isEmpty()) {
+                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
 
-                        }
-                        else {
+                        } else {
                             dialog.dismiss();
                             Bundle bundle = new Bundle();
                             bundle.putString("caption", Title);
@@ -186,23 +175,22 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
             public void onClick(View v) {
                 final Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.custom_dialog_add_user);
-                Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-                Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-                TextInputLayout txt = (TextInputLayout) dialog.findViewById(R.id.edtLastName);
+                Button btnOk = dialog.findViewById(R.id.btnOk);
+                Button btnCancel = dialog.findViewById(R.id.btnCancel);
+                TextInputLayout shopName = dialog.findViewById(R.id.edtShopName);
+                TextInputLayout shopDescription = dialog.findViewById(R.id.edtShopDescription);
 
 
                 dialog.show();
                 btnOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(txt.getEditText().getText().toString().isEmpty())
-                        {
-                            Toast.makeText(view.getContext(),getString(R.string.please_provide),Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        if (shopName.getEditText().getText().toString().isEmpty() ||shopDescription.getEditText().getText().toString().isEmpty()) {
+                            Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
+                        } else {
                             dialog.dismiss();
                             Bundle bundle = new Bundle();
-                            bundle.putString("caption", txt.getEditText().getText().toString());
+                            bundle.putString("caption", shopName.getEditText().getText().toString());
                             Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
                         }
                     }
@@ -265,7 +253,7 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     @Override
     public void onItemClicked(String title) {
         Title = title;
-        Toast.makeText(view.getContext(),title,Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), title, Toast.LENGTH_SHORT).show();
 
 
     }
@@ -276,7 +264,7 @@ public class CircleDetailFragment extends Fragment  implements AdapterInterface 
     }
 
     @Override
-    public void setEditableText(String id,String name) {
+    public void setEditableText(String id, String name) {
 
     }
 }
