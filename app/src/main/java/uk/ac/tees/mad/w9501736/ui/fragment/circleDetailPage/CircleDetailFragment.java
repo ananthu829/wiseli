@@ -6,25 +6,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,6 @@ import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
-import uk.ac.tees.mad.w9501736.models.AvailableUserList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +64,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
-    FloatingActionButton addUser;
     ArrayList data;
     RecyclerView recyclerview;
     Integer userID;
@@ -139,7 +134,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
 
         tabLayout = view.findViewById(R.id.tl);
         viewPager = view.findViewById(R.id.vp);
-        addUser = view.findViewById(R.id.fab);
         ImageView spino = view.findViewById(R.id.addUserBtn);
 
 
@@ -154,28 +148,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
 
         spino.setOnClickListener(v -> {
             getUserListApiCall();
-        });
-
-        addUser.setOnClickListener(v -> {
-            final Dialog dialog = new Dialog(view.getContext());
-            dialog.setContentView(R.layout.custom_dialog_add_user);
-            Button btnOk = dialog.findViewById(R.id.btnOk);
-            Button btnCancel = dialog.findViewById(R.id.btnCancel);
-            TextInputLayout txt = dialog.findViewById(R.id.edtLastName);
-
-
-            dialog.show();
-            btnOk.setOnClickListener(v13 -> {
-                if (txt.getEditText().getText().toString().isEmpty()) {
-                    Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
-                } else {
-                    dialog.dismiss();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("caption", txt.getEditText().getText().toString());
-                    Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-                }
-            });
-            btnCancel.setOnClickListener(v14 -> dialog.dismiss());
         });
 
         tabPagerAdapter = new TabPagerAdapter(getContext(), getChildFragmentManager(), tabLayout.getTabCount());

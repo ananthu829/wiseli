@@ -68,4 +68,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
             commonEditableTextView = view.findViewById(R.id.commonEditableTextView);
         }
     }
+
+    public void updateListItem(List<ActiveInActiveBody> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
 }
