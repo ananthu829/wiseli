@@ -8,11 +8,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvShopTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="ADD USER"
+        android:text="ADD SHOP"
         android:textSize="30sp"
         android:textColor="@color/black"
         android:fontFamily="@font/avertacy_bold"
@@ -21,8 +21,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/edtLastName"
+        android:id="@+id/edtShopName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimens50"
@@ -30,7 +31,7 @@
         android:layout_marginEnd="@dimen/dimens50"
         android:focusable="true"
         android:fontFamily="@font/avertacy_regular"
-        android:hint="Add User"
+        android:hint="Add Shop Name"
         android:imeOptions="actionNext"
         android:maxLength="25"
         android:singleLine="true"
@@ -38,7 +39,33 @@
         app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/tvShopTitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+          <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edtShopDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimens50"
+        android:layout_marginTop="@dimen/dimens20"
+        android:layout_marginEnd="@dimen/dimens50"
+        android:focusable="true"
+        android:fontFamily="@font/avertacy_regular"
+        android:hint="Add Shop Description"
+        android:imeOptions="actionNext"
+        android:maxLength="25"
+        android:singleLine="true"
+        app:helperText=" "
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtShopName">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -59,7 +86,7 @@
         android:background="@drawable/signup_button_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtLastName" />
+        app:layout_constraintTop_toBottomOf="@id/edtShopDescription" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCancel"
@@ -74,5 +101,5 @@
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edtLastName" />
+        app:layout_constraintTop_toBottomOf="@id/edtShopDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

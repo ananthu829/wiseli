@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +49,7 @@ import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
+import uk.ac.tees.mad.w9501736.models.AvailableUserList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -344,6 +346,11 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
         btnOk = dialog.findViewById(R.id.btnOk);
         btnCancel = dialog.findViewById(R.id.btnCancel);
         recyclerview = dialog.findViewById(R.id.homeRecyclerView);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
     }
 
     void initDialogClicks(List<UserFriendsList> userFriendsLists) {
@@ -465,5 +472,4 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
             }
         };
     }
-
 }

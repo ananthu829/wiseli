@@ -13,13 +13,21 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/nav_header_imageView"
+        android:id="@+id/navProfile"
         android:layout_width="@dimen/_100"
         android:layout_height="@dimen/_100"
         android:src="@drawable/image1" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/nav_header_textView"
+        android:id="@+id/navUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="user@gmail.com"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/navEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"

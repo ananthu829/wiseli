@@ -520,6 +520,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onNext(Resource<WiseLiUser> value) {
+                if(value.result) {
                 LoginModel.LoginModelDB loginModel = new LoginModel().new LoginModelDB();
                 loginModel.setUser_id(String.valueOf(value.getData().getUserId()));
                 loginModel.setFirst_name(value.getData().getFirstName());
@@ -537,6 +538,11 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
                 mAppPreferences.setUserCashedInfo(wiseLiUser);
                 Log.d("registerUser", " onNext : value : " + value);
                 navigateToLanding();
+                }
+                else
+                {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
 
             @Override

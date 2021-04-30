@@ -24,6 +24,7 @@ public class AppConstants {
         public static final String API_INACTIVE_LIST = "inactive/list/get";
         public static final String API_DELETE_SHOPPING_LIST = "shoppinglist/delete";
         private static String API_VERSION = "1.0";
+        public static final String PROFILE_EDIT_API ="user/profile/edit";
 
     }
 
