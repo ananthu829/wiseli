@@ -68,6 +68,11 @@
                 android:text="10"
                 android:textSize="16sp" />
         </LinearLayout>
-
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="@dimen/_20"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_delete"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

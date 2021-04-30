@@ -127,5 +127,6 @@ dependencies {
 
     // EasyDeviceInfo Base Composite
     implementation "com.github.nisrulz:easydeviceinfo-base:$easyDeviceInfoVersion"
+    implementation 'com.google.android.libraries.places:places:1.1.0'
 
 }

@@ -55,8 +55,9 @@ public class CommonEditableTextView extends CardView {
                 tv.setVisibility(VISIBLE);
                 tv.setText(currentText);
                 ivEdit.setImageResource(R.drawable.ic_mode_edit);
-                editClickListner.setEditableText(id,et.getText().toString());
-
+                if(editClickListner!=null) {
+                    editClickListner.setEditableText(id, et.getText().toString());
+                }
             } else {
                 et.setVisibility(VISIBLE);
                 tv.setVisibility(GONE);

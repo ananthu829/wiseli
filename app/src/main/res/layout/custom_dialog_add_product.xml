@@ -21,31 +21,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <Spinner
         android:id="@+id/edtItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_40"
         android:layout_marginStart="@dimen/dimens50"
         android:layout_marginTop="@dimen/dimens20"
         android:layout_marginEnd="@dimen/dimens50"
         android:focusable="true"
         android:fontFamily="@font/avertacy_regular"
-        android:hint="Add Item"
-        android:imeOptions="actionNext"
-        android:maxLength="25"
-        android:singleLine="true"
-        app:helperText=" "
+
         app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textView"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edtQuantity2"
