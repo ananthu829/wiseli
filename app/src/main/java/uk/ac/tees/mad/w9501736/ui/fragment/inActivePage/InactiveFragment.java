@@ -118,6 +118,8 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
         mAppPreferences.setActive(false);
         Bundle bundle = new Bundle();
         bundle.putString("caption", title);
+        bundle.putInt("list_id", id);
+        bundle.putString("list_name", title);
         Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
     }
 

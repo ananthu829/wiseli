@@ -48,6 +48,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -315,9 +316,9 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
 
     }
 
-    private void saveData(Boolean isclosed, String amount) {
+    private void saveData(Boolean isclosed, String amounts) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, lat, log, amount, listId, String.valueOf(isclosed));
+        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, amounts, lat, log, listId, String.valueOf(isclosed));
 
 
         api.enqueue(new Callback<BasicResponse>() {
@@ -599,8 +600,8 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                     .addOnCompleteListener(getActivity(), task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation = task.getResult();
-                            lat = String.valueOf(mLastLocation.getLatitude());
-                            log = String.valueOf(mLastLocation.getLongitude());
+                            lat = roundDecimal((mLastLocation.getLatitude()));
+                            log = roundDecimal((mLastLocation.getLongitude()));
                             System.out.println("LandingActivity getLatitude : " + mLastLocation.getLatitude() + ", getLongitude : " + mLastLocation.getLongitude());
                         } else {
                             Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_location_null), Snackbar.LENGTH_LONG).show();
@@ -632,5 +633,9 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 token.continuePermissionRequest();
             }
         }).check();
+    }
+    public String roundDecimal(Double dec){
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return String.valueOf(Double.valueOf(twoDForm.format(dec)));
     }
 }

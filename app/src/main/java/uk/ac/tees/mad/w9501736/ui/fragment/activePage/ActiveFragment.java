@@ -94,7 +94,15 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setRetainInstance(true);
         return inflater.inflate(R.layout.fragment_active, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        getActiveList();
+
+        super.onResume();
     }
 
     @Override
@@ -110,9 +118,7 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
         active = view.findViewById(R.id.activeRv);
         addUser = view.findViewById(R.id.fab);
 
-        active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        userAdapter = new UserAdapter(activeList, true, this);
-        active.setAdapter(userAdapter);
+
 
         getActiveList();
 
@@ -182,6 +188,8 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
             public void onNext(Resource<List<ActiveInActiveBody>> value) {
                 Log.d("getUserList", " onNext : value : " + value);
                 if (value.result) {
+                    adapterSet();
+
                     activeList.clear();
                     activeList = value.getData();
                     userAdapter.updateListItem(activeList);
@@ -205,7 +213,11 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
             }
         };
     }
-
+public  void  adapterSet(){
+    active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+    userAdapter = new UserAdapter(activeList, true, this);
+    active.setAdapter(userAdapter);
+}
     private void createShoppingList(String shopName, String listName) {
         showProgressBar(true);
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
