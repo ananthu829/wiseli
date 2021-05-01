@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_200"
@@ -14,9 +15,11 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/navProfile"
-        android:layout_width="@dimen/_60"
-        android:layout_height="@dimen/_60"
-        android:src="@drawable/image1" />
+        android:layout_width="@dimen/_80"
+        android:layout_height="@dimen/_80"
+        android:src="@drawable/image1"
+        app:civ_border_color="@color/photoBackground"
+        app:civ_border_width="1dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/navUsername"

@@ -4,6 +4,7 @@ package uk.ac.tees.mad.w9501736.ui.fragment.listPage;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,17 +24,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -63,6 +68,7 @@ import uk.ac.tees.mad.w9501736.models.ShoppingList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
+import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -78,6 +84,11 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     ArrayAdapter<String> productListAdapter;
     List<ItemsList.ListItem> listItem = new ArrayList<>();
     String listName = "";
+    String amount = "";
+    private FusedLocationProviderClient mFusedLocationClient;
+    protected Location mLastLocation;
+    public String lat = "0.000";
+    public String log = "0.000";
     ArrayList<Item> itemList;
     Spinner spinner;
     RecyclerView rvList;
@@ -90,8 +101,11 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     CommentAdapter commentAdapter;
     ItemAdapter itemAdapter;
     CommonEditableTextView cetvTotal;
+    CardView spinnerLayout;
+    TextView total;
     TextView btnAddProduct;
     FrameLayout searchMaps;
+    Spinner spinnerOffline;
     Button save;
     String[] courses = {"C", "Data structures",
             "Interview prep", "Algorithms",
@@ -101,6 +115,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     private String placeName = "";
     private Integer circleId = 0;
     private Integer listId = 0;
+    Dialog dialog;
 
     public ShopListDetailFragment() {
         // Required empty public constructor
@@ -126,6 +141,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         itemList = new ArrayList<>();
         commentArrayList = new ArrayList<>();
         getItems();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         commentArrayList.add(new Comment("Good", "Brian", ""));
         if (!Places.isInitialized()) {
@@ -139,13 +155,46 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         ivLocChose = view.findViewById(R.id.ivLocChose);
         tvShopAddress = view.findViewById(R.id.tvShopAddress);
         cetvTotal = view.findViewById(R.id.cetvTotal);
+        total = view.findViewById(R.id.tvTotalHeading);
+        spinnerLayout = view.findViewById(R.id.cardView2);
+        cetvTotal.setOnEditClickListener(this, 0);
         btnAddProduct = view.findViewById(R.id.textView4);
         save = view.findViewById(R.id.save);
         cetvTotal.hideImageDeleteBtn(true);
         cetvTotal.setEditableNumberInputType();
-        cetvTotal.setEditableHintText("Enter the total Amount");
-
-        save.setOnClickListener(view1 -> saveData(isclosed));
+        spinnerOffline = view.findViewById(R.id.spinner2);
+        cetvTotal.setEditableText(amount);
+        getCurrentLoc();
+        if (!mAppPreferences.isActive()) {
+            etComment.setEnabled(false);
+            ivCommentSend.setEnabled(false);
+            rvList.setEnabled(false);
+            searchMaps.setEnabled(false);
+            rvComments.setEnabled(false);
+            ivLocChose.setEnabled(false);
+            tvShopAddress.setEnabled(false);
+            cetvTotal.setEnabled(false);
+            btnAddProduct.setEnabled(false);
+            save.setEnabled(false);
+            spinnerOffline.setEnabled(false);
+            cetvTotal.setEnabled(false);
+            cetvTotal.enableOrDisable(false);
+        } else {
+            etComment.setEnabled(true);
+            ivCommentSend.setEnabled(true);
+            rvList.setEnabled(true);
+            searchMaps.setEnabled(true);
+            rvComments.setEnabled(true);
+            ivLocChose.setEnabled(true);
+            tvShopAddress.setEnabled(true);
+            cetvTotal.setEnabled(true);
+            btnAddProduct.setEnabled(true);
+            save.setEnabled(true);
+            spinnerOffline.setEnabled(true);
+            cetvTotal.setEnabled(true);
+            cetvTotal.enableOrDisable(true);
+        }
+        save.setOnClickListener(view1 -> saveData(isclosed, cetvTotal.getEditableText()));
         if (getArguments() != null) {
             circleId = getArguments().getInt("circle_id");
             listId = getArguments().getInt("list_id");
@@ -178,7 +227,6 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         List<String> yesOrNo = new ArrayList<>();
         yesOrNo.add("No");
         yesOrNo.add("Yes");
-        Spinner spinnerOffline = view.findViewById(R.id.spinner2);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, yesOrNo);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -188,6 +236,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Toast.makeText(getContext(), yesOrNo.get(position), Toast.LENGTH_SHORT).show();
+                isclosed = position != 0;
 
             }
 
@@ -196,8 +245,10 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 // your code here
             }
         });
+
+
         btnAddProduct.setOnClickListener(v -> {
-            final Dialog dialog = new Dialog(view.getContext());
+            dialog = new Dialog(view.getContext());
             dialog.setContentView(R.layout.custom_dialog_add_product);
             Button btnOk = dialog.findViewById(R.id.btnOk);
             Button btnCancel = dialog.findViewById(R.id.btnCancel);
@@ -215,7 +266,6 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     Toast.makeText(getContext(), productItemList.get(position), Toast.LENGTH_SHORT).show();
                     productItemId = listItem.get(position).getItem_id();
-                    isclosed = position != 0;
                 }
 
                 @Override
@@ -236,6 +286,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 }
             });
         });
+
         ivLocChose.setOnClickListener(v -> {
             Dexter.withContext(getActivity())
                     .withPermissions(
@@ -264,9 +315,9 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
 
     }
 
-    private void saveData(Boolean isclosed) {
+    private void saveData(Boolean isclosed, String amount) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, listId, String.valueOf(isclosed));
+        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, lat, log, amount, listId, String.valueOf(isclosed));
 
 
         api.enqueue(new Callback<BasicResponse>() {
@@ -395,10 +446,32 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                     if (response.body().getResult()) {
                         if (response.body().getData() != null) {
                             listName = response.body().getData().getName();
+                            amount = response.body().getData().getAmount();
+                            if (amount.length() != 0) {
+                                cetvTotal.setEditableHintText(amount);
+
+                            } else {
+                                cetvTotal.setEditableHintText("Enter the total Amount");
+
+
+                            }
                             for (int i = 0; i < response.body().getData().getItemData().size(); i++) {
                                 addItem(response.body().getData().getItemData().get(i).getItem_name(), response.body().getData().getItemData().get(i).getQuantity(), response.body().getData().getItemData().get(i).getListitem_id());
                             }
+                            if (itemList.size() == 0) {
+                                rvList.setVisibility(View.GONE);
+                                total.setVisibility(View.GONE);
+                                cetvTotal.setVisibility(View.GONE);
+                                save.setVisibility(View.GONE);
+                                spinnerLayout.setVisibility(View.GONE);
+                            } else {
+                                rvList.setVisibility(View.VISIBLE);
+                                total.setVisibility(View.VISIBLE);
+                                cetvTotal.setVisibility(View.VISIBLE);
+                                save.setVisibility(View.VISIBLE);
 
+                                spinnerLayout.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 } else {
@@ -426,6 +499,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 showProgressBar(false);
                 Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                 itemList.clear();
+                dialog.dismiss();
                 getShoppingList();
 
             }
@@ -467,9 +541,35 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         });
     }
 
+//
+//    private void editShoppingList(Integer listId, String name) {
+//        showProgressBar(true);
+//        Call<BasicResponse> api = mRetrofitService.editListShopping(getWiseLiUser().getToken(), listId, name);
+//
+//
+//        api.enqueue(new Callback<BasicResponse>() {
+//            @Override
+//            public void onResponse(@NotNull Call<BasicResponse> responseCall, Response<BasicResponse> response) {
+//                showProgressBar(false);
+////                Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
+////                itemList.clear();
+////                getShoppingList();
+//            }
+//
+//            @Override
+//            public void onFailure(@NotNull Call<BasicResponse> responseCall, Throwable t) {
+//                t.printStackTrace();
+//                showProgressBar(false);
+//
+//            }
+//
+//
+//        });
+//    }
+
     public void recy() {
         commentAdapter = new CommentAdapter(commentArrayList);
-        itemAdapter = new ItemAdapter(itemList, this);
+        itemAdapter = new ItemAdapter(itemList, this, mAppPreferences.isActive());
     }
 
     @Override
@@ -484,6 +584,53 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
 
     @Override
     public void setEditableText(Integer id, String name) {
+//        editShoppingList(id, name);
+        saveData(false, name);
+    }
 
+    @SuppressWarnings("MissingPermission")
+    private void getLastLocation() {
+        //iLandingPresenter.getWeatherForecastWebService(String.valueOf(latitude), String.valueOf(longitude));
+        System.out.println("LandingActivity getLastLocation");
+        showProgressBar(true);
+        if (NetworkDetector.haveNetworkConnection(getActivity())) {
+
+            mFusedLocationClient.getLastLocation()
+                    .addOnCompleteListener(getActivity(), task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            mLastLocation = task.getResult();
+                            lat = String.valueOf(mLastLocation.getLatitude());
+                            log = String.valueOf(mLastLocation.getLongitude());
+                            System.out.println("LandingActivity getLatitude : " + mLastLocation.getLatitude() + ", getLongitude : " + mLastLocation.getLongitude());
+                        } else {
+                            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_location_null), Snackbar.LENGTH_LONG).show();
+
+                        }
+                    });
+        } else {
+            showProgressBar(false);
+            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_network_available), Snackbar.LENGTH_LONG).show();
+
+        }
+    }
+
+    public void getCurrentLoc() {
+        Dexter.withContext(getActivity())
+                .withPermissions(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.areAllPermissionsGranted()) {
+                    getLastLocation();
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
     }
 }

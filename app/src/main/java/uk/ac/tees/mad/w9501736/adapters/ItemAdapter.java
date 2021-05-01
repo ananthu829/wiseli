@@ -3,6 +3,7 @@ package uk.ac.tees.mad.w9501736.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +22,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
     ArrayList<Item> items;
     public AdapterInterface buttonListener;
+    public Boolean status;
 
-
-    public ItemAdapter(ArrayList<Item> items, AdapterInterface buttonListener) {
+    public ItemAdapter(ArrayList<Item> items, AdapterInterface buttonListener, Boolean status) {
         this.items = items;
         this.buttonListener = buttonListener;
-
+        this.status = status;
 
     }
 
@@ -57,6 +58,46 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
                 buttonListener.onDeleteCtaClicked(contact.getListitem_id());
             }
         });
+        if (!status) {
+            holder.edit.setEnabled(false);
+            holder.ok.setEnabled(false);
+            holder.delete.setEnabled(false);
+        } else {
+            holder.edit.setEnabled(true);
+            holder.ok.setEnabled(true);
+            holder.delete.setEnabled(true);
+        }
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.editItem.setVisibility(View.VISIBLE);
+                holder.editQuantity.setVisibility(View.VISIBLE);
+                holder.edit.setVisibility(View.GONE);
+                holder.ok.setVisibility(View.VISIBLE);
+                holder.delete.setVisibility(View.GONE);
+                holder.txtName.setVisibility(View.GONE);
+                holder.txtQty.setVisibility(View.GONE);
+                holder.editItem.setText(holder.txtName.getText().toString());
+                holder.editQuantity.setText(holder.txtQty.getText().toString());
+
+            }
+        });
+
+        holder.ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.editItem.setVisibility(View.GONE);
+                holder.editQuantity.setVisibility(View.GONE);
+                holder.edit.setVisibility(View.VISIBLE);
+                holder.ok.setVisibility(View.GONE);
+                holder.delete.setVisibility(View.VISIBLE);
+                holder.txtName.setVisibility(View.VISIBLE);
+                holder.txtQty.setVisibility(View.VISIBLE);
+                buttonListener.setEditableText(contact.getListitem_id(), contact.getName());
+                holder.txtName.setText(holder.editItem.getText().toString());
+                holder.txtQty.setText(holder.editQuantity.getText().toString());
+            }
+        });
     }
 
     @Override
@@ -68,7 +109,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
         TextView txtName, txtQty;
         CardView layout;
-        ImageView delete;
+        ImageView delete, edit, ok;
+        EditText editItem, editQuantity;
 
         public holder(View grid) {
             super(grid);
@@ -77,6 +119,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
             txtQty = grid.findViewById(R.id.qty);
             layout = grid.findViewById(R.id.cardView);
             delete = grid.findViewById(R.id.delete);
+            edit = grid.findViewById(R.id.edit);
+            ok = grid.findViewById(R.id.ok);
+            editItem = grid.findViewById(R.id.edit_item);
+            editQuantity = grid.findViewById(R.id.edit_quantity);
 //            edit=grid.findViewById(R.id.editBtn);
         }
 
