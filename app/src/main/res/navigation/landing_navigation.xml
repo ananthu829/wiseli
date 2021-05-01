@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ListFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ShopListDetailFragment"
         android:label=""
         tools:layout="@layout/fragment_list">
 
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/groupCirclesFragment"
-        android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.GroupCirclesFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.FriendListFragment"
         android:label="@string/group_circles_fragment"
         tools:layout="@layout/fragment_group_circles" >
         <action
@@ -80,7 +80,7 @@
         tools:layout="@layout/fragment_friend_group" />
     <fragment
         android:id="@+id/findNewUserFragment"
-        android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.FindNewUserFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.AddFriendFragment"
         android:label="@string/friend_new_user_fragment"
         tools:layout="@layout/fragment_find_new_user" />
 

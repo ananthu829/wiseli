@@ -3,6 +3,7 @@ package uk.ac.tees.mad.w9501736.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,19 @@ import java.util.ArrayList;
 
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.models.Item;
+import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
 
     ArrayList<Item> items;
+    public AdapterInterface buttonListener;
 
 
-    public ItemAdapter(ArrayList<Item> items) {
+    public ItemAdapter(ArrayList<Item> items, AdapterInterface buttonListener) {
         this.items = items;
+        this.buttonListener = buttonListener;
+
 
     }
 
@@ -46,7 +51,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
         holder.setData(contact.getName(), contact.getQty());
 
-
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonListener.onDeleteCtaClicked(contact.getListitem_id());
+            }
+        });
     }
 
     @Override
@@ -58,7 +68,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
 
         TextView txtName, txtQty;
         CardView layout;
-
+        ImageView delete;
 
         public holder(View grid) {
             super(grid);
@@ -66,6 +76,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.holder> {
             txtName = grid.findViewById(R.id.item);
             txtQty = grid.findViewById(R.id.qty);
             layout = grid.findViewById(R.id.cardView);
+            delete = grid.findViewById(R.id.delete);
 //            edit=grid.findViewById(R.id.editBtn);
         }
 

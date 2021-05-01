@@ -6,27 +6,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -44,12 +40,10 @@ import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.models.FriendsList;
-import uk.ac.tees.mad.w9501736.models.User;
 import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
-import uk.ac.tees.mad.w9501736.models.AvailableUserList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,11 +59,8 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     private static final String ARG_PARAM2 = "param2";
     private static final String TAB = "param2";
     public TabPagerAdapter tabPagerAdapter;
-    ArrayList<User> chips;
     ChipGroup chipGroup;
     Chip newChip;
-    FloatingActionButton addUser;
-    ArrayList data;
     RecyclerView recyclerview;
     Integer userID;
     String userName = "";
@@ -139,7 +130,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
 
         tabLayout = view.findViewById(R.id.tl);
         viewPager = view.findViewById(R.id.vp);
-        addUser = view.findViewById(R.id.fab);
         ImageView spino = view.findViewById(R.id.addUserBtn);
 
 
@@ -154,28 +144,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
 
         spino.setOnClickListener(v -> {
             getUserListApiCall();
-        });
-
-        addUser.setOnClickListener(v -> {
-            final Dialog dialog = new Dialog(view.getContext());
-            dialog.setContentView(R.layout.custom_dialog_add_user);
-            Button btnOk = dialog.findViewById(R.id.btnOk);
-            Button btnCancel = dialog.findViewById(R.id.btnCancel);
-            TextInputLayout txt = dialog.findViewById(R.id.edtLastName);
-
-
-            dialog.show();
-            btnOk.setOnClickListener(v13 -> {
-                if (txt.getEditText().getText().toString().isEmpty()) {
-                    Toast.makeText(view.getContext(), getString(R.string.please_provide), Toast.LENGTH_SHORT).show();
-                } else {
-                    dialog.dismiss();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("caption", txt.getEditText().getText().toString());
-                    Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
-                }
-            });
-            btnCancel.setOnClickListener(v14 -> dialog.dismiss());
         });
 
         tabPagerAdapter = new TabPagerAdapter(getContext(), getChildFragmentManager(), tabLayout.getTabCount());
@@ -248,6 +216,7 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
                     if (value.data != null && value.data.size() > 0) {
                         setDialogData(value.data);
                     } else {
+                        showProgressBar(false);
                         Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.user_friends_list_null), Snackbar.LENGTH_LONG).show();
                     }
 
@@ -310,6 +279,9 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
                     if (value.data != null) {
                         if (value.data.getFriendsList() != null && value.data.getFriendsList().size() > 0) {
                             addChips(value.data.getFriendsList());
+                            value.data.getCircleId();
+                        } else {
+                            showProgressBar(false);
                         }
                     }
                 } else {
@@ -368,10 +340,6 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     }
 
     private void addUserToChipView() {
-        apiAddUser();
-    }
-
-    private void apiAddUser() {
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
         final GroupApiService webServices = retrofit.create(GroupApiService.class);
         Observable<Resource<WiseLiUser>> likedObservable = webServices.addCircleUser(getWiseLiUser().getToken(), circleID, userID);
