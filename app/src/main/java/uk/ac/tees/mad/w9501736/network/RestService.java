@@ -64,18 +64,17 @@ public interface RestService {
     Call<Resource<ArrayList<CircleData>>> getCircle(@Nullable @Query("token") String name);
 
 
-
-    @GET("/category/items/get?")
-    Call<ItemsList> getItems(@Nullable @Query("token") String token, @Nullable @Query("category_id") String categoryId);
+    @GET("/api/category/items/get?")
+    Call<ItemsList> getItems(@Nullable @Query("token") String token);
 
     @GET("/api/shoppinglist/details/get?")
-    Call<ShoppingList> getShoppingList(@Nullable @Query("token") String token, @Nullable @Query("shoppinglist_id") String categoryId);
+    Call<ShoppingList> getShoppingList(@Nullable @Query("token") String token, @Nullable @Query("shoppinglist_id") Integer list_id);
 
 
     @FormUrlEncoded
     @POST("/api/add/shoppinglist/item")
     Call<BasicResponse> addShoppingList(@Nullable @Field("token") String token,
-                                        @Nullable @Field("shoppinglist_id") String id,
+                                        @Nullable @Field("shoppinglist_id") Integer id,
                                         @Nullable @Field("item_id") String item_id,
                                         @Nullable @Field("quantity") String quantity
     );
@@ -90,8 +89,8 @@ public interface RestService {
     @FormUrlEncoded
     @POST("/api/shoppinglist/edit")
     Call<BasicResponse> saveData(@Nullable @Field("token") String token,
-                                 @Nullable @Field("list_name") String listitem_id,
-                                 @Nullable @Field("shoppinglist_id") String shoppinglist_id,
+                                 @Nullable @Field("list_name") String listitem_name,
+                                 @Nullable @Field("shoppinglist_id") Integer shoppinglist_id,
                                  @Nullable @Field("is_closed") String is_closed
     );
 
@@ -101,10 +100,10 @@ public interface RestService {
     Call<Resource<ArrayList<UserFriendsList>>> findFriends(@Nullable @Query("token") String name, @Nullable @Query("username") String username);
 
     @FormUrlEncoded
-    @POST("friend/create")
+    @POST("/api/friend/create")
     Call<BasicResponse> addFriend(@Nullable @Field("token") String name, @Nullable @Field("friend_id") Integer friendId);
 
-    @GET("friends/list/get")
+    @GET("/api/friends/list/get")
     Call<Resource<ArrayList<UserFriendsList>>> getFriendsList(@Nullable @Query("token") String token);
 
 

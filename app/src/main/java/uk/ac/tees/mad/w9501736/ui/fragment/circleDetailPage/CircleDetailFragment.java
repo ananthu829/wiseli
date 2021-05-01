@@ -216,6 +216,7 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
                     if (value.data != null && value.data.size() > 0) {
                         setDialogData(value.data);
                     } else {
+                        showProgressBar(false);
                         Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.user_friends_list_null), Snackbar.LENGTH_LONG).show();
                     }
 
@@ -279,6 +280,8 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
                         if (value.data.getFriendsList() != null && value.data.getFriendsList().size() > 0) {
                             addChips(value.data.getFriendsList());
                             value.data.getCircleId();
+                        } else {
+                            showProgressBar(false);
                         }
                     }
                 } else {

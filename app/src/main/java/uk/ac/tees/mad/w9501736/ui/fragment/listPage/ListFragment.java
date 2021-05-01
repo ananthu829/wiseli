@@ -74,7 +74,8 @@ import static android.app.Activity.RESULT_OK;
 public class ListFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, AdapterInterface {
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     ArrayList<String> items, qty;
-    List<String> list = new ArrayList<>();
+    List<String> productItemList = new ArrayList<>();
+    ArrayAdapter<String> productListAdapter;
     List<ItemsList.ListItem> listItem = new ArrayList<>();
     String listName = "";
     ArrayList<Item> itemList;
@@ -95,9 +96,11 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
     String[] courses = {"C", "Data structures",
             "Interview prep", "Algorithms",
             "DSA with java", "OS"};
-    String itemId;
+    String productItemId;
     Boolean isclosed = false;
     private String placeName = "";
+    private Integer circleId = 0;
+    private Integer listId = 0;
 
     public ListFragment() {
         // Required empty public constructor
@@ -142,24 +145,16 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
         cetvTotal.setEditableNumberInputType();
         cetvTotal.setEditableHintText("Enter the total Amount");
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveData(isclosed);
-            }
-        });
+        save.setOnClickListener(view1 -> saveData(isclosed));
         if (getArguments() != null) {
-            String title = getArguments().getString("caption");
-            if (title != null) {
-                ((LandingActivity) getActivity()).setToolbarTitle(title);
+            circleId = getArguments().getInt("circle_id");
+            listId = getArguments().getInt("list_id");
+            listName = getArguments().getString("list_name");
+            if (listName != null) {
+                ((LandingActivity) getActivity()).setToolbarTitle(listName);
             }
         }
-        searchMaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchMaps();
-            }
-        });
+        searchMaps.setOnClickListener(view12 -> searchMaps());
 
         getShoppingList();
         recy();
@@ -201,48 +196,45 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
                 // your code here
             }
         });
-        btnAddProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.custom_dialog_add_product);
-                Button btnOk = dialog.findViewById(R.id.btnOk);
-                Button btnCancel = dialog.findViewById(R.id.btnCancel);
+        btnAddProduct.setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.custom_dialog_add_product);
+            Button btnOk = dialog.findViewById(R.id.btnOk);
+            Button btnCancel = dialog.findViewById(R.id.btnCancel);
 //                TextInputLayout itm = (TextInputLayout) dialog.findViewById(R.id.edtItem);
-                TextInputLayout quantity = dialog.findViewById(R.id.edtQuantity2);
-                dialog.show();
-                spinner = dialog.findViewById(R.id.edtItem);
+            TextInputLayout quantity = dialog.findViewById(R.id.edtQuantity2);
+            dialog.show();
+            spinner = dialog.findViewById(R.id.edtItem);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, list);
-                adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                spinner.setAdapter(adapter);
+            productListAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, productItemList);
+            productListAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            spinner.setAdapter(productListAdapter);
 
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        Toast.makeText(getContext(), list.get(position), Toast.LENGTH_SHORT).show();
-                        itemId = listItem.get(position).getItem_id();
-                        isclosed = position != 0;
-                    }
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    Toast.makeText(getContext(), productItemList.get(position), Toast.LENGTH_SHORT).show();
+                    productItemId = listItem.get(position).getItem_id();
+                    isclosed = position != 0;
+                }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parentView) {
-                        // your code here
-                    }
-                });
-                btnOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addItemToShoppingList();
-                    }
-                });
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-            }
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+            });
+            btnOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addItemToShoppingList(quantity.getEditText().getText().toString());
+                }
+            });
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
         });
         ivLocChose.setOnClickListener(v -> {
             Dexter.withContext(getActivity())
@@ -274,7 +266,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
 
     private void saveData(Boolean isclosed) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.saveData(mAppPreferences.getToken(), "2", listName, String.valueOf(isclosed));
+        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, listId, String.valueOf(isclosed));
 
 
         api.enqueue(new Callback<BasicResponse>() {
@@ -355,8 +347,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
 
     private void getItems() {
         showProgressBar(true);
-        Call<ItemsList> api = mRetrofitService.getItems(mAppPreferences.getToken(), "1");
-
+        Call<ItemsList> api = mRetrofitService.getItems(getWiseLiUser().getToken());
 
         api.enqueue(new Callback<ItemsList>() {
             @Override
@@ -367,7 +358,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
 
                     for (int i = 0; i < response.body().getData().size(); i++) {
 
-                        list.add(response.body().getData().get(i).getItem_name());
+                        productItemList.add(response.body().getData().get(i).getItem_name());
                     }
 
 
@@ -393,7 +384,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
 
     private void getShoppingList() {
         showProgressBar(true);
-        Call<ShoppingList> api = mRetrofitService.getShoppingList(mAppPreferences.getToken(), "3");
+        Call<ShoppingList> api = mRetrofitService.getShoppingList(getWiseLiUser().getToken(), listId);
 
 
         api.enqueue(new Callback<ShoppingList>() {
@@ -412,35 +403,30 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
                     }
                 } else {
 
-
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<ShoppingList> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
-
             }
-
 
         });
     }
 
 
-    private void addItemToShoppingList() {
+    private void addItemToShoppingList(String quantity) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.addShoppingList(mAppPreferences.getToken(), "1", itemId, "10");
-
+        Call<BasicResponse> api = mRetrofitService.addShoppingList(getWiseLiUser().getToken(), listId, productItemId, quantity);
 
         api.enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> responseCall, Response<BasicResponse> response) {
                 showProgressBar(false);
                 Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
-
+                itemList.clear();
+                getShoppingList();
 
             }
 
@@ -458,7 +444,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
 
     private void deleteShoppingList(Integer listId) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.deleteListShopping(mAppPreferences.getToken(), listId);
+        Call<BasicResponse> api = mRetrofitService.deleteListShopping(getWiseLiUser().getToken(), listId);
 
 
         api.enqueue(new Callback<BasicResponse>() {
@@ -466,8 +452,8 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
             public void onResponse(@NotNull Call<BasicResponse> responseCall, Response<BasicResponse> response) {
                 showProgressBar(false);
                 Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
-
-
+                itemList.clear();
+                getShoppingList();
             }
 
             @Override

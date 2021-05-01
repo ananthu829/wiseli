@@ -139,9 +139,11 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
     }
 
     @Override
-    public void onItemClicked(String title, Integer Id) {
+    public void onItemClicked(String shoppingListName, Integer listID) {
         Bundle bundle = new Bundle();
-        bundle.putString("caption", title);
+        bundle.putInt(CIRCLEID, circleId);
+        bundle.putInt("list_id", listID);
+        bundle.putString("list_name", shoppingListName);
         Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
     }
 
