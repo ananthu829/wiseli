@@ -589,7 +589,6 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
                     }
                     mAppPreferences.setToken(wiseLiUser.getToken());
                     mAppPreferences.setUserDetails(loginModel);
-                    DatabaseFactory.getInstance().insertUserData(loginModel);
                     mAppPreferences.setUserCashedInfo(wiseLiUser);
                     userDetails.setPassword(wiseLiUser.getPassword());
                     ( (LandingActivity) getActivity()).updateNavHeader();

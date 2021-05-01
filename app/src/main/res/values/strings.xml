@@ -43,8 +43,8 @@
     <string name="profile_fragment">Profile</string>
     <string name="map_fragment">MapFragment</string>
     <string name="friend_group_fragment">FriendGroupFragment</string>
-    <string name="friend_new_user_fragment">Friends</string>
-    <string name="group_circles_fragment">Friends</string>
+    <string name="friend_new_user_fragment">AddFriendFragment</string>
+    <string name="group_circles_fragment">FriendListFragment</string>
     <string name="landing_fragment">WiseLi</string>
     <string name="circle_detail_fragment">CircleDetailFragment</string>
     <string name="splash_screen_fragment">SplashScreenFragment</string>
@@ -73,5 +73,6 @@
     <string name="user_friends_list_null">No user is available please add user in the nav drawer section </string>
     <string name="please_select">Please select Yes to add amount</string>
     <string name="close_list">Do you want to close the list?</string>
+    <string name="shop_list_fragment">ShopListDetailFragment</string>
 
 </resources>

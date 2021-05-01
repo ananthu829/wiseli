@@ -8,6 +8,7 @@ import androidx.room.Room;
 import java.util.List;
 
 import uk.ac.tees.mad.w9501736.R;
+import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 
 
@@ -32,18 +33,18 @@ public class DatabaseFactory {
         return object;
     }
 
-    public void insertUserData(LoginModel.LoginModelDB loginModel){
+    public void insertUserData(CircleData loginModel){
         AsyncTask.execute(() -> {
             appDatabase.getLocationDao().insert(loginModel);
         });
     }
 //
-//    public void getUserDataFromDatabase(DatabaseCallBack<List<LoginModel>> listDatabaseCallBack){
-//        AsyncTask.execute(() -> {
-//            List<LoginModel> result = appDatabase.getLocationDao().getLocationData();
-//            listDatabaseCallBack.onSuccess(result);
-//        });
-//    }
+    public void getCircleDataFromDatabase(DatabaseCallBack<List<CircleData>> listDatabaseCallBack){
+        AsyncTask.execute(() -> {
+            List<CircleData> result = appDatabase.getLocationDao().getCircleData();
+            listDatabaseCallBack.onSuccess(result);
+        });
+    }
 //
 //    public void clearRecords(){
 //        AsyncTask.execute(() -> {

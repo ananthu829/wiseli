@@ -19,7 +19,7 @@
             android:icon="@drawable/ic_person"
             android:title="@string/profile_fragment" />
         <item
-            android:id="@+id/groupCirclesFragment"
+            android:id="@+id/friendListFragment"
             android:icon="@drawable/ic_group"
             android:title="@string/group_circles_fragment" />
     </group>
