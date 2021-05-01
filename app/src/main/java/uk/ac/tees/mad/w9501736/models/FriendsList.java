@@ -3,8 +3,10 @@ package uk.ac.tees.mad.w9501736.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
+import androidx.room.Entity;
 
+import com.google.gson.annotations.SerializedName;
+@Entity
 public class FriendsList implements Parcelable {
     public static final Creator<FriendsList> CREATOR = new Creator<FriendsList>() {
         @Override

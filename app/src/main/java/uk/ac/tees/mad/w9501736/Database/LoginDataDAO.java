@@ -7,16 +7,17 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import uk.ac.tees.mad.w9501736.models.CircleData;
+import uk.ac.tees.mad.w9501736.models.CircleModel;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 
 @Dao
 public interface LoginDataDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert(LoginModel.LoginModelDB locationData);
+    public void insert(CircleData locationData);
 
-//    @Query("SELECT * FROM LoginModel.LoginModelDB")
-//    public List<LoginModel.LoginModelDB> getLocationData();
+    @Query("SELECT * FROM circledata")
+    public List<CircleData> getCircleData();
 //
-//    @Query("DELETE FROM LoginModel.LoginModelDB")
-//    public void delete();
+//
 }

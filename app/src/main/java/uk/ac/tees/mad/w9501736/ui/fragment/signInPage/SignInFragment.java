@@ -172,7 +172,6 @@ public class SignInFragment extends BaseFragment {
                     LoginModel loginModel = response.body();
                     mAppPreferences.setToken(loginModel.getLoginDetails().getToken());
                     mAppPreferences.setUserDetails(loginModel.getLoginDetails());
-                    DatabaseFactory.getInstance().insertUserData(loginModel.getLoginDetails());
                     WiseLiUser user = new WiseLiUser();
                     user.setUserId(Integer.parseInt(response.body().getLoginDetails().getUser_id()));
                     user.setFirstName(response.body().getLoginDetails().getFirst_name());

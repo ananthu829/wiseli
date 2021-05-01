@@ -4,6 +4,7 @@ package uk.ac.tees.mad.w9501736.ui.fragment.landingPage;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.CircleAdapter;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
@@ -72,8 +74,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        getCircle();
-
+//        getCircle();
 
         Fab = view.findViewById(R.id.fab);
         circles = view.findViewById(R.id.homeRecyclerView);
@@ -97,8 +98,18 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
             });
         });
 
+        if(isNetworkAvailable(getContext())){
+            getCircle();
+        }else {
+            DatabaseFactory.getInstance().getCircleDataFromDatabase(result -> {
+                if (result.size() != 0) {
+                    infos.addAll(result);
 
+                }
+            });
+            recycle();
 
+        }
     }
 
     private void addCircle(String text) {
@@ -209,7 +220,9 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
             @Override
             public void onResponse(Call<Resource<ArrayList<CircleData>>> responseCall, Response<Resource<ArrayList<CircleData>>> response) {
                 showProgressBar(false);
-
+                for (int i = 0; i < response.body().data.size(); i++) {
+                    DatabaseFactory.getInstance().insertUserData(response.body().data.get(i));
+                }
                 if (response.body() != null) {
                     infos.addAll(response.body().getData());
                     recycle();
@@ -271,6 +284,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
 
     @Override
     public void setEditableText(Integer id, String value) {
-        editCircle(id,value);
+        editCircle(id, value);
     }
 }
