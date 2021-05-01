@@ -40,12 +40,12 @@
     <string name="address">address</string>
     <string name="phone_number">Phone number</string>
     <string name="email">Email</string>
-    <string name="profile_fragment">ProfileFragment</string>
+    <string name="profile_fragment">Profile</string>
     <string name="map_fragment">MapFragment</string>
     <string name="friend_group_fragment">FriendGroupFragment</string>
-    <string name="friend_new_user_fragment">FindNewGroupFragment</string>
-
-    <string name="group_circles_fragment">GroupCirclesFragment</string>
+    <string name="friend_new_user_fragment">Friends</string>
+    
+    <string name="group_circles_fragment">Friends</string>
     <string name="landing_fragment">WiseLi</string>
     <string name="circle_detail_fragment">CircleDetailFragment</string>
     <string name="splash_screen_fragment">SplashScreenFragment</string>

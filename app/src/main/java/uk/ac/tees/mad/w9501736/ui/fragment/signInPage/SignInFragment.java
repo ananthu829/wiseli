@@ -168,8 +168,7 @@ public class SignInFragment extends BaseFragment {
         api.enqueue(new Callback<LoginModel>() {
             @Override
             public void onResponse(Call<LoginModel> responseCall, Response<LoginModel> response) {
-
-                if (response.body() != null) {
+                if (response.body().getResult()) {
                     LoginModel loginModel = response.body();
                     mAppPreferences.setToken(loginModel.getLoginDetails().getToken());
                     mAppPreferences.setUserDetails(loginModel.getLoginDetails());
@@ -191,6 +190,7 @@ public class SignInFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), LandingActivity.class));
                     getActivity().finish();
                 } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
                     Log.d("tag1", "Failed---");
 
                 }
