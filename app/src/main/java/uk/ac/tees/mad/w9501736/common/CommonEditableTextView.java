@@ -62,6 +62,7 @@ public class CommonEditableTextView extends CardView {
                 et.setVisibility(VISIBLE);
                 tv.setVisibility(GONE);
                 et.setFocusable(true);
+                tv.setText(et.getText().toString());
                 ivEdit.setImageResource(R.drawable.ic_done);
             }
         });
