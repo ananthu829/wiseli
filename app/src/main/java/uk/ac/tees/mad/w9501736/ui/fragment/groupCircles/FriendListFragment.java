@@ -22,6 +22,7 @@ import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.FriendsAdapter;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
@@ -67,8 +68,26 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adapterInterface = this;
-        getFriendsList();
+        loadFunctionality();
+
         btnClick(view);
+    }
+
+    private  void loadFunctionality() {
+        if (isNetworkAvailable(getContext())) {
+            fab.setEnabled(true);
+            getFriendsList();
+        } else {
+            fab.setEnabled(false);
+            infos.clear();
+            DatabaseFactory.getInstance().getFriendsDataFromDatabase(result -> {
+                if (result.size() != 0) {
+                    infos.addAll(result);
+                    recycle();
+
+                }
+            });
+        }
     }
 
     private void getFriendsList() {
@@ -83,6 +102,9 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
                 showProgressBar(false);
 
                 if (response.body() != null) {
+                    for (int i = 0; i < response.body().data.size(); i++) {
+                        DatabaseFactory.getInstance().insertFriendsData(response.body().data.get(i));
+                    }
                     infos.addAll(response.body().getData());
                     recycle();
                 } else {

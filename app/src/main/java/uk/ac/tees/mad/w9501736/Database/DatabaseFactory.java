@@ -10,6 +10,7 @@ import java.util.List;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.models.CircleData;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
+import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 
 
 public class DatabaseFactory {
@@ -52,4 +53,15 @@ public class DatabaseFactory {
 //        });
 //    }
 
+    public void insertFriendsData(UserFriendsList friendsList){
+        AsyncTask.execute(() -> {
+            appDatabase.getFriendsData().insert(friendsList);
+        });
+    }
+    public void getFriendsDataFromDatabase(DatabaseCallBack<List<UserFriendsList>> listDatabaseCallBack){
+        AsyncTask.execute(() -> {
+            List<UserFriendsList> result = appDatabase.getFriendsData().getFriendsData();
+            listDatabaseCallBack.onSuccess(result);
+        });
+    }
 }

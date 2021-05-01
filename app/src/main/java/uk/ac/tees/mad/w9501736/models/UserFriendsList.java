@@ -3,8 +3,12 @@ package uk.ac.tees.mad.w9501736.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity (tableName = "userFriendList")
 public class UserFriendsList implements Parcelable {
     public static final Parcelable.Creator<UserFriendsList> CREATOR = new Parcelable.Creator<UserFriendsList>() {
         @Override
@@ -17,6 +21,7 @@ public class UserFriendsList implements Parcelable {
             return new UserFriendsList[size];
         }
     };
+    @PrimaryKey
     @SerializedName("user_id")
     private int userId;
     @SerializedName("username")
