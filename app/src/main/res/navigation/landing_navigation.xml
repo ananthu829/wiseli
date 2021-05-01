@@ -24,12 +24,12 @@
     <fragment
         android:id="@+id/circleDetailFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.circleDetailPage.CircleDetailFragment"
-        android:label=""
+        android:label="@string/circle_detail_fragment"
         tools:layout="@layout/fragment_circle_detail">
 
         <action
             android:id="@+id/action_circleDetailFragment_to_listFragment"
-            app:destination="@id/listFragment"
+            app:destination="@id/shopListDetailFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
@@ -38,9 +38,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/listFragment"
+        android:id="@+id/shopListDetailFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ShopListDetailFragment"
-        android:label=""
+        android:label="@string/shop_list_fragment"
         tools:layout="@layout/fragment_list">
 
         <action
@@ -61,25 +61,21 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.profilePage.ProfileFragment"
-        android:label="@string/profile_fragment" />
+        android:label="@string/profile_fragment"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/groupCirclesFragment"
+        android:id="@+id/friendListFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.FriendListFragment"
         android:label="@string/group_circles_fragment"
         tools:layout="@layout/fragment_group_circles" >
         <action
             android:id="@+id/action_groupCirclesFragment_to_findNewUserFragment"
-            app:destination="@id/findNewUserFragment" />
+            app:destination="@id/addFriendFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/friendGroupFragment"
-        android:name="uk.ac.tees.mad.w9501736.ui.fragment.friendGroupPage.FriendGroupFragment"
-        android:label="@string/friend_group_fragment"
-        tools:layout="@layout/fragment_friend_group" />
-    <fragment
-        android:id="@+id/findNewUserFragment"
+        android:id="@+id/addFriendFragment"
         android:name="uk.ac.tees.mad.w9501736.ui.fragment.groupCircles.AddFriendFragment"
         android:label="@string/friend_new_user_fragment"
         tools:layout="@layout/fragment_find_new_user" />
