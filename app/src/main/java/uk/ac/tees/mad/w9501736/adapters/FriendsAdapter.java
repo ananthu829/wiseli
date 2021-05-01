@@ -40,14 +40,16 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.holder> 
     public void onBindViewHolder(@NonNull holder holder, int position) {
         final UserFriendsList contact = items.get(position);
         holder.commonEditableTextView.setEditableText(contact.getFullName());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getUserId());
-        holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getUserId());
-
-        holder.commonEditableTextView.setOnClickListener(v -> {
-            if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getUserId());
-            }
-        });
+        holder.commonEditableTextView.hideImageDeleteBtn(true);
+        holder.commonEditableTextView.hideImageEditBtn(true);
+//        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getUserId());
+//        holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getUserId());
+//
+//        holder.commonEditableTextView.setOnClickListener(v -> {
+//            if (holder.commonEditableTextView.getTextTextVisibility()) {
+//                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getUserId());
+//            }
+//        });
     }
 
     @Override

@@ -113,6 +113,17 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/please_select"
+            android:textSize="@dimen/dimensFont16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listrv" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTotalHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -122,7 +133,9 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listrv" />
+            app:layout_constraintTop_toBottomOf="@+id/tvHint" />
+
+
 
         <uk.ac.tees.mad.w9501736.common.CommonEditableTextView
             android:id="@+id/cetvTotal"
@@ -138,6 +151,19 @@
 
         </uk.ac.tees.mad.w9501736.common.CommonEditableTextView>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCloseHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/close_list"
+            android:textSize="@dimen/dimensFont16"
+            app:layout_constraintBottom_toTopOf="@+id/cardView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cetvTotal" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
@@ -149,7 +175,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cetvTotal" />
+            app:layout_constraintTop_toBottomOf="@+id/tvCloseHint" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clAddComment"
@@ -174,7 +200,6 @@
                 app:cardPreventCornerOverlap="true"
                 app:layout_constraintHorizontal_weight="3"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/ivEdit"
                 app:layout_constraintTop_toTopOf="parent">
 
 
@@ -246,14 +271,12 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/cetvTotal"
             app:layout_constraintStart_toStartOf="@+id/cetvTotal"
-            app:layout_constraintTop_toBottomOf="@+id/cetvTotal"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/cetvTotal">
 
             <Spinner
                 android:id="@+id/spinner2"

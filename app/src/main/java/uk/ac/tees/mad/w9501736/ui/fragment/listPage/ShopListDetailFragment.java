@@ -190,12 +190,17 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             tvShopAddress.setEnabled(true);
             cetvTotal.setEnabled(true);
             btnAddProduct.setEnabled(true);
-            save.setEnabled(true);
+            save.setEnabled(false);
             spinnerOffline.setEnabled(true);
             cetvTotal.setEnabled(true);
             cetvTotal.enableOrDisable(true);
         }
-        save.setOnClickListener(view1 -> saveData(isclosed, cetvTotal.getEditableText()));
+        save.setOnClickListener(view1 -> {
+            if(isclosed)
+            {
+                saveData(isclosed, cetvTotal.getEditableText());
+            }
+        });
         if (getArguments() != null) {
             circleId = getArguments().getInt("circle_id");
             listId = getArguments().getInt("list_id");
@@ -238,6 +243,14 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Toast.makeText(getContext(), yesOrNo.get(position), Toast.LENGTH_SHORT).show();
                 isclosed = position != 0;
+                if(position == 1)
+                {
+                    save.setEnabled(true);
+                }
+                else
+                {
+                    save.setEnabled(false);
+                }
 
             }
 
