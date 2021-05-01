@@ -140,6 +140,7 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
 
     @Override
     public void onItemClicked(String shoppingListName, Integer listID) {
+        mAppPreferences.setActive(true);
         Bundle bundle = new Bundle();
         bundle.putInt(CIRCLEID, circleId);
         bundle.putInt("list_id", listID);

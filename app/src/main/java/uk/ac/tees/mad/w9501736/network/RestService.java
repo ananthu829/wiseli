@@ -87,9 +87,21 @@ public interface RestService {
 
 
     @FormUrlEncoded
+    @POST("/api/shoppinglist/name/edit")
+    Call<BasicResponse> editListShopping(@Nullable @Field("token") String token,
+                                           @Nullable @Field("list_id") Integer list_id,
+                                         @Nullable @Field("list_name") String list_name
+    );
+
+
+    @FormUrlEncoded
     @POST("/api/shoppinglist/edit")
     Call<BasicResponse> saveData(@Nullable @Field("token") String token,
                                  @Nullable @Field("list_name") String listitem_name,
+                                 @Nullable @Field("amount") String amount,
+                                 @Nullable @Field("latitude") String latitude,
+                                 @Nullable @Field("longitude") String longitude,
+
                                  @Nullable @Field("shoppinglist_id") Integer shoppinglist_id,
                                  @Nullable @Field("is_closed") String is_closed
     );

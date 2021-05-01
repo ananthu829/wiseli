@@ -40,6 +40,17 @@ public class AppPreferences {
         mPref.edit().putString("token", token).apply();
     }
 
+
+
+    public Boolean isActive() {
+        return mPref.getBoolean("active", false);
+    }
+
+    public void setActive(Boolean token) {
+        mPref.edit().putBoolean("active", token).apply();
+    }
+
+
     public void setUserDetails(LoginModel.LoginModelDB loginDetails) {
         try {
             mPref.edit().putString("login_details", new Gson().toJson(loginDetails)).apply();

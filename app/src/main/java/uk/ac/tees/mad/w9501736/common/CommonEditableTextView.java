@@ -79,6 +79,10 @@ public class CommonEditableTextView extends CardView {
         return tv.getText().toString();
     }
 
+    public void enableOrDisable(Boolean status) {
+        ivEdit.setEnabled(status);
+    }
+
     public void setEditableText(String text) {
         tv.setText(text);
         et.setText(text);

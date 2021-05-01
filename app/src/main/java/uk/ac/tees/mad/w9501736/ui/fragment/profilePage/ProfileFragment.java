@@ -162,7 +162,10 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         etPhoneNumber.getEditText().setText(userDetails.getPhoneNumber());
         wiseLiUser.setPhoneNumber(userDetails.getPhoneNumber());
         //   Log.i("ENTER",userDetails.getPassword().toString());
-
+        Toast.makeText(getContext(), mAppPreferences.getUserCashedInfo().getProfilePic() + "", Toast.LENGTH_SHORT).show();
+        Glide.with(getContext())
+                .load(mAppPreferences.getUserCashedInfo().getProfilePic() + "")
+                .into(imgProfileImage);
         if (userDetails.getGender().equals("Male")) {
             btnTG.check(R.id.btnMale);
         }
@@ -572,12 +575,14 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
                     loginModel.setEmail(wiseLiUser.getEmail());
                     loginModel.setUsername(wiseLiUser.getUsername());
                     loginModel.setGender(wiseLiUser.getGender());
-                    loginModel.setProfile_pic(wiseLiUser.getProfilePic());
+                    if (wiseLiUser.getProfilePic() != null) {
+                        loginModel.setProfile_pic(wiseLiUser.getProfilePic());
+                    }
                     mAppPreferences.setToken(wiseLiUser.getToken());
                     mAppPreferences.setUserDetails(loginModel);
                     DatabaseFactory.getInstance().insertUserData(loginModel);
                     mAppPreferences.setUserCashedInfo(wiseLiUser);
-                    ( (LandingActivity) getActivity()).updateNavHeader();
+                    ((LandingActivity) getActivity()).updateNavHeader();
 
                     Log.d("registerUser", " onNext : value : " + value);
                 } else {
