@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ListFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.listPage.ShopListDetailFragment"
         android:label=""
         tools:layout="@layout/fragment_list">
 

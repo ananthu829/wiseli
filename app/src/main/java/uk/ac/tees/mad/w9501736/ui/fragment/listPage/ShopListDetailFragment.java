@@ -71,7 +71,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, AdapterInterface {
+public class ShopListDetailFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, AdapterInterface {
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     ArrayList<String> items, qty;
     List<String> productItemList = new ArrayList<>();
@@ -102,7 +102,7 @@ public class ListFragment extends BaseFragment implements AdapterView.OnItemSele
     private Integer circleId = 0;
     private Integer listId = 0;
 
-    public ListFragment() {
+    public ShopListDetailFragment() {
         // Required empty public constructor
     }
 
