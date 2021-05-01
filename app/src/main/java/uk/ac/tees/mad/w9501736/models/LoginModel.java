@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.w9501736.models;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,7 +13,7 @@ public class LoginModel implements Serializable {
 
     @SerializedName("result")
 
-    private String result;
+    private boolean result;
 
     @SerializedName("msg")
 
@@ -22,11 +23,11 @@ public class LoginModel implements Serializable {
 
     private LoginModelDB data;
 
-    public String getResult() {
+    public boolean getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(  @Nullable boolean result) {
         this.result = result;
     }
 

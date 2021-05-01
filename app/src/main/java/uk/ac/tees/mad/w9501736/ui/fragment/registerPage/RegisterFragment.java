@@ -552,6 +552,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
             @Override
             public void onComplete() {
+                showProgressBar(false);
                 Log.d("registerUser", " onComplete");
             }
         };
