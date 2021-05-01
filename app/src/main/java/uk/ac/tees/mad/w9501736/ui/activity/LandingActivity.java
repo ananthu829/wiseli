@@ -18,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.ui.BaseActivity;
@@ -36,7 +37,7 @@ public class LandingActivity extends BaseActivity {
     View headerView;
     TextView navUsername;
     TextView navEmail;
-    ImageView navProfile;
+    CircleImageView navProfile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,10 +62,10 @@ public class LandingActivity extends BaseActivity {
         userDetails = mAppPreferences.getUserCashedInfo();
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
-        Log.i("GlideImage", AppConstants.API_BASE_URL + userDetails.getProfilePic());
+     Log.i("GlideImage", userDetails.toString());
         Glide.with(this)
-                .load(AppConstants.API_BASE_URL + userDetails.getProfilePic())
-                .error(AppConstants.API_BASE_URL + userDetails.getProfilePic())
+                .load(userDetails.getProfilePic())
+                .error(R.drawable.image1)
                 .into(navProfile);
     }
 
@@ -89,8 +90,11 @@ public class LandingActivity extends BaseActivity {
         userDetails = mAppPreferences.getUserCashedInfo();
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
-        Log.i("GlideImage", AppConstants.API_BASE_URL + userDetails.getProfilePic());
-        Glide.with(this).load(AppConstants.API_BASE_URL + userDetails.getProfilePic()).into(navProfile);
+//        Log.i("GlideImage", userDetails.getProfilePic());
+        Glide.with(this)
+                .load(userDetails.getProfilePic())
+                .error(R.drawable.image1)
+                .into(navProfile);
 
     }
 }

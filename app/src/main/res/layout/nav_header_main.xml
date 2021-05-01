@@ -12,10 +12,10 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/navProfile"
-        android:layout_width="@dimen/_100"
-        android:layout_height="@dimen/_100"
+        android:layout_width="@dimen/_60"
+        android:layout_height="@dimen/_60"
         android:src="@drawable/image1" />
 
     <androidx.appcompat.widget.AppCompatTextView

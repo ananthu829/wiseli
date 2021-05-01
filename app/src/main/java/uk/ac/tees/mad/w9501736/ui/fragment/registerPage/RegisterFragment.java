@@ -154,6 +154,20 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
         getDeviceDetails();
 
+        btnTG.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if (isChecked) {
+                    if (checkedId == R.id.btnMale) {
+                        wiseLiUser.setGender("Male");
+                    } else {
+                        wiseLiUser.setGender("Female");
+                    }
+                }
+            }
+        });
+
+
     }
 
     private void btnClicks() {
@@ -354,6 +368,8 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         });
     }
 
+
+
     private void validateEmailId() {
         edtEmailID.setHelperText(getString(R.string.empty_string));
         edtEmailID.getEditText().addTextChangedListener(new TextWatcher() {
@@ -427,18 +443,21 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         });
     }
 
+
     private MultipartBody.Part getImageFile(Uri uri) {
         MultipartBody.Part body = MultipartBody.Part.createFormData("", "");
         try {
             //pass it like this
             File file = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
+            wiseLiUser.setProfilePic(file.getPath());
+
             // create upload service client
             // create RequestBody instance from file
             RequestBody requestFile =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(file));
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
             // MultipartBody.Part is used to send also the actual file name
-            body = MultipartBody.Part.createFormData("profile_pic", file.getName(), requestFile);
+            body = MultipartBody.Part.createFormData("profile_pic","abc.jpeg", requestFile);
             System.out.println("getImageFile: file.getName()" + file.getName());
 
 
