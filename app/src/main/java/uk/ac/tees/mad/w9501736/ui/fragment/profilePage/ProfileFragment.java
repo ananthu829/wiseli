@@ -3,11 +3,15 @@ package uk.ac.tees.mad.w9501736.ui.fragment.profilePage;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +43,9 @@ import com.kroegerama.imgpicker.ButtonType;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,6 +59,9 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
@@ -147,7 +156,9 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
 
         userDetails = mAppPreferences.getUserCashedInfo();
 
-        Glide.with(getActivity()).load(R.drawable.image1).into(imgProfileImage);
+        wiseLiUser.setPassword(userDetails.getPassword());
+
+        Glide.with(getActivity()).load(userDetails.getProfilePic()).into(imgProfileImage);
 
         edtFirstName.getEditText().setText(userDetails.getFirstName());
         wiseLiUser.setFirstName(userDetails.getFirstName());
@@ -473,16 +484,15 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     private MultipartBody.Part getImageFile(Uri uri) {
         MultipartBody.Part body = MultipartBody.Part.createFormData("", "");
         try {
-            //pass it like this
-            File file = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
-            // create upload service client
-            // create RequestBody instance from file
-            RequestBody requestFile =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), String.valueOf(file));
 
-            // MultipartBody.Part is used to send also the actual file name
-            body = MultipartBody.Part.createFormData("profile_pic", file.getName(), requestFile);
-            System.out.println("getImageFile: file.getName()" + file.getName());
+
+          File file = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
+            wiseLiUser.setProfilePic(file.getPath());
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"),file);
+
+            body = MultipartBody.Part.createFormData("profile_pic", "abc.jpeg", requestFile);
+            System.out.println("getImageFile: file.getName()" + file);
 
 
         } catch (Exception e) {
@@ -498,7 +508,6 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     public void onImagesSelected(@NotNull List<? extends Uri> list, @org.jetbrains.annotations.Nullable String s) {
         for (Uri uri : list) {
             Glide.with(getActivity()).load(uri).into(imgProfileImage);
-            wiseLiUser.setImgBody(getImageFile(uri));
             image = getImageFile(uri);
         }
     }
@@ -521,7 +530,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         RequestBody username = createPartFromString(wiseLiUser.getUsername());
         RequestBody email = createPartFromString(wiseLiUser.getEmail());
         RequestBody phone_number = createPartFromString(wiseLiUser.getPhoneNumber());
-        RequestBody password = createPartFromString(wiseLiUser.getPhoneNumber());
+        RequestBody password = createPartFromString(wiseLiUser.getPassword());
         RequestBody device_id = createPartFromString(wiseLiUser.getDeviceId());
         RequestBody device_type = createPartFromString(wiseLiUser.getDeviceType());
         RequestBody latitude = createPartFromString(wiseLiUser.getLatitude());
@@ -582,7 +591,8 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
                     mAppPreferences.setUserDetails(loginModel);
                     DatabaseFactory.getInstance().insertUserData(loginModel);
                     mAppPreferences.setUserCashedInfo(wiseLiUser);
-                    ((LandingActivity) getActivity()).updateNavHeader();
+                    userDetails.setPassword(wiseLiUser.getPassword());
+                    ( (LandingActivity) getActivity()).updateNavHeader();
 
                     Log.d("registerUser", " onNext : value : " + value);
                 } else {
