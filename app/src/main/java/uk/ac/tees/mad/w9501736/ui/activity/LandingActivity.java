@@ -3,7 +3,6 @@ package uk.ac.tees.mad.w9501736.ui.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -22,7 +21,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.ui.BaseActivity;
-import uk.ac.tees.mad.w9501736.utils.AppConstants;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 
 public class LandingActivity extends BaseActivity {
@@ -62,7 +60,7 @@ public class LandingActivity extends BaseActivity {
         userDetails = mAppPreferences.getUserCashedInfo();
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
-     Log.i("GlideImage", userDetails.toString());
+        Log.i("GlideImage", userDetails.toString());
         Glide.with(this)
                 .load(userDetails.getProfilePic())
                 .error(R.drawable.image1)
