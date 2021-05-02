@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -25,12 +26,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.UserAdapter;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
+import uk.ac.tees.mad.w9501736.models.FriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -105,12 +108,29 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
         inactiveLists = new ArrayList<>();
         inactive = view.findViewById(R.id.inActiveRv);
 
-        getInactiveList();
+        loadGetInactiveList();
 
         inactive.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         userAdapter = new UserAdapter(inactiveLists, false, this);
         inactive.setAdapter(userAdapter);
 
+    }
+
+    private void loadGetInactiveList() {
+        if (isNetworkAvailable(getContext())) {
+            getInactiveList();
+        } else {
+            inactiveLists.clear();
+            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(circleId, result -> {
+                    if (result.size() != 0) {
+                        inactiveLists.addAll((Collection<? extends ActiveInActiveBody>) result);
+                        userAdapter.updateListItem(inactiveLists);
+                    } else {
+                        Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
+                    }
+
+            });
+        }
     }
 
     @Override
@@ -155,7 +175,11 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
                 Log.d("getUserList", " onNext : value : " + value);
                 if (value.result) {
                     inactiveLists.clear();
-                    inactiveLists = value.getData();
+                    for (ActiveInActiveBody inActiveBody : value.getData()) {
+                        inActiveBody.setCircleId(circleId);
+                        inActiveBody.setActive(true);
+                        inactiveLists.add(inActiveBody);
+                    }
                     userAdapter.updateListItem(inactiveLists);
                 } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();

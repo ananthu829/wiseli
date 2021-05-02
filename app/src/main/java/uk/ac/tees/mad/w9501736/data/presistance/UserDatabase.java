@@ -3,15 +3,10 @@ package uk.ac.tees.mad.w9501736.data.presistance;
 
 import android.content.Context;
 
-import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 
-import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 
-@Database(entities = {WiseLiUser.class}, version = 1)
-@TypeConverters({Converters.class})
 public abstract class UserDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "user_db";

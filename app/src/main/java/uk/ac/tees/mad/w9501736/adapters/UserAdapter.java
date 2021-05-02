@@ -41,23 +41,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
         final ActiveInActiveBody contact = items.get(position);
-        holder.commonEditableTextView.setEditableText(contact.getListName());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
-        holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getListId());
-        holder.commonEditableTextView.setOnClickListener(v -> {
-            if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
-            }
-        });
         if (!showDeleteBtn) {
             holder.commonEditableTextView.hideImageDeleteBtn(true);
             holder.commonEditableTextView.hideImageEditBtn(true);
+        }
+        if (contact.getActive()) {
+            holder.commonEditableTextView.setEditableText(contact.getListName());
+            holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnClickListener(v -> {
+                if (holder.commonEditableTextView.getTextTextVisibility()) {
+                    buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
+                }
+            });
+        } else {
+            holder.commonEditableTextView.setEditableText(contact.getListName());
+            holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnClickListener(v -> {
+                if (holder.commonEditableTextView.getTextTextVisibility()) {
+                    buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
         return items == null ? 0 : items.size();
+    }
+
+    public void updateListItem(List<ActiveInActiveBody> items) {
+        this.items = items;
+        notifyDataSetChanged();
     }
 
     public static class holder extends RecyclerView.ViewHolder {
@@ -68,10 +84,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
             super(view);
             commonEditableTextView = view.findViewById(R.id.commonEditableTextView);
         }
-    }
-
-    public void updateListItem(List<ActiveInActiveBody> items) {
-        this.items = items;
-        notifyDataSetChanged();
     }
 }
