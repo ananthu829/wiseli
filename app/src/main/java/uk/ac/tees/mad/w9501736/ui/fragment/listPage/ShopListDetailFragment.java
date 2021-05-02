@@ -87,6 +87,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     String listName = "";
     String address = "";
     String amount = "";
+    String shopName = "";
     private FusedLocationProviderClient mFusedLocationClient;
     protected Location mLastLocation;
     public String lat = "0.000";
@@ -106,6 +107,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     CardView spinnerLayout;
     TextView total;
     TextView btnAddProduct;
+    TextView tvListHeading;
     FrameLayout searchMaps;
     Spinner spinnerOffline;
     Button save;
@@ -161,6 +163,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         spinnerLayout = view.findViewById(R.id.cardView2);
         cetvTotal.setOnEditClickListener(this, 0);
         btnAddProduct = view.findViewById(R.id.textView4);
+        tvListHeading = view.findViewById(R.id.tvListHeading);
         save = view.findViewById(R.id.save);
         cetvTotal.hideImageDeleteBtn(true);
         cetvTotal.setEditableNumberInputType();
@@ -461,9 +464,9 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                     if (response.body().getResult()) {
                         if (response.body().getData() != null) {
                             listName = response.body().getData().getName();
-                            address = response.body().getData().getShop_name();
+                            shopName = response.body().getData().getShop_name();
                             amount = response.body().getData().getAmount();
-                            tvShopAddress.setText(address);
+                            tvListHeading.setText(shopName);
                             if (amount.length() != 0) {
                                 cetvTotal.setEditableHintText(amount);
 
