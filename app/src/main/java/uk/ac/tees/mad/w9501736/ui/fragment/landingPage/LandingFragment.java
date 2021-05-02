@@ -4,6 +4,7 @@ package uk.ac.tees.mad.w9501736.ui.fragment.landingPage;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,9 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +45,7 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 public class LandingFragment extends BaseFragment implements AdapterInterface {
 
     RecyclerView circles;
-    ArrayList<CircleData> infos = new ArrayList<>();
+    List<CircleData> infos = new ArrayList<>();
     CircleAdapter circleAdapter;
     private AdapterInterface listener;
     private View view;
@@ -97,17 +100,11 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 dialog.dismiss();
             });
         });
-
-        if(isNetworkAvailable(getContext())){
+//        DatabaseFactory.getInstance().deleteData();
+        if (isNetworkAvailable(getContext())) {
             getCircle();
-        }else {
-            DatabaseFactory.getInstance().getCircleDataFromDatabase(result -> {
-                if (result.size() != 0) {
-                    infos.addAll(result);
-
-                }
-            });
-            recycle();
+        } else {
+            getDataFromDb();
 
         }
     }
@@ -157,7 +154,14 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 showProgressBar(false);
 
                 if (response.body() != null) {
+                    for (int i = 0; i < infos.size(); i++) {
+                        if (infos.get(i).getCircleId() == id) {
+                            infos.remove(i);
+                        }
+                    }
+                    DatabaseFactory.getInstance().deleteDataById(String.valueOf(id));
 
+                    getCircle();
                 } else {
                     Log.d("tag1", "Failed---");
 
@@ -202,6 +206,8 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
             public void onFailure(Call<BasicResponse> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_LONG).show();
+
 
             }
 
@@ -209,10 +215,25 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
         });
     }
 
+    public void getDataFromDb() {
+        infos.clear();
+        DatabaseFactory.getInstance().getCircleDataFromDatabase(result -> {
+            if (result.size() != 0) {
+                infos=result;
+            }
+
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                recycle();
+            }
+        }, 200);
+
+    }
 
     private void getCircle() {
         showProgressBar(true);
-        infos.clear();
         Call<Resource<ArrayList<CircleData>>> api = mRetrofitService.getCircle(getWiseLiUser().getToken());
 
 
@@ -220,25 +241,19 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
             @Override
             public void onResponse(Call<Resource<ArrayList<CircleData>>> responseCall, Response<Resource<ArrayList<CircleData>>> response) {
                 showProgressBar(false);
-                for (int i = 0; i < response.body().data.size(); i++) {
-                    DatabaseFactory.getInstance().insertUserData(response.body().data.get(i));
-                }
-                if (response.body() != null) {
-                    infos.addAll(response.body().getData());
-                    recycle();
-                } else {
-                    Log.d("tag1", "Failed---");
-                    dialog.dismiss();
 
-                }
+                DatabaseFactory.getInstance().insertUserData(response.body().data);
 
+//
 
+                getDataFromDb();
             }
 
             @Override
             public void onFailure(Call<Resource<ArrayList<CircleData>>> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
+                getDataFromDb();
 
             }
 
@@ -273,13 +288,7 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     @Override
     public void onDeleteCtaClicked(Integer id) {
         deleteCircle(id);
-        for (int i = 0; i < infos.size(); i++) {
-            if (infos.get(i).getCircleId() == id) {
-                infos.remove(i);
-            }
-        }
-        circles.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        circles.setAdapter(new CircleAdapter(infos, this));
+
     }
 
     @Override
