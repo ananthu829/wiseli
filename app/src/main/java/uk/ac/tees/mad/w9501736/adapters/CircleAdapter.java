@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.common.CommonEditableTextView;
@@ -18,10 +19,10 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.holder> {
 
 
     public AdapterInterface buttonListener;
-    ArrayList<CircleData> items;
+    List<CircleData> items;
 
 
-    public CircleAdapter(ArrayList<CircleData> items, AdapterInterface buttonListener) {
+    public CircleAdapter(List<CircleData> items, AdapterInterface buttonListener) {
         this.items = items;
         this.buttonListener = buttonListener;
     }
