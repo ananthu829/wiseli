@@ -41,6 +41,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
         final ActiveInActiveBody contact = items.get(position);
+        if (!showDeleteBtn) {
+            holder.commonEditableTextView.hideImageDeleteBtn(true);
+            holder.commonEditableTextView.hideImageEditBtn(true);
+        }
         if (contact.getActive()) {
             holder.commonEditableTextView.setEditableText(contact.getListName());
             holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
@@ -50,8 +54,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
                     buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
                 }
             });
-                holder.commonEditableTextView.hideImageDeleteBtn(true);
-                holder.commonEditableTextView.hideImageEditBtn(true);
         } else {
             holder.commonEditableTextView.setEditableText(contact.getListName());
             holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
@@ -69,6 +71,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
         return items == null ? 0 : items.size();
     }
 
+    public void updateListItem(List<ActiveInActiveBody> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
+
     public static class holder extends RecyclerView.ViewHolder {
 
         CommonEditableTextView commonEditableTextView;
@@ -77,10 +84,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
             super(view);
             commonEditableTextView = view.findViewById(R.id.commonEditableTextView);
         }
-    }
-
-    public void updateListItem(List<ActiveInActiveBody> items) {
-        this.items = items;
-        notifyDataSetChanged();
     }
 }
