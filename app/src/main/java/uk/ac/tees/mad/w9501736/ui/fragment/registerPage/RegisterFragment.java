@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -159,7 +158,6 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         super.onCreate(savedInstanceState);
         //WiseLiComponent wiseLiComponent = ((WiseLiComponentProvider) getActivity().getApplication()).getWiseLiComponent();
         //wiseLiComponent.inject(this);
-        registerFragmentViewModel = new ViewModelProvider(this).get(RegisterFragmentViewModel.class);
     }
 
     @Override
@@ -491,7 +489,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     public String getPathFromURI(Uri contentUri) {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        Cursor cursor = getBaseActivity().getContentResolver().query(contentUri, proj, null, null, null);
         if (cursor.moveToFirst()) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
