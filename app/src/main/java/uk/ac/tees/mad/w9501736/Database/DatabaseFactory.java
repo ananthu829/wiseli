@@ -34,16 +34,30 @@ public class DatabaseFactory {
         return object;
     }
 
-    public void insertUserData(CircleData loginModel){
+    public void insertUserData(List<CircleData> loginModel){
         AsyncTask.execute(() -> {
             appDatabase.getLocationDao().insert(loginModel);
         });
     }
-//
+
     public void getCircleDataFromDatabase(DatabaseCallBack<List<CircleData>> listDatabaseCallBack){
         AsyncTask.execute(() -> {
             List<CircleData> result = appDatabase.getLocationDao().getCircleData();
             listDatabaseCallBack.onSuccess(result);
+        });
+    }
+
+    public void deleteData(){
+        AsyncTask.execute(() -> {
+            appDatabase.getLocationDao().delete();
+
+        });
+    }
+
+    public void deleteDataById(String id){
+        AsyncTask.execute(() -> {
+            appDatabase.getLocationDao().delete(id);
+
         });
     }
 //
