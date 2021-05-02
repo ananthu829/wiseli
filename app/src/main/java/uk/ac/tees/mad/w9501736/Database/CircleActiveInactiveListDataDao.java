@@ -16,6 +16,6 @@ public interface CircleActiveInactiveListDataDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(List<ActiveInActiveBody> data);
 
-    @Query("SELECT * FROM ActiveInActiveBody WHERE circleID = :circleID")
-    List<ActiveInActiveBody> getCircleDetail(Integer circleID);
+    @Query("SELECT * FROM ActiveInActiveBody WHERE circleID = :circleID AND isActive=:iActive")
+    List<ActiveInActiveBody> getCircleDetail(Integer circleID,Boolean iActive);
 }

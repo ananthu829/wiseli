@@ -152,15 +152,17 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
         } else {
             addUser.setEnabled(false);
             activeList.clear();
-            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(circleId, result -> {
+            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(true,circleId, result -> {
                     if (result.size() != 0) {
                         activeList.addAll((Collection<? extends ActiveInActiveBody>) result);
-                        userAdapter.updateListItem(activeList);
+
                     } else {
                         Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
                     }
 
             });
+            adapterSet();
+            userAdapter.updateListItem(activeList);
         }
     }
 

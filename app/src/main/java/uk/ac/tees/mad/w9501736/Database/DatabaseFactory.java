@@ -103,9 +103,9 @@ public class DatabaseFactory {
         });
     }
 
-    public void getCircleActiveInactiveDataFromDatabase(Integer circleID,DatabaseCallBack<List<ActiveInActiveBody>> listDatabaseCallBack) {
+    public void getCircleActiveInactiveDataFromDatabase(Boolean isActive,Integer circleID,DatabaseCallBack<List<ActiveInActiveBody>> listDatabaseCallBack) {
         AsyncTask.execute(() -> {
-            List<ActiveInActiveBody> result = appDatabase.getCircleActiveInactiveData().getCircleDetail(circleID);
+            List<ActiveInActiveBody> result = appDatabase.getCircleActiveInactiveData().getCircleDetail(circleID,isActive);
             listDatabaseCallBack.onSuccess(result);
         });
     }

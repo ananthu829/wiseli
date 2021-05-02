@@ -9,9 +9,12 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity
 public class ActiveInActiveBody {
-    @PrimaryKey
-    @NonNull
+
+
+
+
     private int circleId;
+    @PrimaryKey
     @SerializedName("list_id")
     private int listId;
 
