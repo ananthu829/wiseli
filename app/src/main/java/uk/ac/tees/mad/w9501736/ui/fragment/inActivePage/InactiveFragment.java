@@ -121,7 +121,7 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
             getInactiveList();
         } else {
             inactiveLists.clear();
-            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(circleId, result -> {
+            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(false,circleId, result -> {
                     if (result.size() != 0) {
                         inactiveLists.addAll((Collection<? extends ActiveInActiveBody>) result);
                         userAdapter.updateListItem(inactiveLists);
@@ -177,7 +177,7 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
                     inactiveLists.clear();
                     for (ActiveInActiveBody inActiveBody : value.getData()) {
                         inActiveBody.setCircleId(circleId);
-                        inActiveBody.setActive(true);
+                        inActiveBody.setActive(false);
                         inactiveLists.add(inActiveBody);
                     }
                     userAdapter.updateListItem(inactiveLists);
