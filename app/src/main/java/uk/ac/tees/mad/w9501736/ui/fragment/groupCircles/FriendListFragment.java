@@ -82,10 +82,12 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
             fab.setEnabled(false);
             infos.clear();
             DatabaseFactory.getInstance().getFriendsDataFromDatabase(result -> {
-                if (result.getValue().size() != 0) {
-                    infos.addAll((Collection<? extends UserFriendsList>) result);
-                    recycle();
+                if(result.getValue() != null) {
+                    if (result.getValue().size() != 0) {
+                        infos.addAll((Collection<? extends UserFriendsList>) result);
+                        recycle();
 
+                    }
                 }
             });
         }
