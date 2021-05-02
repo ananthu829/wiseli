@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -45,7 +46,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/inputs_constraint_layout"
             android:layout_width="295dp"
-            android:layout_height="173dp"
+            android:layout_height="@dimen/_200"
             android:layout_marginTop="38dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -54,14 +55,13 @@
             tools:layout_editor_absoluteY="123dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="0dp"
-                android:layout_height="77dp"
+                android:layout_height="@dimen/_110"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/email_address_text_view"
@@ -79,48 +79,39 @@
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="-2dp" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="9dp"
-                    android:background="#F5F6F6"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/email_address_text_view"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="27dp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/emailEdt"
-                    android:layout_width="260dp"
-                    android:layout_height="18dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="23dp"
-                    android:background="#00000000"
-                    android:gravity="start|center_vertical"
-                    android:hint="User Name"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:textColor="#19224C"
-                    android:textColorHint="#D0D1D5"
-                    android:textSize="15sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/email_address_text_view"
-                    tools:layout_editor_absoluteX="20dp"
-                    tools:layout_editor_absoluteY="41dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edtUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15"
+                    app:helperText=" "
+                    app:helperTextTextColor="@color/red"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/email_address_text_view">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:fontFamily="@font/avertacy_regular"
+                    android:hint="username"
+                    android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="77dp"
+                android:layout_height="@dimen/_110"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="96dp">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/password_text_view"
@@ -132,42 +123,33 @@
                     android:lineSpacingMultiplier="1.25"
                     android:text="Password"
                     android:textColor="#454C66"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/dimensFont16"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="-2dp" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="9dp"
-                    android:background="#F5F6F6"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/password_text_view"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="27dp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/pswEdt"
-                    android:layout_width="246dp"
-                    android:layout_height="19dp"
-                    android:layout_marginStart="19dp"
-                    android:layout_marginLeft="19dp"
-                    android:layout_marginTop="23dp"
-                    android:background="#00000000"
-                    android:gravity="start|center_vertical"
-                    android:hint="password"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15"
+                    app:helperText=" "
+                    app:helperTextTextColor="@color/red"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/password_text_view"
-                    tools:layout_editor_absoluteX="19dp"
-                    tools:layout_editor_absoluteY="48dp" />
+                    app:passwordToggleEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:fontFamily="@font/avertacy_regular"
+                        android:hint="password"
+                        android:inputType="textPassword" />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
