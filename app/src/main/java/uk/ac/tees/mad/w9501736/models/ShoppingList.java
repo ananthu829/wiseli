@@ -57,6 +57,14 @@ public class ShoppingList implements Serializable {
 
         private String latitude;
 
+        public String getShop_address() {
+            return shop_address;
+        }
+
+        public void setShop_address(String shop_address) {
+            this.shop_address = shop_address;
+        }
+
         @SerializedName("longitude")
 
         private String longitude;

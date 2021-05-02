@@ -461,9 +461,11 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                     if (response.body().getResult()) {
                         if (response.body().getData() != null) {
                             listName = response.body().getData().getName();
-                            address = response.body().getData().getShop_name();
+                            address = response.body().getData().getShop_address();
                             amount = response.body().getData().getAmount();
-                            tvShopAddress.setText(address);
+                            if(response.body().getData().getAmount().length()!=1) {
+                                tvShopAddress.setText(address);
+                            }
                             if (amount.length() != 0) {
                                 cetvTotal.setEditableHintText(amount);
 
