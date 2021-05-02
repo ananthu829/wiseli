@@ -24,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -190,14 +189,14 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
             friendsList.clear();
             DatabaseFactory.getInstance().getCircleFriendsDataFromDatabase(circleID, result -> {
                   if (result.size() != 0) {
-                      friendsList.addAll((Collection<? extends FriendsList>) result);
-
+                      friendsList.addAll(result);
+                      addChips(friendsList);
                   } else {
                       Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
                   }
 
             });
-            addChips(friendsList);
+
         }
     }
 
