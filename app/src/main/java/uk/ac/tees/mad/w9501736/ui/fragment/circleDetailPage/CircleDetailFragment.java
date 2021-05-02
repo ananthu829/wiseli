@@ -30,6 +30,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
@@ -187,13 +188,33 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
             spino.setEnabled(false);
             chipGroup.setEnabled(false);
             friendsList.clear();
+
             DatabaseFactory.getInstance().getCircleFriendsDataFromDatabase(circleID, result -> {
-                  if (result.size() != 0) {
-                      friendsList.addAll(result);
-                      addChips(friendsList);
-                  } else {
-                      Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
-                  }
+                if (result.size() != 0) {
+                    friendsList.addAll(result);
+                    Observable<List<FriendsList>> observableFried = Observable.just(friendsList);
+                    observableFried.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new DisposableObserver<List<FriendsList>>() {
+                                @Override
+                                public void onNext(@NonNull List<FriendsList> friendsList) {
+                                    // You can access your Book objects here
+                                    addChips(friendsList);
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+                                    // Handler errors here
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    // All your book objects have been fetched. Done!
+                                }
+                            });
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
+                }
 
             });
 
