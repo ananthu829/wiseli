@@ -173,7 +173,6 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         etPhoneNumber.getEditText().setText(userDetails.getPhoneNumber());
         wiseLiUser.setPhoneNumber(userDetails.getPhoneNumber());
         //   Log.i("ENTER",userDetails.getPassword().toString());
-        Toast.makeText(getContext(), mAppPreferences.getUserCashedInfo().getProfilePic() + "", Toast.LENGTH_SHORT).show();
         Glide.with(getContext())
                 .load(mAppPreferences.getUserCashedInfo().getProfilePic() + "")
                 .into(imgProfileImage);
