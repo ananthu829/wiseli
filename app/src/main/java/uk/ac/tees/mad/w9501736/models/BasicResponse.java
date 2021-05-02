@@ -8,7 +8,7 @@ public class BasicResponse implements Serializable {
 
     @SerializedName("result")
 
-    private String result;
+    private Boolean result;
 
     @SerializedName("msg")
 
@@ -19,11 +19,11 @@ public class BasicResponse implements Serializable {
 
     private Object data;
 
-    public String getResult() {
+    public Boolean getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Boolean result) {
         this.result = result;
     }
 

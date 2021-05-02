@@ -245,7 +245,6 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         spinnerOffline.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Toast.makeText(getContext(), yesOrNo.get(position), Toast.LENGTH_SHORT).show();
                 isclosed = position != 0;
                 if(position == 1)
                 {

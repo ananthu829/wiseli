@@ -20,13 +20,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
@@ -37,7 +37,6 @@ import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
-import uk.ac.tees.mad.w9501736.models.FriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -154,15 +153,34 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
             activeList.clear();
             DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(true,circleId, result -> {
                     if (result.size() != 0) {
-                        activeList.addAll((Collection<? extends ActiveInActiveBody>) result);
+                        activeList.addAll(result);
+                        Observable<List<ActiveInActiveBody>> listObservable = Observable.just(activeList);
+                        listObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeWith(new DisposableObserver<List<ActiveInActiveBody>>() {
+                                    @Override
+                                    public void onNext(@NonNull List<ActiveInActiveBody> activeList) {
+                                        // You can access your Book objects here
+                                        adapterSet();
+                                        userAdapter.updateListItem(activeList);
+                                    }
+
+                                    @Override
+                                    public void onError(@NonNull Throwable e) {
+                                        // Handler errors here
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        // All your book objects have been fetched. Done!
+                                    }
+                                });
 
                     } else {
                         Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
                     }
 
             });
-            adapterSet();
-            userAdapter.updateListItem(activeList);
         }
     }
 

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -154,14 +153,18 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 showProgressBar(false);
 
                 if (response.body() != null) {
-                    for (int i = 0; i < infos.size(); i++) {
-                        if (infos.get(i).getCircleId() == id) {
-                            infos.remove(i);
+                    if (response.body().getResult()) {
+                        for (int i = 0; i < infos.size(); i++) {
+                            if (infos.get(i).getCircleId() == id) {
+                                infos.remove(i);
+                            }
                         }
-                    }
-                    DatabaseFactory.getInstance().deleteDataById(String.valueOf(id));
+                        DatabaseFactory.getInstance().deleteDataById(String.valueOf(id));
 
-                    getCircle();
+                        getCircle();
+                    } else {
+                        Snackbar.make(getActivity().findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
+                    }
                 } else {
                     Log.d("tag1", "Failed---");
 
