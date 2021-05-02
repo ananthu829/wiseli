@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -47,28 +50,51 @@ import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
  */
 public class SignInFragment extends BaseFragment {
     protected RestService mRetrofitService;
-    private EditText username, password;
+    private TextInputLayout username, password;
     private AppCompatButton btnLogin;
     AppPreferences mAppPreferences;
     private FusedLocationProviderClient mFusedLocationClient;
     protected Location mLastLocation;
     public String lat = "0.000";
     public String log = "0.000";
+    private  static  String USERNAME  ="username";
+    private  static  String PASSWORD  ="password";
+
     public SignInFragment() {
         // Required empty public constructor
     }
 
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+            outState.putString(USERNAME,username.getEditText().getText().toString());
+            outState.putString(PASSWORD,password.getEditText().getText().toString());
+
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null) {
+            username.getEditText().setText(savedInstanceState.getString(USERNAME));
+            password.getEditText().setText(savedInstanceState.getString(PASSWORD));
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        username = v.findViewById(R.id.emailEdt);
-        password = v.findViewById(R.id.pswEdt);
+        username = v.findViewById(R.id.edtUsername);
+        password = v.findViewById(R.id.edtPassword);
         DatabaseFactory.setupObject(getContext());
 
         mAppPreferences = AppPreferences.getInstance(getContext());
+        validatePassword();
+        validateUserName();
         return v;
     }
 
@@ -160,9 +186,56 @@ public class SignInFragment extends BaseFragment {
 
         }
     }
+
+    private void validateUserName() {
+        username.setHelperText(getString(R.string.empty_string));
+        username.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s != null) {
+                    username.setHelperText(getString(R.string.empty_string));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() < 1) {
+                    username.setHelperText(getString(R.string.field_empty_error));
+                }
+            }
+        });
+    }
+
+    private void validatePassword() {
+        password.setHelperText(getString(R.string.empty_string));
+        password.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s != null) {
+                    password.setHelperText(getString(R.string.empty_string));
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() < 1) {
+                    password.setHelperText(getString(R.string.field_empty_error));
+                }
+            }
+        });
+    }
     private void getLoginApi() {
 
-        Call<LoginModel> api = mRetrofitService.login(username.getText().toString(), password.getText().toString(), deviceId, deviceType, lat, log);
+        Call<LoginModel> api = mRetrofitService.login(username.getEditText().getText().toString(), password.getEditText().getText().toString(), deviceId, deviceType, lat, log);
 
 
         api.enqueue(new Callback<LoginModel>() {
@@ -182,7 +255,7 @@ public class SignInFragment extends BaseFragment {
                     user.setPhoneNumber(response.body().getLoginDetails().getPhone_number());
                     user.setProfilePic(response.body().getLoginDetails().getProfile_pic());
                     user.setToken(response.body().getLoginDetails().getToken());
-                    user.setPassword(password.getText().toString());
+                    user.setPassword(password.getEditText().getText().toString());
                     user.setLatitude(lat);
                     user.setLongitude(log);
                     mAppPreferences.setUserCashedInfo(user);

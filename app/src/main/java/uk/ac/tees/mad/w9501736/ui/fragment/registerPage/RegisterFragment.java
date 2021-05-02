@@ -29,6 +29,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -40,6 +41,7 @@ import com.kroegerama.imgpicker.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,9 +104,54 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     private WiseLiRepository apiRepo;
     private RegisterFragmentViewModel registerFragmentViewModel;
     private FusedLocationProviderClient mFusedLocationClient;
+    private  static  String  USERNAME ="username";
+    private  static  String  PASSWORD ="password";
+    private  static  String  FIRSTNAME ="firstname";
+    private  static  String  LASTNAME ="lastname";
+    private  static  String  PHONENO ="phone";
+    private  static  String  EMAIL ="email";
+    private  static  String  PROFILE_PIC ="pic";
+    private  static  String  GENDER ="gender";
 
     public RegisterFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(USERNAME,etUserName.getEditText().getText().toString());
+        outState.putString(PASSWORD,edtPassword.getEditText().getText().toString());
+        outState.putString(FIRSTNAME,edtFirstName.getEditText().getText().toString());
+        outState.putString(LASTNAME,edtLastName.getEditText().getText().toString());
+        outState.putString(PHONENO,etPhoneNumber.getEditText().getText().toString());
+        outState.putString(EMAIL,edtEmailID.getEditText().getText().toString());
+        outState.putString(PROFILE_PIC,wiseLiUser.getProfilePic());
+        outState.putString(GENDER,wiseLiUser.getGender());
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState !=null) {
+            edtFirstName .getEditText().setText(savedInstanceState.getString(FIRSTNAME));
+            edtLastName .getEditText().setText(savedInstanceState.getString(LASTNAME));
+            etUserName .getEditText().setText(savedInstanceState.getString(USERNAME));
+            etPhoneNumber .getEditText().setText(savedInstanceState.getString(PHONENO));
+            edtPassword .getEditText().setText(savedInstanceState.getString(PASSWORD));
+            edtEmailID .getEditText().setText(savedInstanceState.getString(EMAIL));
+            Glide.with(getActivity()).load(savedInstanceState.getString(PROFILE_PIC)).placeholder(R.drawable.image1).error(R.drawable.image1).into(imgProfileImage);
+            if (GENDER.equals("Male")) {
+                btnTG.check(R.id.btnMale);
+            }
+            if (GENDER.equals("Female")) {
+                btnTG.check(R.id.btnFemale);
+            }
+                wiseLiUser.setProfilePic(savedInstanceState.getString(PROFILE_PIC));
+            Uri uri =Uri.fromFile( new File(wiseLiUser.getProfilePic()));
+            image =getImageFile(uri);
+        }
+
     }
 
     @Override
