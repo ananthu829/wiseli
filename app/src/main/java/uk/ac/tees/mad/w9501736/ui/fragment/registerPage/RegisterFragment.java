@@ -3,9 +3,11 @@ package uk.ac.tees.mad.w9501736.ui.fragment.registerPage;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -13,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +30,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -41,7 +42,6 @@ import com.kroegerama.imgpicker.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 
@@ -201,15 +201,12 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
 
         getDeviceDetails();
 
-        btnTG.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if (isChecked) {
-                    if (checkedId == R.id.btnMale) {
-                        wiseLiUser.setGender("Male");
-                    } else {
-                        wiseLiUser.setGender("Female");
-                    }
+        btnTG.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.btnMale) {
+                    wiseLiUser.setGender("Male");
+                } else {
+                    wiseLiUser.setGender("Female");
                 }
             }
         });
@@ -415,8 +412,6 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         });
     }
 
-
-
     private void validateEmailId() {
         edtEmailID.setHelperText(getString(R.string.empty_string));
         edtEmailID.getEditText().addTextChangedListener(new TextWatcher() {
@@ -462,40 +457,16 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         getActivity().finish();
     }
 
-    private void subscribeObservers(final WiseLiUser wiseLiUser) {
-        registerFragmentViewModel.getRegisterUserData(wiseLiUser).observe(this, userResponse -> {
-            if (userResponse != null) {
-                if (userResponse.data != null) {
-                    switch (userResponse.status) {
-
-                        case LOADING: {
-                            showProgressBar(true);
-                            break;
-                        }
-
-                        case ERROR: {
-                            showProgressBar(false);
-                            Toast.makeText(getContext(), "UnScussess Error : " + userResponse.message, Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-
-                        case SUCCESS: {
-                            showProgressBar(false);
-                            Toast.makeText(getContext(), "Scussess device ID : " + userResponse.data.getDeviceId(), Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-
     private MultipartBody.Part getImageFile(Uri uri) {
         MultipartBody.Part body = MultipartBody.Part.createFormData("", "");
         try {
             //pass it like this
-            File file = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
+
+            File file2 = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
+            String filePath = SiliCompressor.with(getContext()).compress(getPathFromURI(uri), file2);
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "SiliCompressor uri Path:" + filePath, Snackbar.LENGTH_LONG).show();
+            File file = new File(filePath);
+            Snackbar.make(getActivity().findViewById(android.R.id.content), "File Path:" + file.getPath(), Snackbar.LENGTH_LONG).show();
             wiseLiUser.setProfilePic(file.getPath());
 
             // create upload service client
@@ -515,6 +486,18 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         System.out.println("getImageFile: Error");
         return body;
 
+    }
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
     @Override
