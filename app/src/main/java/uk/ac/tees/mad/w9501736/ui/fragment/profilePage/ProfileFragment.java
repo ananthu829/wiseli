@@ -2,10 +2,18 @@ package uk.ac.tees.mad.w9501736.ui.fragment.profilePage;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,6 +36,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -39,8 +48,10 @@ import com.kroegerama.imgpicker.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import github.nisrulz.easydeviceinfo.base.EasyDeviceMod;
@@ -66,6 +77,8 @@ import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.viewModel.RegisterPage.RegisterFragmentViewModel;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
+
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,6 +114,8 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     private WiseLiRepository apiRepo;
     private RegisterFragmentViewModel registerFragmentViewModel;
     private FusedLocationProviderClient mFusedLocationClient;
+    public File imageFile;
+    Uri compressUri = null;
 
 
     public ProfileFragment() {
@@ -497,8 +512,8 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     @Override
     public void onImagesSelected(@NotNull List<? extends Uri> list, @org.jetbrains.annotations.Nullable String s) {
         for (Uri uri : list) {
-            Glide.with(getActivity()).load(uri).into(imgProfileImage);
-            image = getImageFile(uri);
+            new ImageCompressionAsyncTask(getActivity()).execute(uri.toString(),
+                    getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/WiseLi/images");
         }
     }
 
@@ -652,5 +667,53 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
                 token.continuePermissionRequest();
             }
         }).check();
+    }
+
+    class ImageCompressionAsyncTask extends AsyncTask<String, Void, String> {
+
+        Context mContext;
+
+        public ImageCompressionAsyncTask(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            return SiliCompressor.with(mContext).compress(params[0], new File(params[1]));
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            float length = 0;
+            String name;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                compressUri = Uri.parse(s);
+                Cursor c = getContext().getContentResolver().query(compressUri, null, null, null, null);
+                c.moveToFirst();
+                name = c.getString(c.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                length = c.getLong(c.getColumnIndex(OpenableColumns.SIZE)) / 1024;
+            } else {
+                imageFile = new File(s);
+                compressUri = Uri.fromFile(imageFile);
+                name = imageFile.getName();
+                length = imageFile.length() / 1024f; // Size in KB
+            }
+
+            try {
+                wiseLiUser.setImgBody(getImageFile(compressUri));
+                image = getImageFile(compressUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), compressUri);
+                Glide.with(getActivity()).load(bitmap).into(imgProfileImage);
+                int compressWidth = bitmap.getWidth();
+                int compressHieght = bitmap.getHeight();
+                String text = String.format(Locale.US, "Name: %s\nSize: %fKB\nWidth: %d\nHeight: %d", name, length, compressWidth, compressHieght);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
