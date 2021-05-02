@@ -65,6 +65,10 @@ public class ShoppingList implements Serializable {
 
         private String amount;
 
+        @SerializedName("shop_address")
+
+        private String shop_address;
+
         @SerializedName("item_list")
 
         private List<ShoppingListItemData> itemData;

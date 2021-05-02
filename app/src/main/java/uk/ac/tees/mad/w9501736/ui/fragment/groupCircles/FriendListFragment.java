@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -81,8 +82,8 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
             fab.setEnabled(false);
             infos.clear();
             DatabaseFactory.getInstance().getFriendsDataFromDatabase(result -> {
-                if (result.size() != 0) {
-                    infos.addAll(result);
+                if (result.getValue().size() != 0) {
+                    infos.addAll((Collection<? extends UserFriendsList>) result);
                     recycle();
 
                 }

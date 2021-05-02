@@ -3,6 +3,7 @@ package uk.ac.tees.mad.w9501736.Database;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import java.util.List;
@@ -72,9 +73,9 @@ public class DatabaseFactory {
             appDatabase.getFriendsData().insert(friendsList);
         });
     }
-    public void getFriendsDataFromDatabase(DatabaseCallBack<List<UserFriendsList>> listDatabaseCallBack){
+    public void getFriendsDataFromDatabase(DatabaseCallBack<LiveData<List<UserFriendsList>>> listDatabaseCallBack){
         AsyncTask.execute(() -> {
-            List<UserFriendsList> result = appDatabase.getFriendsData().getFriendsData();
+            LiveData<List<UserFriendsList>> result = appDatabase.getFriendsData().getFriendsData();
             listDatabaseCallBack.onSuccess(result);
         });
     }

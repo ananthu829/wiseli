@@ -85,6 +85,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     ArrayAdapter<String> productListAdapter;
     List<ItemsList.ListItem> listItem = new ArrayList<>();
     String listName = "";
+    String address = "";
     String amount = "";
     private FusedLocationProviderClient mFusedLocationClient;
     protected Location mLastLocation;
@@ -331,7 +332,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
 
     private void saveData(Boolean isclosed, String amounts) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, amounts, lat, log, listId, String.valueOf(isclosed));
+        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, amounts, lat, log, listId, String.valueOf(isclosed),tvShopAddress.getText().toString());
 
 
         api.enqueue(new Callback<BasicResponse>() {
@@ -460,7 +461,9 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                     if (response.body().getResult()) {
                         if (response.body().getData() != null) {
                             listName = response.body().getData().getName();
+                            address = response.body().getData().getShop_name();
                             amount = response.body().getData().getAmount();
+                            tvShopAddress.setText(address);
                             if (amount.length() != 0) {
                                 cetvTotal.setEditableHintText(amount);
 
