@@ -23,6 +23,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -31,6 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.TabPagerAdapter;
 import uk.ac.tees.mad.w9501736.adapters.UserListAdapter;
@@ -74,6 +77,8 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     private Integer circleID = 0;
     private AdapterInterface adapterInterface;
     private Dialog dialog;
+    private List<FriendsList> friendsList;
+    private ImageView spino;
 
 
     public CircleDetailFragment() {
@@ -119,7 +124,7 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-
+        friendsList = new ArrayList<>();
         if (getArguments() != null) {
             circleTitle = getArguments().getString("circle_name");
             circleID = getArguments().getInt("circle_id");
@@ -128,9 +133,10 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
             }
         }
 
+
         tabLayout = view.findViewById(R.id.tl);
         viewPager = view.findViewById(R.id.vp);
-        ImageView spino = view.findViewById(R.id.addUserBtn);
+        spino = view.findViewById(R.id.addUserBtn);
 
 
         tabLayout.addTab(tabLayout.newTab().setText("Active"));
@@ -140,7 +146,7 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
 
         chipGroup = view.findViewById(R.id.chipgroup);
 
-        getCircleDetailFromAPISetData();
+        loadCircleDetailFromAPISetData();
 
         spino.setOnClickListener(v -> {
             getUserListApiCall();
@@ -171,6 +177,26 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
 
         tabPagerAdapter.setCircleID(circleID);
 
+    }
+
+    private void loadCircleDetailFromAPISetData() {
+        if (isNetworkAvailable(getContext())) {
+            spino.setEnabled(true);
+            chipGroup.setEnabled(true);
+            getCircleDetailFromAPISetData();
+        } else {
+            spino.setEnabled(false);
+            chipGroup.setEnabled(false);
+            friendsList.clear();
+            DatabaseFactory.getInstance().getCircleFriendsDataFromDatabase(circleIDs, result -> {
+                if (result.getValue().size() != 0) {
+                    friendsList.addAll((Collection<? extends FriendsList>) result);
+                    addChips(friendsList);
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     @Override
@@ -278,8 +304,12 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
                 if (value.result) {
                     if (value.data != null) {
                         if (value.data.getFriendsList() != null && value.data.getFriendsList().size() > 0) {
+                            for (FriendsList friend : value.data.getFriendsList()) {
+                                friend.setCircleId(circleID);
+                                friendsList.add(friend);
+                            }
+                            DatabaseFactory.getInstance().insertCircleFriendsDetailData(friendsList);
                             addChips(value.data.getFriendsList());
-                            value.data.getCircleId();
                         } else {
                             showProgressBar(false);
                         }

@@ -41,17 +41,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
         final ActiveInActiveBody contact = items.get(position);
-        holder.commonEditableTextView.setEditableText(contact.getListName());
-        holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
-        holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getListId());
-        holder.commonEditableTextView.setOnClickListener(v -> {
-            if (holder.commonEditableTextView.getTextTextVisibility()) {
-                buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
+        if (contact.getActive()) {
+            holder.commonEditableTextView.setEditableText(contact.getListName());
+            holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnClickListener(v -> {
+                if (holder.commonEditableTextView.getTextTextVisibility()) {
+                    buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
+                }
+            });
+            if (!showDeleteBtn) {
+                holder.commonEditableTextView.hideImageDeleteBtn(true);
+                holder.commonEditableTextView.hideImageEditBtn(true);
             }
-        });
-        if (!showDeleteBtn) {
-            holder.commonEditableTextView.hideImageDeleteBtn(true);
-            holder.commonEditableTextView.hideImageEditBtn(true);
         }
     }
 

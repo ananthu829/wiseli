@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -28,6 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.adapters.UserAdapter;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
@@ -35,6 +37,7 @@ import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.data.remote.GroupApiService;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
 import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
+import uk.ac.tees.mad.w9501736.models.FriendsList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
 
@@ -118,9 +121,7 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
         active = view.findViewById(R.id.activeRv);
         addUser = view.findViewById(R.id.fab);
 
-
-
-        getActiveList();
+        loadGetActiveList();
 
         addUser.setOnClickListener(v -> {
             final Dialog dialog = new Dialog(view.getContext());
@@ -144,26 +145,52 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
 
     }
 
+    private void loadGetActiveList() {
+        if (isNetworkAvailable(getContext())) {
+            addUser.setEnabled(true);
+            getActiveList();
+        } else {
+            addUser.setEnabled(false);
+            activeList.clear();
+            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(circleIDs, result -> {
+                if (result.getValue().size() != 0) {
+                    activeList.addAll((Collection<? extends FriendsList>) result);
+                    userAdapter.updateListItem(activeList);
+                } else {
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
     @Override
     public void onItemClicked(String shoppingListName, Integer listID) {
-        mAppPreferences.setActive(true);
-        Bundle bundle = new Bundle();
-        bundle.putInt(CIRCLEID, circleId);
-        bundle.putInt("list_id", listID);
-        bundle.putString("list_name", shoppingListName);
-        Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+        if (isNetworkAvailable(getContext())) {
+            mAppPreferences.setActive(true);
+            Bundle bundle = new Bundle();
+            bundle.putInt(CIRCLEID, circleId);
+            bundle.putInt("list_id", listID);
+            bundle.putString("list_name", shoppingListName);
+            Navigation.findNavController(view).navigate(R.id.action_circleDetailFragment_to_listFragment, bundle);
+        } else {
+            Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void onDeleteCtaClicked(Integer listID) {
         Log.d(TAG, "onDeleteCtaClicked: listID: " + listID);
-        deleteShoppingList(listID);
+
     }
 
     @Override
     public void setEditableText(Integer listID, String lastName) {
         Log.d(TAG, "setEditableText: listID : " + listID);
-        editShoppingList(listID, lastName);
+        if (isNetworkAvailable(getContext())) {
+            editShoppingList(listID, lastName);
+        } else {
+            Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void getActiveList() {
@@ -189,15 +216,19 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
                 Log.d("getUserList", " onNext : value : " + value);
                 if (value.result) {
                     adapterSet();
-
                     activeList.clear();
-                    activeList = value.getData();
+                    for (ActiveInActiveBody activeBody : value.getData()) {
+                        activeBody.setCircleId(circleId);
+                        activeBody.setActive(true);
+                        activeList.add(activeBody);
+                    }
+                    DatabaseFactory.getInstance().insertCircleActiveInactiveData(activeList);
                     userAdapter.updateListItem(activeList);
-                    showProgressBar(false);
                 } else {
+
                     Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
-                    showProgressBar(false);
                 }
+                showProgressBar(false);
             }
 
             @Override
@@ -213,11 +244,13 @@ public class ActiveFragment extends BaseFragment implements AdapterInterface {
             }
         };
     }
-public  void  adapterSet(){
-    active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-    userAdapter = new UserAdapter(activeList, true, this);
-    active.setAdapter(userAdapter);
-}
+
+    public void adapterSet() {
+        active.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        userAdapter = new UserAdapter(activeList, true, this);
+        active.setAdapter(userAdapter);
+    }
+
     private void createShoppingList(String shopName, String listName) {
         showProgressBar(true);
         Retrofit retrofit = new WiseLiApiClient().getRetrofitClient();
