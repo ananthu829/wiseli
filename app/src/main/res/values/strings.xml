@@ -45,6 +45,7 @@
     <string name="friend_group_fragment">Friends</string>
     <string name="friend_new_user_fragment">Friends</string>
     <string name="group_circles_fragment">Friends</string>
+    <string name="app_logout">LogOut</string>
     <string name="landing_fragment">WiseLi</string>
     <string name="circle_detail_fragment">CircleDetailFragment</string>
     <string name="splash_screen_fragment">SplashScreenFragment</string>

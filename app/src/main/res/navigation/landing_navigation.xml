@@ -80,5 +80,13 @@
         android:label="@string/friend_new_user_fragment"
         tools:layout="@layout/fragment_find_new_user" />
 
+    <fragment
+        android:id="@+id/logOutFragment"
+        android:name="uk.ac.tees.mad.w9501736.ui.fragment.logOutPage.LogoutFragment"
+        android:label="@string/app_logout"
+        tools:layout="@layout/fragment_logout">
+
+    </fragment>
+
 
 </navigation>

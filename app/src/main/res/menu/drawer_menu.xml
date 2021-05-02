@@ -22,6 +22,10 @@
             android:id="@+id/friendListFragment"
             android:icon="@drawable/ic_group"
             android:title="@string/group_circles_fragment" />
+        <item
+            android:id="@+id/logOutFragment"
+            android:icon="@drawable/ic_exit_to_app"
+            android:title="@string/app_logout" />
     </group>
 
 </menu>

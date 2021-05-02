@@ -38,7 +38,7 @@
         android:layout_height="@dimen/match_constrain"
         android:layout_marginTop="47dp"
         android:layout_marginBottom="67dp"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
         app:layout_constraintEnd_toEndOf="@+id/appCompatTextView"
         app:layout_constraintHorizontal_bias="0.0"
