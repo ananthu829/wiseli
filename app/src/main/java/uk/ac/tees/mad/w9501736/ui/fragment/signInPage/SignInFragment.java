@@ -259,7 +259,7 @@ public class SignInFragment extends BaseFragment {
                     user.setLatitude(lat);
                     user.setLongitude(log);
                     mAppPreferences.setUserCashedInfo(user);
-                    startActivity(new Intent(getActivity(), LandingActivity.class));
+                    startActivity(new Intent(getBaseActivity(), LandingActivity.class));
                     getActivity().finish();
                 } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();
