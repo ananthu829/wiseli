@@ -50,7 +50,7 @@ public interface RestService {
     Call<BasicResponse> editCircle(@Nullable @Field("token") String token,
                                    @Nullable @Field("circle_id") Integer id,
                                    @Nullable @Field("circle_name") String name
-                                );
+    );
 
 
     @FormUrlEncoded
@@ -89,7 +89,7 @@ public interface RestService {
     @FormUrlEncoded
     @POST("/api/shoppinglist/name/edit")
     Call<BasicResponse> editListShopping(@Nullable @Field("token") String token,
-                                           @Nullable @Field("list_id") Integer list_id,
+                                         @Nullable @Field("list_id") Integer list_id,
                                          @Nullable @Field("list_name") String list_name
     );
 
@@ -103,9 +103,10 @@ public interface RestService {
                                  @Nullable @Field("longitude") String longitude,
 
                                  @Nullable @Field("shoppinglist_id") Integer shoppinglist_id,
-                                 @Nullable @Field("is_closed") String is_closed
-    );
+                                 @Nullable @Field("is_closed") String is_closed,
+                                 @Nullable @Field("shop_address") String shop_address
 
+    );
 
 
     @GET("/api/user/search?")

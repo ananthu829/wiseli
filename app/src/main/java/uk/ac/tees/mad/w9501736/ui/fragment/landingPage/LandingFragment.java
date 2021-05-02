@@ -233,6 +233,8 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
     }
 
     private void getCircle() {
+        DatabaseFactory.getInstance().deleteData();
+
         showProgressBar(true);
         Call<Resource<ArrayList<CircleData>>> api = mRetrofitService.getCircle(getWiseLiUser().getToken());
 
