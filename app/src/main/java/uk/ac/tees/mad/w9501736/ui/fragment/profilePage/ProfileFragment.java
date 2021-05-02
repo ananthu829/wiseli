@@ -158,6 +158,8 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
 
         wiseLiUser.setPassword(userDetails.getPassword());
 
+        wiseLiUser.setProfilePic(userDetails.getProfilePic());
+
         Glide.with(getActivity()).load(userDetails.getProfilePic()).into(imgProfileImage);
 
         edtFirstName.getEditText().setText(userDetails.getFirstName());
