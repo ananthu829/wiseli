@@ -50,10 +50,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.holder> {
                     buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
                 }
             });
-            if (!showDeleteBtn) {
                 holder.commonEditableTextView.hideImageDeleteBtn(true);
                 holder.commonEditableTextView.hideImageEditBtn(true);
-            }
+        } else {
+            holder.commonEditableTextView.setEditableText(contact.getListName());
+            holder.commonEditableTextView.setOnDeleteClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnEditClickListener(buttonListener, contact.getListId());
+            holder.commonEditableTextView.setOnClickListener(v -> {
+                if (holder.commonEditableTextView.getTextTextVisibility()) {
+                    buttonListener.onItemClicked(holder.commonEditableTextView.getEditableText(), contact.getListId());
+                }
+            });
         }
     }
 

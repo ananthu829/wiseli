@@ -459,12 +459,15 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         MultipartBody.Part body = MultipartBody.Part.createFormData("", "");
         try {
             //pass it like this
-
+            Log.d(TAG, "getImageFile" + "uri" + uri.toString());
             File file2 = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
             String filePath = SiliCompressor.with(getContext()).compress(getPathFromURI(uri), file2);
+            Log.d(TAG, " getImageFile" + " SiliCompressor uri Path: " + filePath);
+
             Snackbar.make(getActivity().findViewById(android.R.id.content), "SiliCompressor uri Path:" + filePath, Snackbar.LENGTH_LONG).show();
             File file = new File(filePath);
             Snackbar.make(getActivity().findViewById(android.R.id.content), "File Path:" + file.getPath(), Snackbar.LENGTH_LONG).show();
+            Log.d(TAG, "getImageFile" + "File Path:" + file.getPath());
             wiseLiUser.setProfilePic(file.getPath());
 
             // create upload service client
