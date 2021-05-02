@@ -90,9 +90,9 @@ public class DatabaseFactory {
         });
     }
 
-    public void getCircleFriendsDataFromDatabase(Integer circleIDs, DatabaseCallBack<LiveData<FriendsList>> listDatabaseCallBack) {
+    public void getCircleFriendsDataFromDatabase(Integer circleIDs, DatabaseCallBack<List<FriendsList>> listDatabaseCallBack) {
         AsyncTask.execute(() -> {
-            LiveData<FriendsList> result = appDatabase.getCircleFriendData().getCircleDetail(circleIDs);
+            List<FriendsList> result = appDatabase.getCircleFriendData().getCircleDetail(circleIDs);
             listDatabaseCallBack.onSuccess(result);
         });
     }
@@ -103,9 +103,9 @@ public class DatabaseFactory {
         });
     }
 
-    public void getCircleActiveInactiveDataFromDatabase(DatabaseCallBack<LiveData<ActiveInActiveBody>> listDatabaseCallBack, Integer circleID) {
+    public void getCircleActiveInactiveDataFromDatabase(Integer circleID,DatabaseCallBack<List<ActiveInActiveBody>> listDatabaseCallBack) {
         AsyncTask.execute(() -> {
-            LiveData<ActiveInActiveBody> result = appDatabase.getCircleActiveInactiveData().getCircleDetail(circleID);
+            List<ActiveInActiveBody> result = appDatabase.getCircleActiveInactiveData().getCircleDetail(circleID);
             listDatabaseCallBack.onSuccess(result);
         });
     }

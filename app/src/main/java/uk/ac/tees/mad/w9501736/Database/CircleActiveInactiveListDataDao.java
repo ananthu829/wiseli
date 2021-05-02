@@ -17,5 +17,5 @@ public interface CircleActiveInactiveListDataDao {
     void insert(List<ActiveInActiveBody> data);
 
     @Query("SELECT * FROM ActiveInActiveBody WHERE circleID = :circleID")
-    LiveData<ActiveInActiveBody> getCircleDetail(Integer circleID);
+    List<ActiveInActiveBody> getCircleDetail(Integer circleID);
 }

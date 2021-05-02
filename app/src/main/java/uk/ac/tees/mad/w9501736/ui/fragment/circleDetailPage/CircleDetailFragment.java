@@ -188,14 +188,16 @@ public class CircleDetailFragment extends BaseFragment implements AdapterInterfa
             spino.setEnabled(false);
             chipGroup.setEnabled(false);
             friendsList.clear();
-            DatabaseFactory.getInstance().getCircleFriendsDataFromDatabase(circleIDs, result -> {
-                if (result.getValue().size() != 0) {
-                    friendsList.addAll((Collection<? extends FriendsList>) result);
-                    addChips(friendsList);
-                } else {
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
-                }
+            DatabaseFactory.getInstance().getCircleFriendsDataFromDatabase(circleID, result -> {
+                  if (result.size() != 0) {
+                      friendsList.addAll((Collection<? extends FriendsList>) result);
+
+                  } else {
+                      Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
+                  }
+
             });
+            addChips(friendsList);
         }
     }
 

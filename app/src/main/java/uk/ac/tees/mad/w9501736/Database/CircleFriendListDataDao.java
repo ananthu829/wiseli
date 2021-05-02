@@ -16,5 +16,5 @@ public interface CircleFriendListDataDao {
     void insert(List<FriendsList> data);
 
     @Query("SELECT * FROM FriendsList WHERE circleID = :circleID")
-    LiveData<FriendsList> getCircleDetail(Integer circleID);
+    List<FriendsList> getCircleDetail(Integer circleID);
 }

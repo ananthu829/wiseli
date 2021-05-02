@@ -121,13 +121,14 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
             getInactiveList();
         } else {
             inactiveLists.clear();
-            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(circleIDs, result -> {
-                if (result.getValue().size() != 0) {
-                    inactiveLists.addAll((Collection<? extends FriendsList>) result);
-                    userAdapter.updateListItem(inactiveLists);
-                } else {
-                    Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
-                }
+            DatabaseFactory.getInstance().getCircleActiveInactiveDataFromDatabase(circleId, result -> {
+                    if (result.size() != 0) {
+                        inactiveLists.addAll((Collection<? extends ActiveInActiveBody>) result);
+                        userAdapter.updateListItem(inactiveLists);
+                    } else {
+                        Snackbar.make(getActivity().findViewById(android.R.id.content), getString(R.string.snack_error_network) + " and you have no local data", Snackbar.LENGTH_LONG).show();
+                    }
+
             });
         }
     }
