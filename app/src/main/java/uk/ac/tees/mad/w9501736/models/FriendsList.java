@@ -23,11 +23,12 @@ public class FriendsList implements Parcelable {
             return new FriendsList[size];
         }
     };
-    @PrimaryKey
+
     @NonNull
     private int circleId;
     private boolean isActive;
     @SerializedName("user_id")
+    @PrimaryKey
     private int userId;
     @SerializedName("username")
     private String username;
