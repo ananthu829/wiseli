@@ -13,7 +13,7 @@ import uk.ac.tees.mad.w9501736.models.ActiveInActiveBody;
 @Dao
 public interface CircleActiveInactiveListDataDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<ActiveInActiveBody> data);
 
     @Query("SELECT * FROM ActiveInActiveBody WHERE circleID = :circleID AND isActive=:iActive")
