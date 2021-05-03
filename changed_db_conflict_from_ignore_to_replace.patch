@@ -1,0 +1,16 @@
+Index: app/src/main/java/uk/ac/tees/mad/w9501736/Database/FriendsDataDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/uk/ac/tees/mad/w9501736/Database/FriendsDataDao.java	(revision 3d5ec9b5d72507a7791cb0cdeca720fa827e8667)
++++ app/src/main/java/uk/ac/tees/mad/w9501736/Database/FriendsDataDao.java	(date 1620028070736)
+@@ -11,7 +11,7 @@
+ @Dao
+ public interface FriendsDataDao {
+ 
+-    @Insert(onConflict = OnConflictStrategy.IGNORE)
++    @Insert(onConflict = OnConflictStrategy.REPLACE)
+     public void insert(UserFriendsList data);
+ 
+     @Query("SELECT * FROM userFriendList")
