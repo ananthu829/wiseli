@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -182,7 +181,7 @@ public class SignInFragment extends BaseFragment {
             getLoginApi();
         } else {
             showProgressBar(false);
-            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_network_available), Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(R.string.snack_error_network), Snackbar.LENGTH_LONG).show();
 
         }
     }
@@ -259,7 +258,7 @@ public class SignInFragment extends BaseFragment {
                     user.setLatitude(lat);
                     user.setLongitude(log);
                     mAppPreferences.setUserCashedInfo(user);
-                    startActivity(new Intent(getBaseActivity(), LandingActivity.class));
+                    startActivity(new Intent(getContext(), LandingActivity.class));
                     getActivity().finish();
                 } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), response.body().getMsg(), Snackbar.LENGTH_LONG).show();

@@ -198,6 +198,7 @@ public class InactiveFragment extends BaseFragment implements AdapterInterface {
                         inActiveBody.setActive(false);
                         inactiveLists.add(inActiveBody);
                     }
+                    DatabaseFactory.getInstance().insertCircleActiveInactiveData(inactiveLists);
                     userAdapter.updateListItem(inactiveLists);
                 } else {
                     Snackbar.make(getActivity().findViewById(android.R.id.content), value.getMessage(), Snackbar.LENGTH_LONG).show();
