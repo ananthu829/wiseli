@@ -68,7 +68,6 @@ public class LandingActivity extends BaseActivity {
     }
 
     private void setupDrawerLayout() {
-        // Set up ActionBar
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -88,7 +87,6 @@ public class LandingActivity extends BaseActivity {
         userDetails = mAppPreferences.getUserCashedInfo();
         navUsername.setText(userDetails.getUsername());
         navEmail.setText(userDetails.getEmail());
-//        Log.i("GlideImage", userDetails.getProfilePic());
         Glide.with(this)
                 .load(userDetails.getProfilePic())
                 .error(R.drawable.image1)

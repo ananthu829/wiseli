@@ -3,7 +3,6 @@ package uk.ac.tees.mad.w9501736.ui.fragment.profilePage;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -21,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,7 +64,6 @@ import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.data.WiseLiRepository;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
@@ -74,7 +71,6 @@ import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiService;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
-import uk.ac.tees.mad.w9501736.ui.viewModel.RegisterPage.RegisterFragmentViewModel;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
 
@@ -87,6 +83,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
 
     private static final String TAG = "RegisterFragment";
     public MultipartBody.Part image;
+    public File imageFile;
     @BindView(R.id.btnSignUp)
     AppCompatButton btnSignUp;
     @BindView(R.id.imgProfileImage)
@@ -111,22 +108,12 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
     Disposable dMainListObservable;
     AppPreferences mAppPreferences;
     WiseLiUser userDetails;
-    private WiseLiRepository apiRepo;
-    private RegisterFragmentViewModel registerFragmentViewModel;
-    private FusedLocationProviderClient mFusedLocationClient;
-    public File imageFile;
     Uri compressUri = null;
+    private FusedLocationProviderClient mFusedLocationClient;
 
 
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //WiseLiComponent wiseLiComponent = ((WiseLiComponentProvider) getActivity().getApplication()).getWiseLiComponent();
-        //wiseLiComponent.inject(this);
     }
 
     @Override
@@ -200,15 +187,12 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         wiseLiUser.setToken(userDetails.getToken());
 
 
-        btnTG.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if (isChecked) {
-                    if (checkedId == R.id.btnMale) {
-                        wiseLiUser.setGender("Male");
-                    } else {
-                        wiseLiUser.setGender("Female");
-                    }
+        btnTG.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.btnMale) {
+                    wiseLiUser.setGender("Male");
+                } else {
+                    wiseLiUser.setGender("Female");
                 }
             }
         });
@@ -452,49 +436,15 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
         //navigateToLanding();
     }
 
-    private void navigateToLanding() {
-        showProgressBar(false);
-        startActivity(new Intent(getActivity(), LandingActivity.class));
-        getActivity().finish();
-    }
-
-    private void subscribeObservers(final WiseLiUser wiseLiUser) {
-        registerFragmentViewModel.getRegisterUserData(wiseLiUser).observe(this, userResponse -> {
-            if (userResponse != null) {
-                if (userResponse.data != null) {
-                    switch (userResponse.status) {
-
-                        case LOADING: {
-                            showProgressBar(true);
-                            break;
-                        }
-
-                        case ERROR: {
-                            showProgressBar(false);
-                            Toast.makeText(getContext(), "UnScussess Error : " + userResponse.message, Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-
-                        case SUCCESS: {
-                            showProgressBar(false);
-                            Toast.makeText(getContext(), "Scussess device ID : " + userResponse.data.getDeviceId(), Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
     private MultipartBody.Part getImageFile(Uri uri) {
         MultipartBody.Part body = MultipartBody.Part.createFormData("", "");
         try {
 
 
-          File file = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
+            File file = new File(UtilHelper.getRealPathFromURI_API19(getContext(), uri));
             wiseLiUser.setProfilePic(file.getPath());
             RequestBody requestFile =
-                    RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
             body = MultipartBody.Part.createFormData("profile_pic", "abc.jpeg", requestFile);
             System.out.println("getImageFile: file.getName()" + file);
@@ -596,7 +546,7 @@ public class ProfileFragment extends BaseFragment implements BottomSheetImagePic
                     mAppPreferences.setUserDetails(loginModel);
                     mAppPreferences.setUserCashedInfo(wiseLiUser);
                     userDetails.setPassword(wiseLiUser.getPassword());
-                    ( (LandingActivity) getActivity()).updateNavHeader();
+                    ((LandingActivity) getActivity()).updateNavHeader();
 
                     Log.d("registerUser", " onNext : value : " + value);
                 } else {

@@ -64,12 +64,9 @@ public class AddFriendFragment extends BaseFragment implements AdapterInterface 
 
         findFriend(SearchData);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (friendId != 0) {
-                    addUser(friendId);
-                }
+        btnAdd.setOnClickListener(v -> {
+            if (friendId != 0) {
+                addUser(friendId);
             }
         });
 
@@ -145,28 +142,6 @@ public class AddFriendFragment extends BaseFragment implements AdapterInterface 
             }
 
 
-        });
-    }
-
-    private void getFriendsList() {
-        showProgressBar(true);
-        Call<Resource<ArrayList<UserFriendsList>>> api = mRetrofitService.getFriendsList(getWiseLiUser().getToken());
-        api.enqueue(new Callback<Resource<ArrayList<UserFriendsList>>>() {
-            @Override
-            public void onResponse(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Response<Resource<ArrayList<UserFriendsList>>> response) {
-                showProgressBar(false);
-                if (response.body() != null) {
-
-                } else {
-                    Log.d("tag1", "Failed---");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Throwable t) {
-                t.printStackTrace();
-                showProgressBar(false);
-            }
         });
     }
 

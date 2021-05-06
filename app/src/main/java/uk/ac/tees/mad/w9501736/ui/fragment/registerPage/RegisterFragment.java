@@ -65,7 +65,6 @@ import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import uk.ac.tees.mad.w9501736.Database.DatabaseFactory;
 import uk.ac.tees.mad.w9501736.R;
-import uk.ac.tees.mad.w9501736.data.WiseLiRepository;
 import uk.ac.tees.mad.w9501736.data.model.Resource;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiClient;
@@ -73,7 +72,6 @@ import uk.ac.tees.mad.w9501736.data.remote.WiseLiApiService;
 import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
-import uk.ac.tees.mad.w9501736.ui.viewModel.RegisterPage.RegisterFragmentViewModel;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
 
@@ -86,7 +84,16 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 public class RegisterFragment extends BaseFragment implements BottomSheetImagePicker.OnImagesSelectedListener {
 
     private static final String TAG = "RegisterFragment";
+    private static String USERNAME = "username";
+    private static String PASSWORD = "password";
+    private static String FIRSTNAME = "firstname";
+    private static String LASTNAME = "lastname";
+    private static String PHONENO = "phone";
+    private static String EMAIL = "email";
+    private static String PROFILE_PIC = "pic";
+    private static String GENDER = "gender";
     public MultipartBody.Part image;
+    public File imageFile;
     @BindView(R.id.btnSignUp)
     AppCompatButton btnSignUp;
     @BindView(R.id.imgProfileImage)
@@ -110,19 +117,8 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     TextInputLayout edtEmailID;
     Disposable dMainListObservable;
     AppPreferences mAppPreferences;
-    private WiseLiRepository apiRepo;
-    private RegisterFragmentViewModel registerFragmentViewModel;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private  static  String  USERNAME ="username";
-    private  static  String  PASSWORD ="password";
-    private  static  String  FIRSTNAME ="firstname";
-    private  static  String  LASTNAME ="lastname";
-    private  static  String  PHONENO ="phone";
-    private  static  String  EMAIL ="email";
-    private  static  String  PROFILE_PIC ="pic";
-    private  static  String  GENDER ="gender";
-    public File imageFile;
     Uri compressUri = null;
+    private FusedLocationProviderClient mFusedLocationClient;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -131,26 +127,26 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(USERNAME,etUserName.getEditText().getText().toString());
-        outState.putString(PASSWORD,edtPassword.getEditText().getText().toString());
-        outState.putString(FIRSTNAME,edtFirstName.getEditText().getText().toString());
-        outState.putString(LASTNAME,edtLastName.getEditText().getText().toString());
-        outState.putString(PHONENO,etPhoneNumber.getEditText().getText().toString());
-        outState.putString(EMAIL,edtEmailID.getEditText().getText().toString());
-        outState.putString(PROFILE_PIC,wiseLiUser.getProfilePic());
-        outState.putString(GENDER,wiseLiUser.getGender());
+        outState.putString(USERNAME, etUserName.getEditText().getText().toString());
+        outState.putString(PASSWORD, edtPassword.getEditText().getText().toString());
+        outState.putString(FIRSTNAME, edtFirstName.getEditText().getText().toString());
+        outState.putString(LASTNAME, edtLastName.getEditText().getText().toString());
+        outState.putString(PHONENO, etPhoneNumber.getEditText().getText().toString());
+        outState.putString(EMAIL, edtEmailID.getEditText().getText().toString());
+        outState.putString(PROFILE_PIC, wiseLiUser.getProfilePic());
+        outState.putString(GENDER, wiseLiUser.getGender());
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState !=null) {
-            edtFirstName .getEditText().setText(savedInstanceState.getString(FIRSTNAME));
-            edtLastName .getEditText().setText(savedInstanceState.getString(LASTNAME));
-            etUserName .getEditText().setText(savedInstanceState.getString(USERNAME));
-            etPhoneNumber .getEditText().setText(savedInstanceState.getString(PHONENO));
-            edtPassword .getEditText().setText(savedInstanceState.getString(PASSWORD));
-            edtEmailID .getEditText().setText(savedInstanceState.getString(EMAIL));
+        if (savedInstanceState != null) {
+            edtFirstName.getEditText().setText(savedInstanceState.getString(FIRSTNAME));
+            edtLastName.getEditText().setText(savedInstanceState.getString(LASTNAME));
+            etUserName.getEditText().setText(savedInstanceState.getString(USERNAME));
+            etPhoneNumber.getEditText().setText(savedInstanceState.getString(PHONENO));
+            edtPassword.getEditText().setText(savedInstanceState.getString(PASSWORD));
+            edtEmailID.getEditText().setText(savedInstanceState.getString(EMAIL));
             Glide.with(getActivity()).load(savedInstanceState.getString(PROFILE_PIC)).placeholder(R.drawable.image1).error(R.drawable.image1).into(imgProfileImage);
             if (GENDER.equals("Male")) {
                 btnTG.check(R.id.btnMale);
@@ -158,9 +154,9 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
             if (GENDER.equals("Female")) {
                 btnTG.check(R.id.btnFemale);
             }
-                wiseLiUser.setProfilePic(savedInstanceState.getString(PROFILE_PIC));
-            Uri uri =Uri.fromFile( new File(wiseLiUser.getProfilePic()));
-            image =getImageFile(uri);
+            wiseLiUser.setProfilePic(savedInstanceState.getString(PROFILE_PIC));
+            Uri uri = Uri.fromFile(new File(wiseLiUser.getProfilePic()));
+            image = getImageFile(uri);
         }
 
     }
@@ -484,7 +480,7 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
                     RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
             // MultipartBody.Part is used to send also the actual file name
-            body = MultipartBody.Part.createFormData("profile_pic","abc.jpeg", requestFile);
+            body = MultipartBody.Part.createFormData("profile_pic", "abc.jpeg", requestFile);
             System.out.println("getImageFile: file.getName()" + file.getName());
 
 
@@ -495,18 +491,6 @@ public class RegisterFragment extends BaseFragment implements BottomSheetImagePi
         System.out.println("getImageFile: Error");
         return body;
 
-    }
-
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getBaseActivity().getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
     }
 
     @Override

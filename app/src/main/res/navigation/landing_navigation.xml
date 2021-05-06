@@ -43,20 +43,7 @@
         android:label="@string/shop_list_fragment"
         tools:layout="@layout/fragment_list">
 
-        <action
-            android:id="@+id/action_listFragment_to_mapFragment"
-            app:destination="@id/mapFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right" />
-
     </fragment>
-
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="uk.ac.tees.mad.w9501736.ui.fragment.mapPage.MapFragment"
-        android:label="@string/map_fragment" />
 
     <fragment
         android:id="@+id/profileFragment"

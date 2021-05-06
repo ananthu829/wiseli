@@ -36,8 +36,8 @@ import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
  * A simple {@link Fragment} subclass.
  */
 public class FriendListFragment extends BaseFragment implements AdapterInterface {
-    ArrayList<UserFriendsList> infos = new ArrayList<>();
 
+    ArrayList<UserFriendsList> infos = new ArrayList<>();
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -46,7 +46,6 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
     RecyclerView rvUser;
 
     AdapterInterface adapterInterface;
-
 
     public FriendListFragment() {
         // Required empty public constructor
@@ -112,10 +111,7 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
                     recycle();
                 } else {
                     Log.d("tag1", "Failed---");
-
                 }
-
-
             }
 
 
@@ -123,10 +119,7 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
             public void onFailure(Call<Resource<ArrayList<UserFriendsList>>> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
-
             }
-
-
         });
     }
 
@@ -146,13 +139,9 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
                 showProgressBar(false);
 
                 if (response.body() != null) {
-
                 } else {
                     Log.d("tag1", "Failed---");
-
                 }
-
-
             }
 
             @Override
@@ -160,8 +149,6 @@ public class FriendListFragment extends BaseFragment implements AdapterInterface
                 t.printStackTrace();
                 showProgressBar(false);
             }
-
-
         });
     }
 

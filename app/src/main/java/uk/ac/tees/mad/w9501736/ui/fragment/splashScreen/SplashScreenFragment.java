@@ -25,7 +25,6 @@ import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
-import uk.ac.tees.mad.w9501736.ui.viewModel.splashScreen.SplashScreenFragmentViewModel;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
 
 import static uk.ac.tees.mad.w9501736.utils.AppConstants.SPLASH_SCREEN_TIME_OUT;
@@ -34,8 +33,6 @@ public class SplashScreenFragment extends BaseFragment {
 
     AppPreferences mAppPreferences;
     WiseLiUser userDetails;
-
-    private SplashScreenFragmentViewModel splashScreenFragmentViewModel;
 
     public SplashScreenFragment() {
         // Required empty public constructor

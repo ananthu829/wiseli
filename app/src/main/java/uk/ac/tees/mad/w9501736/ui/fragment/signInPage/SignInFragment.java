@@ -42,7 +42,6 @@ import uk.ac.tees.mad.w9501736.network.RestService;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.utils.AppPreferences;
-import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,8 +109,6 @@ public class SignInFragment extends BaseFragment {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         btnLogin.setOnClickListener(v -> {
-//            startActivity(new Intent(getActivity(), LandingActivity.class));
-//            getActivity().finish();
             getCurrentLoc();
         });
         getDeviceDetails();
@@ -163,8 +160,7 @@ public class SignInFragment extends BaseFragment {
         //iLandingPresenter.getWeatherForecastWebService(String.valueOf(latitude), String.valueOf(longitude));
         System.out.println("LandingActivity getLastLocation");
         showProgressBar(true);
-        if (NetworkDetector.haveNetworkConnection(getActivity())) {
-
+        if (isNetworkAvailable(getActivity())) {
             mFusedLocationClient.getLastLocation()
                     .addOnCompleteListener(getActivity(), task -> {
                         if (task.isSuccessful() && task.getResult() != null) {

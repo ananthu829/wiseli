@@ -69,7 +69,6 @@ import uk.ac.tees.mad.w9501736.models.ShoppingList;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.helper.AdapterInterface;
-import uk.ac.tees.mad.w9501736.utils.NetworkDetector;
 import uk.ac.tees.mad.w9501736.utils.UtilHelper;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -80,6 +79,9 @@ import static android.app.Activity.RESULT_OK;
  */
 public class ShopListDetailFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, AdapterInterface {
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
+    public String lat = "0.000";
+    public String log = "0.000";
+    protected Location mLastLocation;
     ArrayList<String> items, qty;
     List<String> productItemList = new ArrayList<>();
     ArrayAdapter<String> productListAdapter;
@@ -88,10 +90,6 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     String address = "";
     String amount = "";
     String shopName = "";
-    private FusedLocationProviderClient mFusedLocationClient;
-    protected Location mLastLocation;
-    public String lat = "0.000";
-    public String log = "0.000";
     ArrayList<Item> itemList;
     Spinner spinner;
     RecyclerView rvList;
@@ -116,10 +114,11 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             "DSA with java", "OS"};
     String productItemId;
     Boolean isclosed = false;
+    Dialog dialog;
+    private FusedLocationProviderClient mFusedLocationClient;
     private String placeName = "";
     private Integer circleId = 0;
     private Integer listId = 0;
-    Dialog dialog;
 
     public ShopListDetailFragment() {
         // Required empty public constructor
@@ -200,8 +199,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             cetvTotal.enableOrDisable(true);
         }
         save.setOnClickListener(view1 -> {
-            if(isclosed)
-            {
+            if (isclosed) {
                 saveData(isclosed, cetvTotal.getEditableText());
             }
         });
@@ -246,12 +244,9 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 isclosed = position != 0;
-                if(position == 1)
-                {
+                if (position == 1) {
                     save.setEnabled(true);
-                }
-                else
-                {
+                } else {
                     save.setEnabled(false);
                 }
 
@@ -334,16 +329,13 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
 
     private void saveData(Boolean isclosed, String amounts) {
         showProgressBar(true);
-        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, amounts, lat, log, listId, String.valueOf(isclosed),tvShopAddress.getText().toString());
-
+        Call<BasicResponse> api = mRetrofitService.saveData(getWiseLiUser().getToken(), listName, amounts, lat, log, listId, String.valueOf(isclosed), tvShopAddress.getText().toString());
 
         api.enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(@NotNull Call<BasicResponse> responseCall, Response<BasicResponse> response) {
                 showProgressBar(false);
                 Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
-
-
             }
 
             @Override
@@ -423,28 +415,19 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 showProgressBar(false);
                 if (response.body() != null) {
                     listItem = response.body().getData();
-
                     for (int i = 0; i < response.body().getData().size(); i++) {
 
                         productItemList.add(response.body().getData().get(i).getItem_name());
                     }
-
-
                 } else {
-
-
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<ItemsList> responseCall, Throwable t) {
                 t.printStackTrace();
                 showProgressBar(false);
-
             }
-
 
         });
     }
@@ -453,7 +436,6 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
     private void getShoppingList() {
         showProgressBar(true);
         Call<ShoppingList> api = mRetrofitService.getShoppingList(getWiseLiUser().getToken(), listId);
-
 
         api.enqueue(new Callback<ShoppingList>() {
             @Override
@@ -520,7 +502,6 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 itemList.clear();
                 dialog.dismiss();
                 getShoppingList();
-
             }
 
             @Override
@@ -529,11 +510,8 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
                 showProgressBar(false);
 
             }
-
-
         });
     }
-
 
     private void deleteShoppingList(Integer listId) {
         showProgressBar(true);
@@ -556,35 +534,8 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
 
             }
 
-
         });
     }
-
-//
-//    private void editShoppingList(Integer listId, String name) {
-//        showProgressBar(true);
-//        Call<BasicResponse> api = mRetrofitService.editListShopping(getWiseLiUser().getToken(), listId, name);
-//
-//
-//        api.enqueue(new Callback<BasicResponse>() {
-//            @Override
-//            public void onResponse(@NotNull Call<BasicResponse> responseCall, Response<BasicResponse> response) {
-//                showProgressBar(false);
-////                Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
-////                itemList.clear();
-////                getShoppingList();
-//            }
-//
-//            @Override
-//            public void onFailure(@NotNull Call<BasicResponse> responseCall, Throwable t) {
-//                t.printStackTrace();
-//                showProgressBar(false);
-//
-//            }
-//
-//
-//        });
-//    }
 
     public void recy() {
         commentAdapter = new CommentAdapter(commentArrayList);
@@ -612,8 +563,7 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
         //iLandingPresenter.getWeatherForecastWebService(String.valueOf(latitude), String.valueOf(longitude));
         System.out.println("LandingActivity getLastLocation");
         showProgressBar(true);
-        if (NetworkDetector.haveNetworkConnection(getActivity())) {
-
+        if (isNetworkAvailable(getActivity())) {
             mFusedLocationClient.getLastLocation()
                     .addOnCompleteListener(getActivity(), task -> {
                         if (task.isSuccessful() && task.getResult() != null) {
@@ -652,7 +602,8 @@ public class ShopListDetailFragment extends BaseFragment implements AdapterView.
             }
         }).check();
     }
-    public String roundDecimal(Double dec){
+
+    public String roundDecimal(Double dec) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
         return String.valueOf(Double.valueOf(twoDForm.format(dec)));
     }

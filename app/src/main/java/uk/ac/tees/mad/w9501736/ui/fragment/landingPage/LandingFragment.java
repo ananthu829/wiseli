@@ -45,12 +45,9 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
 
     RecyclerView circles;
     List<CircleData> infos = new ArrayList<>();
-    CircleAdapter circleAdapter;
     private AdapterInterface listener;
     private View view;
     FloatingActionButton Fab;
-
-
     Dialog dialog;
 
     public LandingFragment() {
@@ -99,7 +96,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 dialog.dismiss();
             });
         });
-//        DatabaseFactory.getInstance().deleteData();
         if (isNetworkAvailable(getContext())) {
             getCircle();
         } else {
@@ -126,8 +122,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                     Log.d("tag1", "Failed---");
                     dialog.dismiss();
                 }
-
-
             }
 
             @Override
@@ -135,8 +129,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 t.printStackTrace();
                 showProgressBar(false);
             }
-
-
         });
     }
 
@@ -169,8 +161,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                     Log.d("tag1", "Failed---");
 
                 }
-
-
             }
 
             @Override
@@ -178,18 +168,13 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 t.printStackTrace();
                 showProgressBar(false);
             }
-
-
         });
     }
 
 
     private void editCircle(Integer id, String name) {
         showProgressBar(true);
-
         Call<BasicResponse> api = mRetrofitService.editCircle(getWiseLiUser().getToken(), id, name);
-
-
         api.enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> responseCall, Response<BasicResponse> response) {
@@ -201,8 +186,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                     Log.d("tag1", "Failed---");
 
                 }
-
-
             }
 
             @Override
@@ -210,8 +193,6 @@ public class LandingFragment extends BaseFragment implements AdapterInterface {
                 t.printStackTrace();
                 showProgressBar(false);
                 Snackbar.make(getActivity().findViewById(android.R.id.content), "Something went wrong", Snackbar.LENGTH_LONG).show();
-
-
             }
 
 

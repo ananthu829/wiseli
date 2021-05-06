@@ -19,9 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import uk.ac.tees.mad.w9501736.BuildConfig;
 import uk.ac.tees.mad.w9501736.utils.AppConstants;
 
-/**
- * @author pedro.vicente
- */
+
 public class RetrofitHelper {
 
     private static final String CACHE_DIR = "http-cache";

@@ -19,14 +19,8 @@ import uk.ac.tees.mad.w9501736.models.LoginModel;
 import uk.ac.tees.mad.w9501736.models.ShoppingList;
 import uk.ac.tees.mad.w9501736.models.UserFriendsList;
 
-/**
- * Created by nithin on 20/9/20
- **/
+
 public interface RestService {
-
-
-//    @POST("/api/user/login")
-//    Call<LoginModel> getOTP(@Body LoginModel requestOTP);
 
     @FormUrlEncoded
     @POST("/api/user/login")
@@ -36,7 +30,6 @@ public interface RestService {
                            @Nullable @Field("device_type") String device_type,
                            @Nullable @Field("latitude") String latitude,
                            @Nullable @Field("longitude") String longitude);
-
 
     @FormUrlEncoded
     @POST("/api/circle/create")
@@ -51,7 +44,6 @@ public interface RestService {
                                    @Nullable @Field("circle_id") Integer id,
                                    @Nullable @Field("circle_name") String name
     );
-
 
     @FormUrlEncoded
     @POST("/api/circle/delete")
@@ -85,14 +77,12 @@ public interface RestService {
                                            @Nullable @Field("listitem_id") Integer listitem_id
     );
 
-
     @FormUrlEncoded
     @POST("/api/shoppinglist/name/edit")
     Call<BasicResponse> editListShopping(@Nullable @Field("token") String token,
                                          @Nullable @Field("list_id") Integer list_id,
                                          @Nullable @Field("list_name") String list_name
     );
-
 
     @FormUrlEncoded
     @POST("/api/shoppinglist/edit")
@@ -108,7 +98,6 @@ public interface RestService {
 
     );
 
-
     @GET("/api/user/search?")
     Call<Resource<ArrayList<UserFriendsList>>> findFriends(@Nullable @Query("token") String name, @Nullable @Query("username") String username);
 
@@ -118,6 +107,5 @@ public interface RestService {
 
     @GET("/api/friends/list/get")
     Call<Resource<ArrayList<UserFriendsList>>> getFriendsList(@Nullable @Query("token") String token);
-
 
 }
