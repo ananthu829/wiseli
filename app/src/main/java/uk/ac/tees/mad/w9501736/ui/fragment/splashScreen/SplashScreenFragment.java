@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.karumi.dexter.Dexter;
@@ -21,8 +22,12 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import uk.ac.tees.mad.w9501736.R;
 import uk.ac.tees.mad.w9501736.data.model.WiseLiUser;
+import uk.ac.tees.mad.w9501736.di.components.DaggerWiseLiComponent;
+import uk.ac.tees.mad.w9501736.di.components.WiseLiComponent;
 import uk.ac.tees.mad.w9501736.ui.BaseFragment;
 import uk.ac.tees.mad.w9501736.ui.activity.LandingActivity;
 import uk.ac.tees.mad.w9501736.ui.viewModel.splashScreen.SplashScreenFragmentViewModel;
@@ -34,6 +39,10 @@ public class SplashScreenFragment extends BaseFragment {
 
     AppPreferences mAppPreferences;
     WiseLiUser userDetails;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    private WiseLiComponent wiseLiComponent;
 
     private SplashScreenFragmentViewModel splashScreenFragmentViewModel;
 
@@ -64,7 +73,9 @@ public class SplashScreenFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mAppPreferences = AppPreferences.getInstance(getContext());
         userDetails = mAppPreferences.getUserCashedInfo();
-        //splashScreenFragmentViewModel = new ViewModelProvider(requireActivity()).get(SplashScreenFragmentViewModel.class);
+        wiseLiComponent = DaggerWiseLiComponent.create();
+        wiseLiComponent.inject(this);
+        splashScreenFragmentViewModel = new ViewModelProvider(this, viewModelFactory).get(SplashScreenFragmentViewModel.class);
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             Dexter.withContext(getActivity())

@@ -1,26 +1,28 @@
 package uk.ac.tees.mad.w9501736.di.components;
 
 
-import android.app.Application;
+import androidx.lifecycle.ViewModelProvider;
+
+import javax.inject.Singleton;
 
 import dagger.Component;
-import uk.ac.tees.mad.w9501736.cache.GuestData;
-import uk.ac.tees.mad.w9501736.di.module.WiseLiModule;
 import uk.ac.tees.mad.w9501736.di.module.WiseLiViewModelModule;
-import uk.ac.tees.mad.w9501736.di.scopes.WiseLiScope;
+import uk.ac.tees.mad.w9501736.ui.fragment.splashScreen.SplashScreenFragment;
+import uk.ac.tees.mad.w9501736.ui.viewModel.splashScreen.SplashScreenFragmentViewModel;
 
-@WiseLiScope
+@Singleton
 @Component(
-        modules = {
-                WiseLiModule.class,
-                WiseLiViewModelModule.class
-        }
+        modules = WiseLiViewModelModule.class
 )
 public interface WiseLiComponent {
 
-    Application application();
+    ViewModelProvider.Factory provideViewModelFactory();
 
-    GuestData provideGuestData();
+    void inject(SplashScreenFragment splashScreenFragment);
+
+    SplashScreenFragmentViewModel provideSplashScreenFragmentViewModel();
+
+    //GuestData provideGuestData();
 
     //RetrofitHelper provideRetrofitHelper();
 

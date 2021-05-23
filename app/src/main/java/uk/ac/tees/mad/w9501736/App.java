@@ -28,7 +28,7 @@ public class App extends Application implements WiseLiComponentProvider {
         super.onCreate();
 
         GuestData.init(this);
-
+        //wiseLiComponent =
 
     }
 

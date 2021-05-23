@@ -1,29 +1,46 @@
 package uk.ac.tees.mad.w9501736.ui;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-/**
- * Factory class to create ViewModel which has parameter/s constructor view models.
- *
- * @author bchougul - 9/20/2018.
- */
+import java.util.Map;
 
-public class WiseLiViewModelProviderFactory<V extends ViewModel> implements ViewModelProvider.Factory {
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
-    private final V model;
 
-    public WiseLiViewModelProviderFactory(V model) {
-        this.model = model;
+@Singleton
+public class WiseLiViewModelProviderFactory implements ViewModelProvider.Factory {
+
+    private static final String TAG = "WiseLiViewModelProviderFactory";
+
+    private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
+
+    @Inject
+    public WiseLiViewModelProviderFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+        this.creators = creators;
     }
 
-    @NonNull
     @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(model.getClass())) {
-            return (T) model;
+    public <T extends ViewModel> T create(Class<T> modelClass) {
+        Provider<? extends ViewModel> creator = creators.get(modelClass);
+        if (creator == null) {
+            for (Map.Entry<Class<? extends ViewModel>, Provider<ViewModel>> entry : creators.entrySet()) {
+                if (modelClass.isAssignableFrom(entry.getKey())) {
+                    creator = entry.getValue();
+                    break;
+                }
+            }
         }
-        throw new IllegalArgumentException("Unknown class " + modelClass.getSimpleName());
+        if (creator == null) {
+            throw new IllegalArgumentException("unknown model class " + modelClass);
+        }
+        try {
+            return (T) creator.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+
